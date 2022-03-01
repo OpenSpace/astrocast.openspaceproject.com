@@ -1,6 +1,14 @@
 import * as net from 'net';
 const ChattyDebug = false;
 const Debug = true;
+// ===DEBUG===
+// process.argv.push("--port");
+// process.argv.push("25001");
+// process.argv.push("--password");
+// process.argv.push("abc");
+// process.argv.push("--hostpassword");
+// process.argv.push("def");
+// ===DEBUG===
 //
 //  Extract commandline arguments
 //
@@ -34,7 +42,7 @@ for (let i = 0; i < argv.length; i += 2) {
             process.exit(1);
     }
 }
-const CurrentProtocolVersion = 5;
+const CurrentProtocolVersion = 6;
 var MessageType;
 (function (MessageType) {
     MessageType[MessageType["Authentication"] = 0] = "Authentication";
@@ -65,8 +73,8 @@ let peers = [];
 let currentHostId = null;
 function sendMessage(peer, messageType, data) {
     let buffer = new ArrayBuffer(2 + // OS header
-        Uint32Array.BYTES_PER_ELEMENT + // protocol version
-        Uint32Array.BYTES_PER_ELEMENT + // message type
+        Uint8Array.BYTES_PER_ELEMENT + // protocol version
+        Uint8Array.BYTES_PER_ELEMENT + // message type
         Uint32Array.BYTES_PER_ELEMENT + // message size
         data.byteLength // message
     );
@@ -78,35 +86,38 @@ function sendMessage(peer, messageType, data) {
     dv.setUint8(offset, 'OS'.charCodeAt(1));
     offset += 1;
     // Protocol version
-    dv.setUint32(offset, CurrentProtocolVersion, true);
-    offset += 4;
+    dv.setUint8(offset, CurrentProtocolVersion);
+    offset += 1;
     // Message type
-    dv.setUint32(offset, messageType, true);
-    offset += 4;
+    dv.setUint8(offset, messageType);
+    offset += 1;
     // Message size
     dv.setUint32(offset, data.byteLength, true);
     offset += 4;
     // Copy the message
     let bufferView = new Uint8Array(buffer);
     bufferView.set(new Uint8Array(data), offset);
-    if (Debug)
-        console.log("Sending", buffer);
+    if (Debug && messageType !== MessageType.Data)
+        console.log(`Sending to ${peer.id} [${peer.name}]`, buffer);
+    if (ChattyDebug && messageType === MessageType.Data)
+        console.log(`Sending to ${peer.id} [${peer.name}]`, buffer);
     peer.socket.write(bufferView);
 }
 function sendConnectionStatus(peer) {
     const currentHostName = currentHostId === null ? "" : peers[currentHostId].name;
-    let buffer = new ArrayBuffer(Uint32Array.BYTES_PER_ELEMENT + // Status
-        Uint32Array.BYTES_PER_ELEMENT + // Length of new host
+    let buffer = new ArrayBuffer(Uint8Array.BYTES_PER_ELEMENT + // Status
+        Uint8Array.BYTES_PER_ELEMENT + // Length of new host
         currentHostName.length // Host name
     );
     let dv = new DataView(buffer);
     let offset = 0;
-    dv.setUint32(offset, peer.status, true);
-    offset += 4;
-    dv.setUint32(offset, currentHostName.length, true);
-    offset += 4;
+    dv.setUint8(offset, peer.status);
+    offset += 1;
+    dv.setUint8(offset, currentHostName.length);
+    offset += 1;
+    let bufferView = new Uint8Array(buffer);
     for (let i = 0; i < currentHostName.length; i += 1) {
-        dv.setUint8(offset + i, currentHostName.charCodeAt(i));
+        bufferView[offset + i] = currentHostName.charCodeAt(i);
     }
     sendMessage(peer, MessageType.ConnectionStatus, buffer);
 }
@@ -124,35 +135,24 @@ function assignHost(newHost) {
     currentHostId = newHost.id;
     newHost.status = ConnectionStatus.Host;
     // Update everyone about the new host
-    peers.forEach((peer) => { sendConnectionStatus(peer); });
-}
-function setToClient(peer) {
-    if (peer.status === ConnectionStatus.Host) {
-        // If we were the host, we were just demoted, so we should remove information about
-        // the current host
-        currentHostId = null;
-        // and then also everyone just lost their host and should know about it, the `peers`
-        // list also includes the former host, so need to touch the `peer` again
-        peers.forEach((peer) => {
-            peer.status = ConnectionStatus.ClientWithoutHost;
-            sendConnectionStatus(peer);
-        });
-    }
-    else {
-        // @TODO:  Not sure if this case is actually necessary.  When would it happen that we
-        //         have to reaffirm the host-having of a client?  The demotion of the host
-        //         should tell everyone
-        // We only need to send a message if something has actually changed
-        if (currentHostId === null && peer.status === ConnectionStatus.ClientWithHost) {
-            // -> The client had a host before, but 
-            peer.status = ConnectionStatus.ClientWithoutHost;
-            sendConnectionStatus(peer);
-        }
-        else if (currentHostId !== null && peer.status === ConnectionStatus.ClientWithoutHost) {
+    peers.forEach((peer) => {
+        // If there was no host before, we need to let people know about the new host
+        if (peer.status === ConnectionStatus.ClientWithoutHost) {
             peer.status = ConnectionStatus.ClientWithHost;
-            sendConnectionStatus(peer);
         }
-    }
+        sendConnectionStatus(peer);
+    });
+}
+function removeHostship() {
+    // If we were the host, we were just demoted, so we should remove information
+    // about the current host
+    currentHostId = null;
+    // and then also everyone just lost their host and should know about it, the
+    // `peers` list also includes the former host, so need to touch the `peer` again
+    peers.forEach((peer) => {
+        peer.status = ConnectionStatus.ClientWithoutHost;
+        sendConnectionStatus(peer);
+    });
 }
 //
 //  main
@@ -161,20 +161,18 @@ const server = net.createServer();
 server.listen(settings.port, () => {
     console.log(`Server listening to connections on port ${settings.port} with password ${settings.password} and host password ${settings.hostPassword}`);
 });
-let nextConnectionId = 0;
 server.on('connection', function (socket) {
     let peer = {
-        id: nextConnectionId,
+        id: peers.length,
         name: "",
         socket: socket,
         status: ConnectionStatus.Connecting
     };
-    nextConnectionId += 1;
     console.log(`Added new peer: ${peer.id}`);
     socket.on('data', function (data) {
         if (ChattyDebug)
             console.log("Incoming data", data);
-        const HeaderSize = 'OS'.length + 3 * Uint32Array.BYTES_PER_ELEMENT;
+        const HeaderSize = 2 + 1 + 1 + 4; // OS + Protocol + Type + MsgSize
         if (data.length < HeaderSize) {
             // The message we received cannot be valid since it doesn't even contain the header
             // information
@@ -182,53 +180,57 @@ server.on('connection', function (socket) {
         }
         // Get the hard-corded prefix
         const prefix = data.slice(0, 2).toString('utf-8');
-        data = data.slice(2);
         if (prefix !== 'OS') {
             // The message did not start with the OS prefix
             return;
         }
         // Convert Buffer to ArrayBuffer for use with the DataView
         let dv = new DataView(data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength));
-        const protocolVersion = dv.getUint32(0, true);
+        let offset = 2;
+        const protocolVersion = dv.getUint8(offset);
+        offset += 1;
         if (protocolVersion !== CurrentProtocolVersion) {
             // We received an invalid protocol version
             return;
         }
-        const messageType = dv.getUint32(4, true);
+        const messageType = dv.getUint8(offset);
+        offset += 1;
         if (!(messageType in MessageType)) {
             // We received an invalid message type
             return;
         }
-        const messageSize = dv.getUint32(8, true);
-        if (data.byteLength !== 12 + messageSize) {
+        const messageSize = dv.getUint32(offset, true);
+        offset += 4;
+        if (data.byteLength !== offset + messageSize) {
             // The provided message size was not the same as the actual message length
             return;
         }
-        let offset = 12;
         switch (messageType) {
             case MessageType.Authentication: {
                 if (Debug)
-                    console.log(`Received Authentication from ${peer.id}: ${peer.name}`);
-                const passwordSize = dv.getUint32(offset, true);
-                offset += 4;
+                    console.log(`Received Authentication from ${peer.id}`);
+                const passwordSize = dv.getUint16(offset, true);
+                offset += 2;
+                console.log(passwordSize);
                 if (passwordSize === 0) {
                     // We didn't get any password at all, so we should bail out
                     return;
                 }
                 const password = data.slice(offset, offset + passwordSize).toString('utf-8');
                 offset += passwordSize;
+                console.log(password);
                 if (password !== settings.password) {
                     // We received the wrong password
                     return;
                 }
-                const hostPasswordSize = dv.getUint32(offset, true);
-                offset += 4;
+                const hostPasswordSize = dv.getUint16(offset, true);
+                offset += 2;
                 const hostPassword = hostPasswordSize === 0 ?
                     "" :
                     data.slice(offset, offset + hostPasswordSize).toString('utf-8');
                 offset += hostPasswordSize;
-                const nameSize = dv.getUint32(offset, true);
-                offset += 4;
+                const nameSize = dv.getUint8(offset);
+                offset += 1;
                 const name = nameSize === 0 ?
                     "Anonymous" :
                     data.slice(offset, offset + nameSize).toString('utf-8');
@@ -238,10 +240,11 @@ server.on('connection', function (socket) {
                 if (currentHostId === null && hostPassword === settings.hostPassword) {
                     // We don't have a current host and this peer provided the correct password,
                     // so we can instantly promote them
-                    console.log(`Connection ${peer.id}: ${peer.name} directly promoted to host`);
+                    console.log(`Connection ${peer.id} [${peer.name}] directly promoted to host`);
                     assignHost(peer);
                 }
                 else {
+                    console.log(`Connection ${peer.id} [${peer.name}] is client`);
                     peer.status = currentHostId === null ?
                         ConnectionStatus.ClientWithoutHost :
                         ConnectionStatus.ClientWithHost;
@@ -254,7 +257,7 @@ server.on('connection', function (socket) {
                 if (ChattyDebug)
                     console.log(`Received Data from ${peer.id}: ${peer.name}`);
                 if (peer.id !== currentHostId) {
-                    console.log(`Ignoring connection ${peer.id}: ${peer.name} trying to send data`);
+                    console.log(`Ignoring connection ${peer.id} [${peer.name}] trying to send data`);
                     return;
                 }
                 let payload = data.slice(offset);
@@ -267,10 +270,10 @@ server.on('connection', function (socket) {
             }
             case MessageType.HostshipRequest: {
                 if (Debug)
-                    console.log(`Received HostshipRequest from ${peer.id}: ${peer.name}`);
-                console.log(`Connection ${peer.id}: ${peer.name} requested hostship`);
-                const passwordSize = dv.getUint32(offset, true);
-                offset += 4;
+                    console.log(`Received HostshipRequest from ${peer.id} [${peer.name}]`);
+                console.log(`Connection ${peer.id} [${peer.name}] requested hostship`);
+                const passwordSize = dv.getUint16(offset, true);
+                offset += 2;
                 if (passwordSize === 0) {
                     // We didn't get any password at all, so we should bail out
                     return;
@@ -278,14 +281,14 @@ server.on('connection', function (socket) {
                 const password = data.slice(offset, offset + passwordSize).toString('utf-8');
                 offset += passwordSize;
                 if (password !== settings.hostPassword) {
-                    console.log(`Connection ${peer.id}: ${peer.name} provided incorrect host password`);
+                    console.log(`Connection ${peer.id} [${peer.name}] provided incorrect host password`);
                     if (Debug)
                         console.log(`Provided: ${password}.  Is ${settings.hostPassword}`);
                     // We received the wrong password
                     return;
                 }
                 if (currentHostId === peer.id) {
-                    console.log(`Connection ${peer.id}: ${peer.name} is already the host`);
+                    console.log(`Connection ${peer.id} [${peer.name}] is already the host`);
                     return;
                 }
                 assignHost(peer);
@@ -293,9 +296,9 @@ server.on('connection', function (socket) {
             }
             case MessageType.HostshipResignation: {
                 if (Debug)
-                    console.log(`Received HostshipResignation from ${peer.id}: ${peer.name}`);
+                    console.log(`Received HostshipResignation from ${peer.id} [${peer.name}]`);
                 if (peer.status === ConnectionStatus.Host) {
-                    setToClient(peer);
+                    removeHostship();
                 }
                 break;
             }
@@ -306,17 +309,14 @@ server.on('connection', function (socket) {
     });
     socket.on('end', function () {
         console.log(`Closing connection with peer ${peer.id}`);
+        if (currentHostId === peer.id) {
+            removeHostship();
+        }
+        let idx = peers.findIndex((p => { peer.id === p.id; }));
+        peers.splice(idx, 1);
+        sendNumberConnections();
     });
     socket.on('error', function (err) {
         console.log(`Error: ${err} from peer ${peer.id}`);
     });
 });
-//
-// app.get('/', (req, res) => {
-//   res.setHeader('Content-Type', 'text/plain');
-//   console.log('hello');
-//   res.status(200).end();
-// });
-// 
-// app.listen(8080)
-// console.loog(settings, argv);
