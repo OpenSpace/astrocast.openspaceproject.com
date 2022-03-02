@@ -1,5 +1,10 @@
 # Wormhole
-
+To start the Wormhole server, you will need [Node.JS and NPM](https://nodejs.org) installed on your system. With that taken care of
+1. Clone this repository and enter the folder
+1. Install the TypeScript package by executing `npm install -g typescript`
+1. Install all potentially required packages by calling `npm install`
+1. Execute the TypeScript transpiler by calling `tsc` in the repository. This will set up a running process that will transpile the necessary files every time there is a change
+1. In a second terminal, start the Wormhole server by calling `node index.js`. Please note that the script can take optional commandline arguments which are described by calling `node index.js --help`
 
 # Message Structures (version 6)
 This section describes the different message types that are being sent between OpenSpace and the Wormhole application.  A message consists of a header and a type-appropriate payload
