@@ -50,23 +50,26 @@ enum ConnectionStatus {
  * Represents a peer to this server, i.e., an instance that is capable of receiving any of
  * these message types are responding according to the protocol.
  */
-interface Peer {
+type Peer = {
   /**
    * A unique ID for this peer. IDs might be reused through the lifetime of the server if
    * peers connect and disconnect, but at any given time it is guaranteed that a specific
    * id will belong to either exactly 1 or no Peer
    */
   id: number,
+  
   /**
    * The user-provided name for this peer, or "Anonymous" if no name was specified. The
    * name can have a maximum length of 255 characters and can only consist of ASCII
    * characters
    */
   name: string,
+  
   /**
    * The socket on which to contact the Peer and send messages to
    */
   socket: net.Socket,
+  
   /**
    * The current status of this Peer as it has been communicated
    */
@@ -109,7 +112,7 @@ export class Server {
    * are added to the end of this list and are moved when they disconnect or provide an
    * error message
    */
-  private peers: Peer[] = [];
+  private peers = new Array<Peer>();
 
   /**
    * The id of the current host. Please note that this is **not** the location of this
@@ -175,7 +178,9 @@ export class Server {
    * @param peer The peer from which this data package was received
    */
   private onData(data, peer: Peer): void {
-    if (ChattyDebug)  console.log("Incoming data", data);
+    if (ChattyDebug) {
+      console.log("Incoming data", data);
+    }
     
     const HeaderSize = 
       'OS'.length +
@@ -280,7 +285,9 @@ export class Server {
    * @param peer The peer from which this message came
    */
   private handleAuthentication(data, peer: Peer) {
-    if (Debug)  console.log(`Received Authentication from ${peer.id}`);
+    if (Debug) {
+      console.log(`Received Authentication from ${peer.id}`);
+    }
 
     let dv = new DataView(
       data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)
@@ -348,7 +355,9 @@ export class Server {
    * @param peer The peer from which this package is coming
    */
   private handleData(data, peer: Peer) {
-    if (ChattyDebug)  console.log(`Received Data from ${peer.id}: ${peer.name}`);
+    if (ChattyDebug) {
+      console.log(`Received Data from ${peer.id}: ${peer.name}`);
+    }
 
     // Check if the peer is the current host or not and only send messages if it is so
     if (peer.id === this.currentHostId) {
@@ -371,7 +380,9 @@ export class Server {
    * @param peer The peer from which this message arrived
    */
   private handleHostshipRequest(data, peer: Peer) {
-    if (Debug)  console.log(`Received HostshipRequest from ${peer.id} [${peer.name}]`);
+    if (Debug) {
+      console.log(`Received HostshipRequest from ${peer.id} [${peer.name}]`);
+    }
         
     console.log(`Connection ${peer.id} [${peer.name}] requested hostship`);
 
@@ -412,7 +423,9 @@ export class Server {
    * @param peer The peer from which this message arrived
    */
   private handleHostshipResignation(data, peer: Peer) {
-    if (Debug)  console.log(`Received HostshipResignation from ${peer.id} [${peer.name}]`);
+    if (Debug) {
+      console.log(`Received HostshipResignation from ${peer.id} [${peer.name}]`);
+    }
 
     // Only remove the current host if it was the host that requesting the resignation
     if (peer.status === ConnectionStatus.Host) {
@@ -570,7 +583,9 @@ export class Server {
    */
   private removeHostship() {
     // If there is no host right now, there is nothing to be done
-    if (this.currentHostId === null)  return;
+    if (this.currentHostId === null) {
+      return;
+    }
 
     // If we were the host, we were just demoted, so we should remove information
     // about the current host
