@@ -22,43 +22,75 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { Server } from "./server.js";
+import { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
-//
-//  Extract commandline arguments
-//
-let settings = {
-  port: 25001,
-  password: Math.random().toString(16).slice(2, 10),
-  hostPassword: Math.random().toString(16).slice(2, 10)
+interface CloseServerButtonProps {
+  instanceID: string;
+  text: string;
+  onRoomClosed: (message: string) => void;
+}
+
+const CloseServerButton = ({
+  instanceID,
+  text,
+  onRoomClosed,
+}: CloseServerButtonProps) => {
+  const [isButtonActive, setButtonActive] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const apiUrl = import.meta.env.VITE_SERVER_API_PATH;
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setButtonActive(true);
+  };
+  const handleShowModal = () => {
+    setShowModal(true);
+    setButtonActive(false);
+  };
+
+  const requestServerClose = () => {
+    fetch(`${apiUrl}/remove-server-instance/${instanceID}`)
+      .then((response) => {
+        if (!response.ok) {
+          setTimeout(() => {
+            setButtonActive(true);
+          }, 1500);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        onRoomClosed(data.message);
+      })
+      .catch((error) => {
+        console.log(`ERROR on server remove: ${error}`);
+        onRoomClosed("Internal server error, check logs.");
+      });
+  };
+
+  return (
+    <>
+      <Button variant="outline-dark" disabled={!isButtonActive} onClick={handleShowModal}>
+        {!isButtonActive ? "Removing..." : text}
+      </Button>
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Warning</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>You are about to {text.toLowerCase()} a server, continue?</Modal.Body>
+        <Modal.Footer>
+          <Button autoFocus variant="success" onClick={handleCloseModal}>
+            Abort
+          </Button>
+          <Button variant="secondary" onClick={requestServerClose}>
+            Continue
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
 };
 
-let argv = process.argv.slice(2);
-if (argv.length === 1 && argv[0] === "--help") {
-  console.log("Usage:");
-  console.log("  --help:          This message");
-  console.log("  --port:          The port this server should use instead");
-  console.log("  --password:      The password this server should use instead");
-  console.log("  --hostpassword:  The host password this server should use instead");
-  process.exit(0);
-}
-
-for (let i = 0; i < argv.length; i += 2) {
-  switch (argv[i]) {
-    case "--port":
-      settings.port = parseFloat(argv[i + 1]);
-      break;
-    case "--password":
-      settings.password = argv[i + 1];
-      break;
-    case "--hostpassword":
-      settings.hostPassword = argv[i + 1];
-      break;
-    default:
-      console.error(`Unknown commandline argument ${argv[i]}`);
-      process.exit(1);
-  }
-}
-
-let server = new Server(settings.port, settings.password, settings.hostPassword);
-
+export default CloseServerButton;

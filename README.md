@@ -1,13 +1,41 @@
-# Wormhole
-To start the Wormhole server, you will need [Node.JS and NPM](https://nodejs.org) installed on your system. With that taken care of
-1. Clone this repository and enter the folder
-1. Install the TypeScript package by executing `npm install -g typescript`
-1. Install all potentially required packages by calling `npm install`
-1. Execute the TypeScript transpiler by calling `tsc` in the repository. This will set up a running process that will transpile the necessary files every time there is a change
-1. In a second terminal, start the Wormhole server by calling `node index.js`. Please note that the script can take optional commandline arguments which are described by calling `node index.js --help`
+# Wormhole - Parallel Connection
 
-# Message Structures (version 6)
-This section describes the different message types that are being sent between OpenSpace and the Wormhole application.  A message consists of a header and a type-appropriate payload
+# Overview
+
+The web app enhances the usability of Parallel Connection in OpenSpace by enabling users to view available rooms (sessions), create and share rooms with others, and join sessions directly from the website if OpenSpace is running locally.
+
+# Functionality
+
+### Session Information
+
+View detailed information about each session, including the number of participants, the creator of the room, the current host, and other relevant information.
+
+### Join Existing Rooms
+
+Easily connect to an existing room session via the website if you're connected to OpenSpace.
+
+### Share Room
+
+Share room links with others for automatic joining and seamless streaming.
+
+### Create New Rooms
+
+All sessions occupied? Log in with your Google, Facebook, Twitter, or GitHub account and create a new session.
+
+# Wormhole
+
+To start the Wormhole server locally, you will need [Node.JS and NPM](https://nodejs.org) installed on your system. With that taken care of
+
+1. Clone this repository and enter the folder
+1. Install all potentially required packages by calling `npm install`
+1. Make a copy of `.env_sample`, rename it to `.env` and fill in the information. The projects API keys can be found on [Firebase](https://console.firebase.google.com/u/0/), download the projects admin sdk files as well.
+1. Start the frontend and backend server by executing `npm run dev`. This will set up all the neccesary processes that will transpile the necessary files, enable hot reload, and serve a local express app
+1. To ready the app for deployment execute `npm run build`. This will build both the frontend and backend into .local/express & .local/vite
+1. Optionally to only run frontend execute `npm run vite:dev` or backend by `npm run api:dev`
+
+# Message Structures (version 7)
+
+This section describes the different message types that are being sent between OpenSpace and the Wormhole application. A message consists of a header and a type-appropriate payload
 
 ```cpp
 struct {
@@ -19,25 +47,30 @@ struct {
 }
 ```
 
+## Changes in version 7
+
+Added session `roomName` to authentication message
 
 ## Authentication (Type = 0)
+
 This message is sent from OpenSpace to the Wormhole server to authenticate a new peer to a running session. It consists of a password which has to be provided, and an optional host password, and the optional name. An optional parameter is represented by a length of 0.
 
 ```cpp
 struct {
   uint16_t passwordLength; // The length of the password field
   byte[passwordLength] password; // The provided password without a terminating \0
-
   uint16_t hostPasswordLength; // The length of the host password field or 0 if the host password is omitted
   byte[hostPasswordLength] hostPassword; // The host password
-
+  uint8_t roomNameLength; // The length of the session room name field
+  byte[roomNameLength] roomName; // The session room name
   uint8_t nameLength; // The length of the user's name or 0 if the name is omitted
   byte[nameLength] name; // The users's name
 }
 ```
 
 ## Data (Type = 1)
-This type of message is sent from the host Peer to the Wormhole server which then distributes this message to all other connected peers. This message is the primary way method for the host to send OpenSpace related data to the connected peers.  Only the host of the session should send these messages to the Wormhole server
+
+This type of message is sent from the host Peer to the Wormhole server which then distributes this message to all other connected peers. This message is the primary way method for the host to send OpenSpace related data to the connected peers. Only the host of the session should send these messages to the Wormhole server
 
 ```cpp
 struct {
@@ -54,7 +87,9 @@ struct {
 ```
 
 ### Camera
+
 This data message contains information about the current camera
+
 ```cpp
 struct {
   double[3] position; // The position of the camera
@@ -68,7 +103,9 @@ struct {
 ```
 
 ### Time
+
 This data message contains information about the current in-game time
+
 ```cpp
 struct {
   double time; // The current in-game time
@@ -80,7 +117,9 @@ struct {
 ```
 
 ### Script
+
 This data message contains a Lua script that the host wants a peer to be executed
+
 ```cpp
 struct {
   uint32_t scriptLength; // The length of the script message
@@ -89,6 +128,7 @@ struct {
 ```
 
 ## ConnectionStatus (Type = 2)
+
 This message is sent from the Wormhole server to OpenSpace to inform the Peer about a change in status, be it the Peer's status or if the host of the session has changed.
 
 ```cpp
@@ -99,7 +139,7 @@ struct {
     ClientWithoutHost = 2,
     ClientWithHost = 3,
     Host = 4
-  } status;  // The identifier of the status 
+  } status;  // The identifier of the status
 
   uint8_t hostNameLength; // The number of characters of the new host or 0 if there is no host
   byte[hostNameLength] hostName; // The name of the current host of the session
@@ -107,6 +147,7 @@ struct {
 ```
 
 ## HostshipRequest (Type = 3)
+
 This message is sent from OpenSpace to the Wormhole server when the Peer signals that it wants to become the active host.
 
 ```cpp
@@ -117,6 +158,7 @@ struct {
 ```
 
 ## HostshipResignation (Type = 4)
+
 This message is sent from OpenSpace to the Wormhole server when the Peer signals that it wants to resign a potentially current hostship.
 
 ```cpp
@@ -126,6 +168,7 @@ struct {
 ```
 
 ## NConnections (Type = 5)
+
 This message is sent from the Wormhole server to OpenSpace to inform the peer about a changed number of total connected peers to the server.
 
 ```cpp
