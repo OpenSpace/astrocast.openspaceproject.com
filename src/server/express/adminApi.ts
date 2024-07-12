@@ -32,14 +32,28 @@ import { DataSnapshot, EventType, getDatabase, Reference } from "firebase-admin/
  * Set admin rights for a user in the firebase auth database.
  *
  * @param uid The user uid to set admin rights for
+ * @param secret The secret to verify the request
  */
-export const setAdminRights = async (uid: string) => {
+export const setAdminRights = async (uid: string, secret: string) => {
+  // Verify the provided secret against the database secret
+  const db = getDatabase(adminDbApp);
+  const dbSecret = await db.ref("Admin/secret").get();
+
+  if (!dbSecret.exists()) {
+    throw new Error("Could not find admin secret in database");
+  }
+
+  if (secret !== dbSecret.val()) {
+    throw new Error("Invalid secret provided");
+  }
+
   const auth = getAuth(adminAuthApp);
   try {
     await auth.setCustomUserClaims(uid, { admin: true });
-    console.log("Successfully set admin rights for user:", uid);
+    LINFO(`Successfully set admin rights for user: ${uid}`);
   } catch (error) {
-    console.log(error);
+    LERROR("Internal error", (error as Error).message, `uid: '${uid}'`);
+    throw error;
   }
 };
 

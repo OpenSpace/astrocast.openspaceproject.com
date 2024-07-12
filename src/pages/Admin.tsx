@@ -35,6 +35,7 @@ import { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import RequestAdminRightsForm from "@/components/RequestAdminRightsForm";
 
 const Admin = () => {
   const instances = useServerInstanceData(true);
@@ -95,7 +96,7 @@ const Admin = () => {
         </Modal.Body>
       </Modal>
 
-      <Container className="d-flex justify-content-end">
+      <Container className="d-flex justify-content-end mb-2">
         <Button
           className="py-2"
           variant="success"
@@ -105,6 +106,10 @@ const Admin = () => {
         >
           Create New Room
         </Button>
+      </Container>
+
+      <Container>
+        <RequestAdminRightsForm />
       </Container>
 
       <Container>

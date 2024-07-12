@@ -28,6 +28,7 @@ import {
   getUserByID,
   postServerInstance,
   removeServerInstanceFromDb,
+  setAdminRights,
   subscribeToDatabase,
 } from "./adminApi";
 import { Server } from "./server";
@@ -70,6 +71,10 @@ class ServerManager {
     this.app.post(
       `${this.API_PATH}/request-server-instance`,
       this.handleRequestServerInstance.bind(this)
+    );
+    this.app.post(
+      `${this.API_PATH}/request-admin-rights`,
+      this.handleRequestSetAdminRights.bind(this)
     );
     this.app.get(
       `${this.API_PATH}/remove-server-instance/:id`,
@@ -128,6 +133,23 @@ class ServerManager {
     }
 
     LINFO(`Loaded ${this.wormhole.activeServers()} existing instances from database`);
+  }
+
+  /**
+   * Handle the request to set admin rights for a user.
+   *
+   * @param req Request object must contain the user id token and secret in the body
+   */
+  private async handleRequestSetAdminRights(req: Request, res: Response): Promise<void> {
+    const uid = req.body.uid;
+    const secret = req.body.secret;
+
+    try {
+      await setAdminRights(uid, secret);
+      res.status(200).json({ message: `Successfully set admin rights for user: ${uid}` });
+    } catch (error) {
+      res.status(500).json({ error: (error as Error).message });
+    }
   }
 
   /**

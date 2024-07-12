@@ -70,6 +70,30 @@ export const handleNewRoomForm = async (
     });
 };
 
+export const handleAdminRightsForm = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  const form = e.currentTarget;
+  const formData = new FormData(form);
+  const formJson = Object.fromEntries(formData.entries());
+  const apiUrl = import.meta.env.VITE_SERVER_API_PATH;
+
+  const response = await fetch(`${apiUrl}/request-admin-rights`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formJson),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw data.error;
+  }
+  return data.message;
+};
+
 export const isUserAdmin = async (user: User | null): Promise<boolean> => {
   if (!user) return false;
 
