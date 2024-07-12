@@ -44,7 +44,7 @@ const RequestNewRoomForm = ({ onSubmitCallback }: RequestNewRoomFormProps) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+    if (!form.checkValidity()) {
       event.preventDefault();
       event.stopPropagation();
     } else {

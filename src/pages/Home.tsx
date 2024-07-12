@@ -80,7 +80,7 @@ const Home = () => {
             }}
           />
         ) : (
-          <h3>Login to ceate a new room</h3>
+          <h3>Login to create a new room</h3>
         )}
       </Container>
     </>

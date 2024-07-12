@@ -52,6 +52,7 @@ class ServerManager {
    * The path to the API endpoint for the server
    */
   private API_PATH = process.env.VITE_SERVER_API_PATH;
+
   /**
    * The express server that is listening to incoming HTTP requests
    */
@@ -84,14 +85,15 @@ class ServerManager {
   }
 
   /**
-   * Start the wormhole server that will handle all the server instances
+   * Start the wormhole server that will handle all the server instances.
    */
   public startWormhole(): void {
     this.wormhole.startWormholeServer();
   }
 
   /**
-   * Fetch the display name of a user given their uid
+   * Fetch the display name of a user given their uid.
+   *   
    * @param req Request object containing the user token
    * @param res Response object containing user name
    */
@@ -106,7 +108,7 @@ class ServerManager {
   }
 
   /**
-   * Load existing server instances from the database and start them again
+   * Load existing server instances from the database and start them again.
    */
   public async loadServerInstancesFromDB(): Promise<void> {
     const instances = await getServerInstancesFromDB();
@@ -129,7 +131,8 @@ class ServerManager {
   }
 
   /**
-   * Handle the request to remove a server instance from the database
+   * Handle the request to remove a server instance from the database.
+   *
    * @param req Request object must contain the instance id as a params `/:id`
    */
   private async handleRemoveServerInstance(req: Request, res: Response): Promise<void> {
@@ -151,9 +154,10 @@ class ServerManager {
    * Shut down and remove a server instance from the internal list and the database. This
    * will first try to remove the server form the database and if successful it will also
    * stop the server locally.
+   *
    * @param instanceID The id of the server instance to shut down
-   * @returns Returns a promise that resolves with a successful message or rejects with
-   * an error message
+   * @return Returns a promise that resolves with a successful message or rejects with
+   *         an error message
    */
   private async removeServerInstance(instanceID: string): Promise<string> {
     try {
@@ -166,10 +170,11 @@ class ServerManager {
   }
 
   /**
-   * Handle the request to create a new server instance
+   * Handle the request to create a new server instance.
+   *
    * @param req Request object must contain the password and hostpassword in the body
-   * @returns Returns a promise that resolves with the server metadata or rejects with an
-   * error
+   * @return Returns a promise that resolves with the server metadata or rejects with an
+   *         error
    */
   private async handleRequestServerInstance(req: Request, res: Response): Promise<void> {
     const password = req.body.password;
@@ -236,7 +241,7 @@ class ServerManager {
   }
 
   /**
-   * Automatically kill inactive servers that have been running for too long
+   * Automatically kill inactive servers that have been running for too long.
    */
   public autoKillInactiveServers(): void {
     let instances: ServerInstanceData[] = [];
@@ -254,7 +259,6 @@ class ServerManager {
       LERROR("Error fetching instance data: ", error);
     };
 
-    // /* const unsubscribe = */ onValue(instanceRef, handleData, handleError);
     subscribeToDatabase("InstanceData", "value", handleData, handleError);
 
     setInterval(

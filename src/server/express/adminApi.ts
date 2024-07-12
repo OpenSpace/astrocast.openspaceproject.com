@@ -29,7 +29,8 @@ import { getAuth, UserRecord } from "firebase-admin/auth";
 import { DataSnapshot, EventType, getDatabase, Reference } from "firebase-admin/database";
 
 /**
- * Set admin rights for a user in the firebase auth database
+ * Set admin rights for a user in the firebase auth database.
+ *
  * @param uid The user uid to set admin rights for
  */
 export const setAdminRights = async (uid: string) => {
@@ -43,9 +44,10 @@ export const setAdminRights = async (uid: string) => {
 };
 
 /**
- * Authorize a user to the firebase auth database
+ * Authorize a user to the firebase auth database.
+ *
  * @param token The client user id token to authorize
- * @returns Returns a promise that resolves with the user firebase uid
+ * @return Returns a promise that resolves with the user firebase uid
  */
 export const authorizeUser = async (token: string): Promise<string> => {
   const auth = getAuth(adminAuthApp);
@@ -54,9 +56,10 @@ export const authorizeUser = async (token: string): Promise<string> => {
 };
 
 /**
- * Fetch the display name of a user given their uid
+ * Fetch the display name of a user given their uid.
+ *
  * @param token Token to fetch user information
- * @returns Returns a promise that resolves with the user information
+ * @return Returns a promise that resolves with the user information
  */
 export const getUserByID = async (token: string): Promise<UserRecord> => {
   const auth = getAuth(adminAuthApp);
@@ -69,7 +72,7 @@ export const getUserByID = async (token: string): Promise<UserRecord> => {
 };
 
 /**
- * @returns Returns a promise that resolves with an array of server instances or empty array
+ * @return Returns a promise that resolves with an array of server instances or empty array
  */
 export const getServerInstancesFromDB = async (): Promise<ServerInstanceData[]> => {
   const db = getDatabase(adminDbApp);
@@ -84,7 +87,8 @@ export const getServerInstancesFromDB = async (): Promise<ServerInstanceData[]> 
 };
 
 /**
- * Subscribe to the database at `path` and listen for `eventType` events
+ * Subscribe to the database at `path` and listen for `eventType` events.
+ *
  * @param path The path to the database to subscribe to
  * @param eventType The type of event to listen for
  * @param callback The callback function when an event is triggered
@@ -102,7 +106,8 @@ export const subscribeToDatabase = async (
 };
 
 /**
- *  Adds a new server instance to the database
+ * Adds a new server instance to the database.
+ *
  * @param server The server instance to add to the database
  * @param profile The OpenSpace profile this instance is running
  * @param isPrivate True if instance is private, false otherwise
@@ -146,7 +151,8 @@ export const postServerInstance = async (
 };
 
 /**
- * Add the `instance` to the history database
+ * Add the `instance` to the history database.
+ *
  * @param instance The instance data to add to the history database
  */
 export const postInstanceHistoryData = async (
@@ -179,7 +185,8 @@ export const postInstanceHistoryData = async (
 
 /**
  * Attempts to remove the server instance with the given ID from the database, returns a
- * promise once the operation is complete
+ * promise once the operation is complete.
+ *
  * @param instanceID The ID of the server instance to remove
  */
 export const removeServerInstanceFromDb = async (instanceID: string): Promise<void> => {
@@ -211,7 +218,8 @@ export const removeServerInstanceFromDb = async (instanceID: string): Promise<vo
 };
 
 /**
- * Updates the active status of a server instance in the database
+ * Updates the active status of a server instance in the database.
+ *
  * @param instanceID The ID of the server instance to update
  * @param online The new status of the server instance
  */
@@ -250,7 +258,8 @@ export const updateActiveSessionStatus = async (
 };
 
 /**
- * Updates the current number of active users in a server instance
+ * Updates the current number of active users in a server instance.
+ *
  * @param instanceID The ID of the server instance to update
  * @param nPeers The new number of active users
  */
@@ -281,7 +290,8 @@ export const updateCurrentActiveUsers = async (
 };
 
 /**
- * Add a new statistics entry for the given `instanceID` instance
+ * Add a new statistics entry for the given `instanceID` instance.
+ *
  * @param instanceID The ID of the server instance to update
  * @param nPeers The new number of active users
  */
@@ -309,7 +319,8 @@ export const updateStatistics = async (
   }
 };
 /**
- * Updates the current host of a server instance
+ * Updates the current host of a server instance.
+ *
  * @param instanceID The ID of the server instance to update
  * @param host The new host of the server instance
  */
@@ -334,7 +345,8 @@ export const updateCurrentHost = async (instanceID: string, host: string) => {
 };
 
 /**
- * Updates the total number of users connected to a server instance
+ * Updates the total number of users connected to a server instance.
+ *
  * @param instanceID The ID of the server instance to update
  */
 export const updateUsage = async (instanceID: string) => {

@@ -61,7 +61,7 @@ const ServerLink = () => {
       return;
     }
     setIsConnecting(true);
-    // We dont set the host password when joining from a link. Since this room is most
+    // We don't set the host password when joining from a link. Since this room is most
     // likely private
     await openspace.parallel.joinServer(
       import.meta.env.VITE_WORMHOLE_PORT.toString(),
