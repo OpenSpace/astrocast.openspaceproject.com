@@ -32,6 +32,10 @@ import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 
+function capitalizeFirstLetter(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 const UserProfile = () => {
   const user = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
@@ -114,7 +118,7 @@ const UserProfile = () => {
                 className="py-2 my-1"
                 variant="outline-dark"
               >
-                Link account with {provider.split(".")[0]}
+                Link account with {capitalizeFirstLetter(provider.split(".")[0])}
               </Button>
             ))}
           </Row>

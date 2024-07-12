@@ -21,6 +21,14 @@ To start the Wormhole server locally, you will need [Node.JS and NPM](https://no
 1. Clone this repository and enter the "Wormhole" folder
 1. Install all potentially required packages by calling `npm install`
 1. Make a copy of `.env_sample`, rename it to `.env` and fill in the information. The projects API keys can be found on [Firebase](https://console.firebase.google.com/u/0/), download the projects admin sdk files as well.
+  - API
+    1. In the Firebase console, open "Project Overview" > "1 app" > "Cog wheel"
+    1. Scroll down to see the values
+  - Admin SDK
+    1. In the Firebase console, open Settings > Service Accounts.
+    1. Click Generate New Private Key, then confirm by clicking Generate Key.
+    1. Securely store the JSON file containing the key.
+
 1. Start the frontend and backend server by executing `npm run dev`. This will set up all the neccesary processes that will transpile the necessary files, enable hot reload, and serve a local express app
 1. To ready the app for deployment execute `npm run build`. This will build both the frontend and backend into .local/express & .local/vite
 1. Optionally to only run frontend execute `npm run vite:dev` or backend by `npm run api:dev`
@@ -31,7 +39,7 @@ This section describes the different message types that are being sent between O
 ```cpp
 struct {
   byte[2] header; // fixed header, must be equal to "OS"
-  uint8_t version; // The version of the protocol. Must be 6
+  uint8_t version; // The version of the protocol. Must be 7
   uint8_t messageType; // The type of the message that is contained in the payload
   uint32_t messageSize; // The total size of the payload data
   byte[messageSize] payload; // The payload of the message according to the messageType
