@@ -31,7 +31,7 @@ This section describes the different message types that are being sent between O
 ```cpp
 struct {
   byte[2] header; // fixed header, must be equal to "OS"
-  uint8_t version; // The version of the protocol. Must be 6
+  uint8_t version; // The version of the protocol. Must be 7
   uint8_t messageType; // The type of the message that is contained in the payload
   uint32_t messageSize; // The total size of the payload data
   byte[messageSize] payload; // The payload of the message according to the messageType
