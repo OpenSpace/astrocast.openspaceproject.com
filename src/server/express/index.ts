@@ -93,7 +93,7 @@ class ServerManager {
 
   /**
    * Fetch the display name of a user given their uid.
-   *   
+   *
    * @param req Request object containing the user token
    * @param res Response object containing user name
    */
@@ -156,7 +156,7 @@ class ServerManager {
    * stop the server locally.
    *
    * @param instanceID The id of the server instance to shut down
-   * @return Returns a promise that resolves with a successful message or rejects with
+   * @return A promise that resolves with a successful message or rejects with
    *         an error message
    */
   private async removeServerInstance(instanceID: string): Promise<string> {
@@ -173,7 +173,7 @@ class ServerManager {
    * Handle the request to create a new server instance.
    *
    * @param req Request object must contain the password and hostpassword in the body
-   * @return Returns a promise that resolves with the server metadata or rejects with an
+   * @return A promise that resolves with the server metadata or rejects with an
    *         error
    */
   private async handleRequestServerInstance(req: Request, res: Response): Promise<void> {

@@ -47,7 +47,7 @@ export const setAdminRights = async (uid: string) => {
  * Authorize a user to the firebase auth database.
  *
  * @param token The client user id token to authorize
- * @return Returns a promise that resolves with the user firebase uid
+ * @return A promise that resolves with the user firebase uid
  */
 export const authorizeUser = async (token: string): Promise<string> => {
   const auth = getAuth(adminAuthApp);
@@ -59,7 +59,7 @@ export const authorizeUser = async (token: string): Promise<string> => {
  * Fetch the display name of a user given their uid.
  *
  * @param token Token to fetch user information
- * @return Returns a promise that resolves with the user information
+ * @return A promise that resolves with the user information
  */
 export const getUserByID = async (token: string): Promise<UserRecord> => {
   const auth = getAuth(adminAuthApp);
@@ -72,7 +72,7 @@ export const getUserByID = async (token: string): Promise<UserRecord> => {
 };
 
 /**
- * @return Returns a promise that resolves with an array of server instances or empty array
+ * @return A promise that resolves with an array of server instances or empty array
  */
 export const getServerInstancesFromDB = async (): Promise<ServerInstanceData[]> => {
   const db = getDatabase(adminDbApp);
@@ -184,10 +184,10 @@ export const postInstanceHistoryData = async (
 };
 
 /**
- * Attempts to remove the server instance with the given ID from the database, returns a
- * promise once the operation is complete.
+ * Attempts to remove the server instance with the given ID from the database.
  *
  * @param instanceID The ID of the server instance to remove
+ * @return A promise once the operation is complete or an exception if an error occurs
  */
 export const removeServerInstanceFromDb = async (instanceID: string): Promise<void> => {
   try {

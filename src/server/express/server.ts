@@ -147,7 +147,7 @@ class WormholeServer {
 
   /**
    * Attempts to start the server on the provided port.
-   * @returns A promise that resolves to true if the server was successfully started,
+   * @return A promise that resolves to true if the server was successfully started,
    * otherwise it is rejected with an error message
    */
   public startWormholeServer(): Promise<boolean> {
@@ -170,7 +170,7 @@ class WormholeServer {
   /**
    * Create and add a new instance to the wormhole server. If an instance with the same
    * name exists it will be removed first and the new one added.
-   * @returns The newly created server instance
+   * @return The newly created server instance
    */
   public async addServerInstance(
     name: string,
@@ -190,7 +190,7 @@ class WormholeServer {
   }
 
   /**
-   * @returns The number of active servers that are currently running
+   * @return The number of active servers that are currently running
    */
   public activeServers(): number {
     return Object.keys(this.instances).length;
@@ -201,7 +201,7 @@ class WormholeServer {
    * instance is fully closed. TODO: check when this happens
    * This happens when all connections have disconnected or are
    * closed.
-   * @returns A promise that resolves to a string message if the server was successfully
+   * @return A promise that resolves to a string message if the server was successfully
    * stopped, otherwise it is rejected with an error message
    */
   public async removeServerInstance(instanceID: string): Promise<string> {
@@ -344,7 +344,6 @@ class WormholeServer {
    *
    * @param data The payload of the authentication message
    * @param peer The Peer from which this message arrived
-   * @returns
    */
   private handleAuthentication(data: Buffer, peer: Peer): void {
     LDEBUG(`Handling authentication for peer ${peer.id}`);
@@ -421,7 +420,6 @@ class WormholeServer {
    *
    * @param data The payload of the hostship request message
    * @param peer The Peer from which this message arrived
-   * @returns
    */
   private handleHostshipRequest(data: Buffer, peer: Peer): void {
     const instance = this.instances[peer.serverName];

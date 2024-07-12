@@ -69,7 +69,7 @@ export const supportedProviders = [
 ];
 
 /**
- * @returns The provider object for the given `providerID`
+ * @return The provider object for the given `providerID`
  */
 export const getProvider = (providerID: string) => {
   switch (providerID) {
@@ -92,6 +92,7 @@ export const getProvider = (providerID: string) => {
  * Attempts to sign in with the given provider, if user already has an existing account
  * with another provider it throws an error with the list of available login methods
  * for the user
+ *
  * @param providerKey Provider to sign in with
  */
 export const signInWith = async (providerKey: string) => {
