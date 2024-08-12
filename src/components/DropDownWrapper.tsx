@@ -66,9 +66,7 @@ const DropDownWrapper = ({
   // True if this instance is the server we are connected to, false otherwise
   const isConnected = connectedInstance === instance.id;
 
-  /**
-   * Tell OpenSpace we want to disconnect from the current room
-   */
+   // Tell OpenSpace we want to disconnect from the current room
   const disconnectFromInstanceServer = async () => {
     // If we are connected to OpenSpace we send the disconnect message
     if (openspace) {
@@ -81,6 +79,7 @@ const DropDownWrapper = ({
     setToastMessage(`Left session: '${instance.roomName}'`);
     setShowToast(true);
   };
+  
   return (
     <InstanceWrapper>
       <CustomToast

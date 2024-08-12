@@ -88,7 +88,6 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
     });
 
     setTimeout(() => {
-      // setButtonValid(false);
       api.connect();
       setApiRef(api);
     }, 2000);

@@ -54,6 +54,7 @@ class ServerManager {
    */
   private API_PATH = process.env.VITE_SERVER_API_PATH;
 
+
   /**
    * The express server that is listening to incoming HTTP requests
    */
@@ -176,6 +177,7 @@ class ServerManager {
    * Shut down and remove a server instance from the internal list and the database. This
    * will first try to remove the server form the database and if successful it will also
    * stop the server locally.
+   *
    *
    * @param instanceID The id of the server instance to shut down
    * @return A promise that resolves with a successful message or rejects with

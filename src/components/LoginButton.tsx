@@ -51,11 +51,11 @@ const LoginButton = () => {
   };
 
   const onSignInError = (methods: string[]) => {
-    methods = methods.map((method) => method.split(".")[0]);
+    const methodNames = methods.map((method) => method.split(".")[0]);
 
     setToastMessage(
       `An account with this email already exists. Please sign in with your ` +
-        `${methods.join("or ")} account, and link your accounts under account settings.`
+        `${methodNames.join("or ")} account, and link your accounts under account settings.`
     );
     setShowToast(true);
   };
