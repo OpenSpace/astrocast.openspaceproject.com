@@ -14,10 +14,7 @@
     "api:dev": "concurrently -n build,serve \"npm run api:build:watch\" \"wait-on ./.local/express/dist/api.js && nodemon --inspect=8229 --legacy-watch --watch ./.local/express/dist ./.local/express/dist/api.js ./src/server\"",
     "tsc": "tsc --pretty",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
-    "test:all": "npm run lint && npm run tsc && npm run build && npm run test",
-    "docker:preview": "docker compose -f docker-compose.yml up -d",
-    "docker:preview:rebuild": "docker compose -f docker-compose.yml build",
-    "docker:preview:rebuild:nocache": "docker compose -f docker-compose.yml build --no-cache"
+    "test:all": "npm run lint && npm run tsc && npm run build && npm run test"
   },
   "repository": {
     "type": "git",
