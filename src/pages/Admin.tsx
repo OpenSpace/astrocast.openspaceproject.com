@@ -73,7 +73,9 @@ const Admin = () => {
       <CustomToast
         message={toastMessage}
         showToast={showToast}
-        onClose={() => setShowToast(false)}
+        onClose={() => {
+          setShowToast(false);
+        }}
       />
 
       <Modal show={showModal}>
@@ -131,7 +133,7 @@ const Admin = () => {
             key={instance.id + "-history"}
             instance={instance}
             statistics={statistics.find((stat) => stat.id === instance.id)}
-          ></InstanceHistory>
+          />
         ))}
       </Container>
     </>

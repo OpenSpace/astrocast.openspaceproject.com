@@ -37,22 +37,22 @@ const ShareServerLink = ({ instanceID }: ShareServerLinkProps) => {
 
   const target = useRef(null);
 
+  const copyToClipboard = () => {
+    /*TODO: copy correct addres/port to clipboard */
+    navigator.clipboard.writeText(`http://localhost:5173/join-server/${instanceID}`);
+    setShowOverlay(true);
+    setTimeout(() => {
+      setShowOverlay(false);
+    }, 1500);
+  };
+
   return (
     <>
       <Button
         variant="outline-dark"
         className="d-flex justify-content-center align-items-center gap-2"
         ref={target}
-        onClick={() => {
-          /*TODO: copy correct addres/port to clipboard */
-          navigator.clipboard.writeText(
-            `http://localhost:5173/join-server/${instanceID}`
-          );
-          setShowOverlay(true);
-          setTimeout(() => {
-            setShowOverlay(false);
-          }, 1500);
-        }}
+        onClick={copyToClipboard}
       >
         Copy link <FaRegCopy />
       </Button>

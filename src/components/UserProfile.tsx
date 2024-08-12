@@ -48,16 +48,26 @@ const UserProfile = () => {
     (provider) => !linkedAccounts?.includes(provider)
   );
 
-  const handleClose = () => {
-    setShowModal(false);
-  };
-  const handleShow = () => {
-    setShowModal(true);
-  };
-
   const logout = async () => {
     await signOut(auth);
     setShowModal(false);
+  };
+
+  type ProviderType = (typeof supportedProviders)[number];
+
+  const linkAccount = (provider: ProviderType) => {
+    linkWithPopup(user!, getProvider(provider))
+      .then((_result) => {
+        setToastMessage("Account linked successfully");
+        setShowToast(true);
+        unlinkedAccounts.splice(unlinkedAccounts.indexOf(provider), 1);
+      })
+      .catch((error) => {
+        console.log(error);
+        setToastMessage("Error linking account. Please try again.");
+        setShowToast(true);
+        setShowModal(false);
+      });
   };
 
   return (
@@ -77,10 +87,17 @@ const UserProfile = () => {
           roundedCircle={user ? true : false}
           src={user?.photoURL ?? "/images/icon.png"}
           referrerPolicy="no-referrer"
-          onClick={handleShow}
+          onClick={() => {
+            setShowModal(true);
+          }}
         />
       }
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal
+        show={showModal}
+        onHide={() => {
+          setShowModal(false);
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title as={"div"} className="ms-auto">
             {user?.email}
@@ -103,18 +120,7 @@ const UserProfile = () => {
               <Button
                 key={provider + "link"}
                 onClick={() => {
-                  linkWithPopup(user!, getProvider(provider))
-                    .then((_result) => {
-                      setToastMessage("Account linked successfully");
-                      setShowToast(true);
-                      unlinkedAccounts.splice(unlinkedAccounts.indexOf(provider), 1);
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                      setToastMessage("Error linking account. Please try again.");
-                      setShowToast(true);
-                      setShowModal(false);
-                    });
+                  linkAccount(provider);
                 }}
                 className="py-2 my-1"
                 variant="outline-dark"

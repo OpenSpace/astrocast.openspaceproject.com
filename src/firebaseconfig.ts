@@ -66,7 +66,7 @@ export const supportedProviders = [
   FacebookAuthProvider.PROVIDER_ID,
   GithubAuthProvider.PROVIDER_ID,
   TwitterAuthProvider.PROVIDER_ID,
-];
+] as const;
 
 /**
  * @return The provider object for the given `providerID`

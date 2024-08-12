@@ -31,12 +31,17 @@ import Button from "react-bootstrap/Button";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 
+enum ConnectionState {
+  CONNECTING = 0,
+  CONNECTED,
+  DISCONNECTED,
+}
+
 const ServerLink = () => {
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
 
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const [connectionState, setConnectionState] = useState(ConnectionState.DISCONNECTED);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -53,7 +58,7 @@ const ServerLink = () => {
       setShowToast(true);
       return;
     }
-    if (isConnecting) {
+    if (connectionState === ConnectionState.CONNECTING) {
       return;
     }
     if (!instance) {
@@ -61,7 +66,7 @@ const ServerLink = () => {
       setShowToast(true);
       return;
     }
-    setIsConnecting(true);
+    setConnectionState(ConnectionState.CONNECTING);
     // We don't set the host password when joining from a link. Since this room is most
     // likely private
     await openspace.parallel.joinServer(
@@ -74,12 +79,23 @@ const ServerLink = () => {
     );
     setToastMessage(`Joined session: ${instance.roomName}`);
     setShowToast(true);
-    setIsConnected(true);
+    setConnectionState(ConnectionState.CONNECTED);
   };
 
   useEffect(() => {
     connectToInstanceServer();
   }, [instance]);
+
+  const statusText = () => {
+    switch (connectionState) {
+      case ConnectionState.CONNECTING:
+        return "Joining Session...";
+      case ConnectionState.CONNECTED:
+        return "Connected";
+      case ConnectionState.DISCONNECTED:
+        return "Join Session";
+    }
+  };
 
   return (
     <>
@@ -89,7 +105,7 @@ const ServerLink = () => {
         onClose={() => {
           setShowToast(false);
         }}
-      ></CustomToast>
+      />
       <Container>
         <div>
           <p>Your session has started in OpenSpace</p>
@@ -97,22 +113,16 @@ const ServerLink = () => {
             If you don't see the session, click <b>Join Session</b> below
           </p>
         </div>
-
         <Button
           variant="success"
           className="px-5 py-2 mt-3"
           onClick={() => {
             // If the automatic connection failed we need to reset the connection flag
-            setIsConnecting(false);
-            setIsConnected(false);
+            setConnectionState(ConnectionState.DISCONNECTED);
             connectToInstanceServer();
           }}
         >
-          {isConnected
-            ? "Connected"
-            : isConnecting
-              ? "Joining Session..."
-              : "Join Session"}
+          {statusText()}
         </Button>
       </Container>
     </>
