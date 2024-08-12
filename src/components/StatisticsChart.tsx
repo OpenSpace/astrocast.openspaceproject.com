@@ -49,10 +49,10 @@ const StatisticsChart = ({ statistics }: StatisticsChartProps) => {
   return (
     <>
       <Container>
-        <Row className="px-3 pb-3">
-          <h3 style={{ margin: 0 }}>Server usage</h3>
+        <Row>
+          <h3>Server usage</h3>
         </Row>
-        <Row className="py-2">
+        <Row className="py-3">
           <Col>
             <AreaChart
               width={600}

@@ -64,7 +64,7 @@ const RequestNewRoomForm = ({ onSubmitCallback }: RequestNewRoomFormProps) => {
       className="p-3 my-3"
       style={{ boxShadow: "0 0 5px 0 #bdbdbd", borderRadius: 10, background: "#ffff" }}
     >
-      <h2 style={{ textAlign: "left", marginBottom: 15 }}>Create a new room</h2>
+      <h2 className="mb-3">Create a new room</h2>
       <Row>
         <Form.Group as={Col}>
           <FloatingLabel label="Room Name" controlId="floatingRoomName" className="mb-3">

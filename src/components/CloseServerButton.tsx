@@ -46,7 +46,7 @@ const CloseServerButton = ({
     setShowModal(false);
     setButtonActive(true);
   };
-  
+
   const handleShowModal = () => {
     setShowModal(true);
     setButtonActive(false);

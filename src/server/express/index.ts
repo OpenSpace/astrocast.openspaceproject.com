@@ -54,7 +54,6 @@ class ServerManager {
    */
   private API_PATH = process.env.VITE_SERVER_API_PATH;
 
-
   /**
    * The express server that is listening to incoming HTTP requests
    */

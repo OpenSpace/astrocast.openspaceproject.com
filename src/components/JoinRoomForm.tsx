@@ -50,7 +50,7 @@ const JoinRoomForm = ({
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
 
-   // If OpenSpace is connected, we can automatically join the room using OpenSpace API
+  // If OpenSpace is connected, we can automatically join the room using OpenSpace API
   const connectToInstanceServer = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!openspace) {

@@ -53,7 +53,7 @@ export const InstanceHeader = ({ children }: InstanceHeaderProps) => {
         backgroundColor: "#464646",
         color: "#ffff",
         boxShadow: "0 0 5px 0 #bdbdbd",
-        borderRadius: 10,
+        borderRadius: "10px",
       }}
     >
       {children}
@@ -105,18 +105,7 @@ interface InstanceBodyProps {
   children: React.ReactNode;
 }
 export const InstanceBody = ({ children }: InstanceBodyProps) => {
-  return (
-    <Container
-      className="my-2"
-      style={{
-        background: "#ffff",
-        color: "#333333",
-        borderRadius: "0 0 10px 10px",
-      }}
-    >
-      {children}
-    </Container>
-  );
+  return <Container className="my-2">{children}</Container>;
 };
 
 interface InstanceBodyEntryProps {
