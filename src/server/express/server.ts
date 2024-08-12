@@ -104,14 +104,14 @@ class WormholeServer {
    * Constructor for a unique server.
    *
    * @param port The port on which this TCP server should listen to new connections.
-   * This port must not already be in use on this computer
+   *        This port must not already be in use on this computer
    * @param password  The password that needs to be provided by Peers to connect to this
-   * server. This password has a maximum length of 65535 characters and can consist only
-   * of ASCII characters
+   *        server. This password has a maximum length of 65535 characters and can consist
+   *       only of ASCII characters
    * @param hostPassword The host password that needs to be provided by Peers to assume
-   * hostship. Either directly when connecting or by assuming hostship during a session.
-   * The host password has a maximum length of 65535 characters and can consist only of
-   * ASCII characters
+   *        hostship. Either directly when connecting or by assuming hostship during a session.
+   *        The host password has a maximum length of 65535 characters and can consist only
+   *        of ASCII characters
    */
   constructor(port: number) {
     this.port = port;
@@ -147,6 +147,7 @@ class WormholeServer {
 
   /**
    * Attempts to start the server on the provided port.
+   *
    * @return A promise that resolves to true if the server was successfully started,
    * otherwise it is rejected with an error message
    */
@@ -170,6 +171,7 @@ class WormholeServer {
   /**
    * Create and add a new instance to the wormhole server. If an instance with the same
    * name exists it will be removed first and the new one added.
+   *
    * @return The newly created server instance
    */
   public async addServerInstance(
@@ -201,6 +203,7 @@ class WormholeServer {
    * instance is fully closed. TODO: check when this happens
    * This happens when all connections have disconnected or are
    * closed.
+   *
    * @return A promise that resolves to a string message if the server was successfully
    * stopped, otherwise it is rejected with an error message
    */
@@ -221,7 +224,7 @@ class WormholeServer {
       // Notify all peers that the instance is closing
       await instance.stopInstance();
 
-      // Remmove instance from internal array
+      // Remove instance from internal array
       delete this.instances[instance.getServerMetadata().serverName];
 
       const successMsg = `Instance "${instanceID}" successfully removed`;
@@ -235,7 +238,7 @@ class WormholeServer {
   }
 
   /**
-   * Handles incomming data packages on the socket. We unpack the message and bail early
+   * Handles incoming data packages on the socket. We unpack the message and bail early
    * if there are any errors in the provided message. A valid message is then forwarded
    * to the appropriate handlers.
    *
@@ -337,7 +340,7 @@ class WormholeServer {
   }
 
   /**
-   * Handles the incomming authentication method by the provided peer. If the
+   * Handles the incoming authentication method by the provided peer. If the
    * authentication is valid and contains the correct password, the peer is added to the
    * list in the group. If the host password is also correct and there is no currently
    * assigned host, the peer is automatically promoted to hostship too.
@@ -398,7 +401,7 @@ class WormholeServer {
   }
 
   /**
-   * Handle incomming data from the provided peer, we only forward the data along to
+   * Handle incoming data from the provided peer, we only forward the data along to
    * other peers if it comes from the host.
    *
    * @param data The payload of the data message
@@ -436,7 +439,7 @@ class WormholeServer {
    * host, we remove the hostship and inform all connected peers that they lost their
    * host.
    *
-   * @param data
+   * @param _ Unused parameter
    * @param peer The Peer from which this message arrived
    */
   private handleHostshipResignation(_: Buffer, peer: Peer): void {

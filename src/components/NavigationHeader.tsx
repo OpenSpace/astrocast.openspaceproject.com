@@ -43,7 +43,8 @@ const NavigationHeader = () => {
           width={30}
           height={30}
           className="d-inline-block align-top"
-        ></Image>{" "}
+        />
+        {" "}
         <h4 className="d-inline-block">Parallel Connection</h4>
       </NavBar.Brand>
 

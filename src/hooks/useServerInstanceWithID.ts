@@ -41,7 +41,6 @@ function useServerInstanceWithID(id?: string) {
 
         if (snapshot.exists()) {
           const data = snapshot.val();
-
           setInstance(data);
         } else {
           setInstance(null);

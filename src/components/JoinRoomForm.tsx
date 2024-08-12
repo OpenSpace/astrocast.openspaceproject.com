@@ -50,9 +50,7 @@ const JoinRoomForm = ({
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
 
-  /**
-   * If OpenSpace is connected, we can automatically join the room using OpenSpace API
-   */
+   // If OpenSpace is connected, we can automatically join the room using OpenSpace API
   const connectToInstanceServer = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!openspace) {
@@ -71,9 +69,8 @@ const JoinRoomForm = ({
       instance.roomName,
       instance.password,
       hostPassword,
-      /* If we are signed in but the user set a username we will use that, if no username
-       *was set we use the display name of the user, otherwise it defaults to guest
-       */
+      // If we are signed in but the user set a username we will use that, if no username
+      // was set we use the display name of the user, otherwise it defaults to guest
       user && username === "Guest" ? user.displayName : username
     );
     setConnectedInstance(instance.id);

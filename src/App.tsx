@@ -34,8 +34,7 @@ import { Route, Routes } from "react-router-dom";
 function App() {
   return (
     <>
-      <NavigationHeader></NavigationHeader>
-
+      <NavigationHeader />
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <OpenSpaceProvider>
           <PageNavigationHeader />

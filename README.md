@@ -18,20 +18,20 @@ All sessions occupied? Log in with your Google, Facebook, Twitter, or GitHub acc
 # Wormhole
 To start the Wormhole server locally, you will need [Node.JS and NPM](https://nodejs.org) installed on your system. With that taken care of
 
-1. Clone this repository and enter the "Wormhole" folder
+1. Clone this repository and enter the `Wormhole` folder
 1. Install all potentially required packages by calling `npm install`
 1. Make a copy of `.env_sample`, rename it to `.env` and fill in the information. The projects API keys can be found on [Firebase](https://console.firebase.google.com/u/0/), download the projects admin sdk files as well.
   - API
-    1. In the Firebase console, open "Project Overview" > "1 app" > "Cog wheel"
+    1. In the Firebase console, open `Project Overview` > `1 app` > `Cog wheel`
     1. Scroll down to see the values
   - Admin SDK
-    1. In the Firebase console, open Settings > Service Accounts.
-    1. Click Generate New Private Key, then confirm by clicking Generate Key.
+    1. In the Firebase console, open `Settings` > `Service Accounts`.
+    1. Click `Generate New Private Key`, then confirm by clicking `Generate Key`.
     1. Securely store the JSON file containing the key.
 
-1. Start the frontend and backend server by executing `npm run dev`. This will set up all the neccesary processes that will transpile the necessary files, enable hot reload, and serve a local express app
-1. To ready the app for deployment execute `npm run build`. This will build both the frontend and backend into .local/express & .local/vite
-1. Optionally to only run frontend execute `npm run vite:dev` or backend by `npm run api:dev`
+1. Start the frontend and backend server by executing `npm run dev`. This will set up all the neccesary processes that will transpile the necessary files, enable hot reload, and serve a local express app.
+1. To ready the app for deployment execute `npm run build`. This will build both the frontend and backend into `.local/express` and `.local/vite`.
+1. Optionally you can run only the frontend by executing `npm run vite:dev` or only the backend by executing `npm run api:dev`.
 
 # Message Structures (version 7)
 This section describes the different message types that are being sent between OpenSpace and the Wormhole application. A message consists of a header and a type-appropriate payload.

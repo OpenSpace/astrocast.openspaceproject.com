@@ -45,6 +45,7 @@ const CloseServerButton = ({
     setShowModal(false);
     setButtonActive(true);
   };
+  
   const handleShowModal = () => {
     setShowModal(true);
     setButtonActive(false);
@@ -74,7 +75,6 @@ const CloseServerButton = ({
       <Button variant="outline-dark" disabled={!isButtonActive} onClick={handleShowModal}>
         {!isButtonActive ? "Removing..." : text}
       </Button>
-
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Warning</Modal.Title>

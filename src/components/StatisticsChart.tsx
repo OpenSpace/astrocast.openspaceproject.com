@@ -19,7 +19,7 @@ interface StatisticsChartProps {
 }
 
 const StatisticsChart = ({ statistics }: StatisticsChartProps) => {
-  // Set y-axis domain to atleast (0,8)
+  // Set y-axis domain to at least (0,8)
   const yDomain = [0, Math.max(8, ...statistics.data.map((d) => d.nPeers))];
   const headers = [
     { label: "timestamp", key: "timestamp" },
