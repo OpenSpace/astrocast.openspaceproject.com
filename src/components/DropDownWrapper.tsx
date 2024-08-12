@@ -55,12 +55,14 @@ const DropDownWrapper = ({
   connectedInstance,
   setConnectedInstance,
 }: InstanceStatusProps) => {
+  const openspace = useContext(OpenSpaceContext);
+  const user = useContext(AuthContext);
+
   const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const openspace = useContext(OpenSpaceContext);
-  const user = useContext(AuthContext);
+
   // True if this instance is the server we are connected to, false otherwise
   const isConnected = connectedInstance === instance.id;
 

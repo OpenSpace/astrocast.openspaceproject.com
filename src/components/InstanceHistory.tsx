@@ -41,6 +41,7 @@ interface InstanceHistoryProps {
 }
 const InstanceHistory = ({ instance, statistics }: InstanceHistoryProps) => {
   const [showMore, setShowMore] = useState(false);
+
   const userName = useInstanceOwnerName(instance.owner);
 
   return (

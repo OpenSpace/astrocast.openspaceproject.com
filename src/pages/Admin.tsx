@@ -38,12 +38,13 @@ import Button from "react-bootstrap/Button";
 import RequestAdminRightsForm from "@/components/RequestAdminRightsForm";
 
 const Admin = () => {
-  const instances = useServerInstanceData(true);
-  const statistics = useServerStatisticsData();
-  const history = useServerInstanceHistory();
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+
+  const instances = useServerInstanceData(true);
+  const statistics = useServerStatisticsData();
+  const history = useServerInstanceHistory();
 
   // Sort history records by latest first
   history.sort((a, b) => {

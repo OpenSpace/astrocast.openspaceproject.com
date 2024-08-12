@@ -38,6 +38,7 @@ function capitalizeFirstLetter(str: string): string {
 
 const UserProfile = () => {
   const user = useContext(AuthContext);
+
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");

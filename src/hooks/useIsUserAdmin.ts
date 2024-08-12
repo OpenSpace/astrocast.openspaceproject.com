@@ -28,6 +28,7 @@ import { useContext, useEffect, useState } from "react";
 
 const useIsUserAdmin = () => {
   const user = useContext(AuthContext);
+
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {

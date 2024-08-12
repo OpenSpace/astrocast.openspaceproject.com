@@ -39,6 +39,7 @@ const CloseServerButton = ({
 }: CloseServerButtonProps) => {
   const [isButtonActive, setButtonActive] = useState(true);
   const [showModal, setShowModal] = useState(false);
+
   const apiUrl = import.meta.env.VITE_SERVER_API_PATH;
 
   const handleCloseModal = () => {

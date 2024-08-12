@@ -28,9 +28,10 @@ import { DataSnapshot, onValue, ref } from "firebase/database";
 import { useContext, useEffect, useState } from "react";
 
 function useServerInstanceData(isAdmin: boolean = false) {
+  const user = useContext(AuthContext);
+
   // TODO: Actually validate admin status over using a flag
   const [instances, setInstances] = useState<ServerInstanceData[]>([]);
-  const user = useContext(AuthContext);
 
   useEffect(() => {
     const instanceDbRef = ref(db, "InstanceData");

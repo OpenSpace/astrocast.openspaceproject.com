@@ -46,8 +46,9 @@ type InstanceStatusProps = {
 };
 
 const InstanceStatus = ({ instance, statistics, callback }: InstanceStatusProps) => {
-  const userName = useInstanceOwnerName(instance.owner);
   const [showMore, setShowMore] = useState(false);
+
+  const userName = useInstanceOwnerName(instance.owner);
 
   const formatUpTime = (timestamp: number) => {
     const now = Date.now();

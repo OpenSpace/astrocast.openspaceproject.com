@@ -34,9 +34,6 @@ import Container from "react-bootstrap/Container";
 const ServerLink = () => {
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
-  // Retrieve the server ID from the URL
-  const { id } = useParams();
-  const instance = useServerInstanceWithID(id);
 
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
@@ -44,8 +41,12 @@ const ServerLink = () => {
   const [toastMessage, setToastMessage] = useState("");
 
   const username = user?.displayName || "Guest";
-  // Get the server instance from firebase
 
+  // Retrieve the server ID from the URL
+  const { id } = useParams();
+  const instance = useServerInstanceWithID(id);
+
+  // Get the server instance from firebase
   const connectToInstanceServer = async () => {
     if (!openspace) {
       setToastMessage("Not connected to OpenSpace");

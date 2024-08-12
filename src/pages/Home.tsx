@@ -34,10 +34,12 @@ import Container from "react-bootstrap/Container";
 
 const Home = () => {
   const user = useContext(AuthContext);
-  const instances = useServerInstanceData();
+
   const [connectedInstance, setConnectedInstance] = useState<string>("");
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("New room created");
+
+  const instances = useServerInstanceData();
 
   const onRoomCreate = (data: ServerInstanceData) => {
     setToastMessage(`New room created: ${data.roomName}`);

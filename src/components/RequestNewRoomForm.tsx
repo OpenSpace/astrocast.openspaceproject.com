@@ -40,6 +40,7 @@ interface RequestNewRoomFormProps {
 
 const RequestNewRoomForm = ({ onSubmitCallback }: RequestNewRoomFormProps) => {
   const user = useContext(AuthContext);
+
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

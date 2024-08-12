@@ -42,6 +42,7 @@ const LoginButton = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+
   const icons = {
     [GoogleAuthProvider.PROVIDER_ID]: <FcGoogle />,
     [FacebookAuthProvider.PROVIDER_ID]: <FaSquareFacebook />,

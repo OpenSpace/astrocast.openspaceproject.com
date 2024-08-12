@@ -34,6 +34,7 @@ interface ShareServerLinkProps {
 
 const ShareServerLink = ({ instanceID }: ShareServerLinkProps) => {
   const [showOverlay, setShowOverlay] = useState(false);
+
   const target = useRef(null);
 
   return (

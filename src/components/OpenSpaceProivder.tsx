@@ -43,7 +43,6 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [apiRef, setApiRef] = useState<any | null>(null);
-
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   // State to control if we can click connect/disconnect button
