@@ -36,11 +36,11 @@ const FgWhite = '\x1b[37m';
  * @param params Any additional parameters to log
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const LDEBUG = (message: string, ...params: any[]): void => {
+export function LDEBUG(message: string, ...params: any[]): void {
   if (ChattyDebug) {
     console.log(FgGreen, message, FgWhite, ...params);
   }
-};
+}
 /**
  * Logs an error message.
  *
@@ -48,9 +48,9 @@ export const LDEBUG = (message: string, ...params: any[]): void => {
  * @param params Any additional parameters to log
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const LERROR = (message: string, ...params: any[]): void => {
+export function LERROR(message: string, ...params: any[]): void {
   console.error(FgRed, message, FgWhite, ...params);
-};
+}
 
 /**
  * Logs an info message.
@@ -59,6 +59,6 @@ export const LERROR = (message: string, ...params: any[]): void => {
  * @param params Any additional parameters to log
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const LINFO = (message: string, ...params: any[]): void => {
+export function LINFO(message: string, ...params: any[]): void {
   console.log(FgWhite, message, ...params);
-};
+}
