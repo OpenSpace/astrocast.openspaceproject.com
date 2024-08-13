@@ -34,7 +34,7 @@ function useServerInstanceWithID(id?: string) {
       return;
     }
 
-    const getInstanceData = async () => {
+    async function getInstanceData() {
       const instanceDbRef = ref(db, `InstanceData/${id}`);
       try {
         const snapshot = await get(instanceDbRef);
@@ -49,7 +49,7 @@ function useServerInstanceWithID(id?: string) {
         console.log('Error fetching instance data: ', error);
         setInstance(null);
       }
-    };
+    }
 
     getInstanceData();
   }, []);

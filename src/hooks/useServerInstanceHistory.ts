@@ -32,7 +32,7 @@ function useServerInstanceHistory() {
   useEffect(() => {
     const instanceDbRef = ref(db, 'InstanceHistory');
 
-    const handleData = (snapshot: DataSnapshot) => {
+    function handleData(snapshot: DataSnapshot) {
       if (snapshot.exists()) {
         const data = snapshot.val();
 
@@ -40,13 +40,13 @@ function useServerInstanceHistory() {
       } else {
         setInstances([]);
       }
-    };
+    }
 
-    const handleError = (error: Error) => {
+    function handleError(error: Error) {
       // TODO: Handle error
       console.log('Error fetching instance data: ', error);
       setInstances([]);
-    };
+    }
 
     const unsubscribe = onValue(instanceDbRef, handleData, handleError);
 

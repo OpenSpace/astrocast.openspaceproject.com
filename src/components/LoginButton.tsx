@@ -38,7 +38,7 @@ import { FaGithub } from 'react-icons/fa';
 import { FaSquareFacebook, FaXTwitter } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 
-const LoginButton = () => {
+function LoginButton() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -50,7 +50,7 @@ const LoginButton = () => {
     [TwitterAuthProvider.PROVIDER_ID]: <FaXTwitter />
   };
 
-  const onSignInError = (methods: string[]) => {
+  function onSignInError(methods: string[]) {
     const methodNames = methods.map((method) => method.split('.')[0]);
 
     setToastMessage(
@@ -58,7 +58,7 @@ const LoginButton = () => {
         `${methodNames.join('or ')} account, and link your accounts under account settings.`
     );
     setShowToast(true);
-  };
+  }
 
   return (
     <>
@@ -95,7 +95,7 @@ const LoginButton = () => {
               >
                 {icons[provider]}
                 <span className="d-flex w-100 justify-content-center">
-                  Continue with {}
+                  Continue with
                   {/*Removes the '.com' and capitalizes first letter */}
                   {provider.split('.')[0][0].toUpperCase() +
                     provider.split('.')[0].slice(1)}
@@ -107,6 +107,6 @@ const LoginButton = () => {
       </Modal>
     </>
   );
-};
+}
 
 export default LoginButton;

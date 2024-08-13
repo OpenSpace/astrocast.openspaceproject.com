@@ -32,27 +32,23 @@ interface CloseServerButtonProps {
   onRoomClosed: (message: string) => void;
 }
 
-const CloseServerButton = ({
-  instanceID,
-  text,
-  onRoomClosed
-}: CloseServerButtonProps) => {
+function CloseServerButton({ instanceID, text, onRoomClosed }: CloseServerButtonProps) {
   const [isButtonActive, setButtonActive] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
   const apiUrl = import.meta.env.VITE_SERVER_API_PATH;
 
-  const handleCloseModal = () => {
+  function handleCloseModal() {
     setShowModal(false);
     setButtonActive(true);
-  };
+  }
 
-  const handleShowModal = () => {
+  function handleShowModal() {
     setShowModal(true);
     setButtonActive(false);
-  };
+  }
 
-  const requestServerClose = () => {
+  function requestServerClose() {
     fetch(`${apiUrl}/remove-server-instance/${instanceID}`)
       .then((response) => {
         if (!response.ok) {
@@ -69,7 +65,7 @@ const CloseServerButton = ({
         console.log(`ERROR on server remove: ${error}`);
         onRoomClosed('Internal server error, check logs.');
       });
-  };
+  }
 
   return (
     <>
@@ -92,6 +88,6 @@ const CloseServerButton = ({
       </Modal>
     </>
   );
-};
+}
 
 export default CloseServerButton;

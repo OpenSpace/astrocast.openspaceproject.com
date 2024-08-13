@@ -38,12 +38,12 @@ interface RequestNewRoomFormProps {
   ) => Promise<void>;
 }
 
-const RequestNewRoomForm = ({ onSubmitCallback }: RequestNewRoomFormProps) => {
+function RequestNewRoomForm({ onSubmitCallback }: RequestNewRoomFormProps) {
   const user = useContext(AuthContext);
 
   const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     const form = event.currentTarget;
     if (!form.checkValidity()) {
       event.preventDefault();
@@ -53,7 +53,7 @@ const RequestNewRoomForm = ({ onSubmitCallback }: RequestNewRoomFormProps) => {
     }
 
     setValidated(true);
-  };
+  }
 
   return (
     <Form
@@ -130,6 +130,6 @@ const RequestNewRoomForm = ({ onSubmitCallback }: RequestNewRoomFormProps) => {
       </Col>
     </Form>
   );
-};
+}
 
 export default RequestNewRoomForm;

@@ -32,7 +32,7 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext<User | null>(null);
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -43,6 +43,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   return <AuthContext.Provider value={user ?? null}>{children}</AuthContext.Provider>;
-};
+}
 
 export default AuthProvider;

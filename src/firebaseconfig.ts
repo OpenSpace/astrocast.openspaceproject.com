@@ -71,7 +71,7 @@ export const supportedProviders = [
 /**
  * @return The provider object for the given `providerID`
  */
-export const getProvider = (providerID: string) => {
+export function getProvider(providerID: string) {
   switch (providerID) {
     case GoogleAuthProvider.PROVIDER_ID:
       const googleProvider = new GoogleAuthProvider();
@@ -86,7 +86,7 @@ export const getProvider = (providerID: string) => {
     default:
       throw new Error(`No provider implemented for ${providerID}`);
   }
-};
+}
 
 /**
  * Attempts to sign in with the given provider, if user already has an existing account
@@ -95,7 +95,7 @@ export const getProvider = (providerID: string) => {
  *
  * @param providerKey Provider to sign in with
  */
-export const signInWith = async (providerKey: string) => {
+export async function signInWith(providerKey: string) {
   const provider = getProvider(providerKey);
 
   try {
@@ -110,4 +110,4 @@ export const signInWith = async (providerKey: string) => {
       console.log(error);
     }
   }
-};
+}

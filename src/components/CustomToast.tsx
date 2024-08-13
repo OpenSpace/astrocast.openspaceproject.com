@@ -32,7 +32,7 @@ interface CustomToastProps {
   delay?: number;
 }
 
-const CustomToast = ({ message, showToast, onClose, delay = 5000 }: CustomToastProps) => {
+function CustomToast({ message, showToast, onClose, delay = 5000 }: CustomToastProps) {
   return (
     <ToastContainer style={{ zIndex: 1, top: 97, right: 10 }}>
       <Toast
@@ -50,6 +50,6 @@ const CustomToast = ({ message, showToast, onClose, delay = 5000 }: CustomToastP
       </Toast>
     </ToastContainer>
   );
-};
+}
 
 export default CustomToast;

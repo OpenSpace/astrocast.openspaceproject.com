@@ -24,7 +24,7 @@
 
 import { useEffect, useState } from 'react';
 
-const useInstanceOwnerName = (userID: string | null) => {
+function useInstanceOwnerName(userID: string | null) {
   const [userName, setUserName] = useState<string | null>(null);
 
   const apiUrl = import.meta.env.VITE_SERVER_API_PATH;
@@ -43,5 +43,5 @@ const useInstanceOwnerName = (userID: string | null) => {
   }, []);
 
   return userName;
-};
+}
 export default useInstanceOwnerName;

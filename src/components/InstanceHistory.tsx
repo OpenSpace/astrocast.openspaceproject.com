@@ -39,7 +39,7 @@ interface InstanceHistoryProps {
   instance: InstanceHistoryData;
   statistics?: Statistics;
 }
-const InstanceHistory = ({ instance, statistics }: InstanceHistoryProps) => {
+function InstanceHistory({ instance, statistics }: InstanceHistoryProps) {
   const [showMore, setShowMore] = useState(false);
 
   const userName = useInstanceOwnerName(instance.owner);
@@ -86,6 +86,6 @@ const InstanceHistory = ({ instance, statistics }: InstanceHistoryProps) => {
       </Container>
     </InstanceWrapper>
   );
-};
+}
 
 export default InstanceHistory;

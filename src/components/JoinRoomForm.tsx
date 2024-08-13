@@ -41,17 +41,17 @@ interface JoinRoomFormProps {
   onConnectCallback: Function;
 }
 
-const JoinRoomForm = ({
+function JoinRoomForm({
   instance,
   setConnectedInstance,
   onCallback,
   onConnectCallback
-}: JoinRoomFormProps) => {
+}: JoinRoomFormProps) {
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
 
   // If OpenSpace is connected, we can automatically join the room using OpenSpace API
-  const connectToInstanceServer = async (event: React.FormEvent<HTMLFormElement>) => {
+  async function connectToInstanceServer(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!openspace) {
       return;
@@ -75,7 +75,7 @@ const JoinRoomForm = ({
     );
     setConnectedInstance(instance.id);
     onConnectCallback();
-  };
+  }
 
   return (
     <Form method="post" onSubmit={connectToInstanceServer}>
@@ -127,6 +127,6 @@ const JoinRoomForm = ({
       </Row>
     </Form>
   );
-};
+}
 
 export default JoinRoomForm;

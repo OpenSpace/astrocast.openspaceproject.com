@@ -32,19 +32,19 @@ interface ShareServerLinkProps {
   instanceID: string;
 }
 
-const ShareServerLink = ({ instanceID }: ShareServerLinkProps) => {
+function ShareServerLink({ instanceID }: ShareServerLinkProps) {
   const [showOverlay, setShowOverlay] = useState(false);
 
   const target = useRef(null);
 
-  const copyToClipboard = () => {
+  function copyToClipboard() {
     /*TODO: copy correct addres/port to clipboard */
     navigator.clipboard.writeText(`http://localhost:5173/join-server/${instanceID}`);
     setShowOverlay(true);
     setTimeout(() => {
       setShowOverlay(false);
     }, 1500);
-  };
+  }
 
   return (
     <>
@@ -65,6 +65,6 @@ const ShareServerLink = ({ instanceID }: ShareServerLinkProps) => {
       </Overlay>
     </>
   );
-};
+}
 
 export default ShareServerLink;

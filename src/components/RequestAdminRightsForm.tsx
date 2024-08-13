@@ -31,12 +31,12 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
-const RequestAdminRightsForm = () => {
+function RequestAdminRightsForm() {
   const [validated, setValidated] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
-  const requestAdminRights = async (event: React.FormEvent<HTMLFormElement>) => {
+  async function requestAdminRights(event: React.FormEvent<HTMLFormElement>) {
     const form = event.currentTarget;
     if (!form.checkValidity()) {
       event.preventDefault();
@@ -54,7 +54,7 @@ const RequestAdminRightsForm = () => {
       }
     }
     setValidated(true);
-  };
+  }
 
   return (
     <>
@@ -91,6 +91,6 @@ const RequestAdminRightsForm = () => {
       </Form>
     </>
   );
-};
+}
 
 export default RequestAdminRightsForm;

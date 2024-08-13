@@ -269,18 +269,18 @@ class ServerManager {
   public autoKillInactiveServers(): void {
     let instances: ServerInstanceData[] = [];
 
-    const handleData = (snapshot: DataSnapshot, b?: string | null | undefined): any => {
+    function handleData(snapshot: DataSnapshot, b?: string | null | undefined): any {
       if (snapshot.exists()) {
         const data = snapshot.val();
         instances = Object.values<ServerInstanceData>(data);
       } else {
         instances = [];
       }
-    };
+    }
 
-    const handleError = (error: Error) => {
+    function handleError(error: Error) {
       LERROR('Error fetching instance data: ', error);
-    };
+    }
 
     subscribeToDatabase('InstanceData', 'value', handleData, handleError);
 

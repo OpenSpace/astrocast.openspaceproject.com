@@ -31,7 +31,7 @@ interface InstanceWrapperProps {
   children: React.ReactNode;
 }
 
-export const InstanceWrapper = ({ children }: InstanceWrapperProps) => {
+export function InstanceWrapper({ children }: InstanceWrapperProps) {
   return (
     <div
       className="my-3"
@@ -40,12 +40,12 @@ export const InstanceWrapper = ({ children }: InstanceWrapperProps) => {
       {children}
     </div>
   );
-};
+}
 
 interface InstanceHeaderProps {
   children: React.ReactNode;
 }
-export const InstanceHeader = ({ children }: InstanceHeaderProps) => {
+export function InstanceHeader({ children }: InstanceHeaderProps) {
   return (
     <Row
       className="py-3 pe-3"
@@ -59,18 +59,14 @@ export const InstanceHeader = ({ children }: InstanceHeaderProps) => {
       {children}
     </Row>
   );
-};
+}
 
 interface InstanceHeaderEntryProps {
   header: string;
   value: string | number | null | JSX.Element;
   props?: ColProps;
 }
-export const InstanceHeaderEntry = ({
-  header,
-  value,
-  props
-}: InstanceHeaderEntryProps) => {
+export function InstanceHeaderEntry({ header, value, props }: InstanceHeaderEntryProps) {
   return (
     <Col md={props?.md}>
       <Container>
@@ -79,17 +75,17 @@ export const InstanceHeaderEntry = ({
       </Container>
     </Col>
   );
-};
+}
 
 interface InstanceHeaderChevronProps {
   showMore: boolean;
   callback: () => void;
 }
 
-export const InstanceHeaderChevron = ({
+export function InstanceHeaderChevron({
   showMore,
   callback
-}: InstanceHeaderChevronProps) => {
+}: InstanceHeaderChevronProps) {
   return (
     <Col
       onClick={callback}
@@ -99,25 +95,25 @@ export const InstanceHeaderChevron = ({
       {showMore ? <FaChevronUp /> : <FaChevronDown />}
     </Col>
   );
-};
+}
 
 interface InstanceBodyProps {
   children: React.ReactNode;
 }
-export const InstanceBody = ({ children }: InstanceBodyProps) => {
+export function InstanceBody({ children }: InstanceBodyProps) {
   return <Container className="my-2">{children}</Container>;
-};
+}
 
 interface InstanceBodyEntryProps {
   header: string;
   value: string | number | null | JSX.Element;
 }
 
-export const InstanceBodyEntry = ({ header, value }: InstanceBodyEntryProps) => {
+export function InstanceBodyEntry({ header, value }: InstanceBodyEntryProps) {
   return (
     <Row className="py-2 border-bottom">
       <Col>{header}</Col>
       <Col className="d-flex justify-content-end">{value}</Col>
     </Row>
   );
-};
+}

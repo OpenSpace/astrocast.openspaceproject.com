@@ -36,7 +36,7 @@ function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const UserProfile = () => {
+function UserProfile() {
   const user = useContext(AuthContext);
 
   const [showModal, setShowModal] = useState(false);
@@ -48,14 +48,14 @@ const UserProfile = () => {
     (provider) => !linkedAccounts?.includes(provider)
   );
 
-  const logout = async () => {
+  async function logout() {
     await signOut(auth);
     setShowModal(false);
-  };
+  }
 
   type ProviderType = (typeof supportedProviders)[number];
 
-  const linkAccount = (provider: ProviderType) => {
+  function linkAccount(provider: ProviderType) {
     linkWithPopup(user!, getProvider(provider))
       .then((_result) => {
         setToastMessage('Account linked successfully');
@@ -68,7 +68,7 @@ const UserProfile = () => {
         setShowToast(true);
         setShowModal(false);
       });
-  };
+  }
 
   return (
     <>
@@ -138,6 +138,6 @@ const UserProfile = () => {
       </Modal>
     </>
   );
-};
+}
 
 export default UserProfile;

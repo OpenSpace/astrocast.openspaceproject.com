@@ -32,7 +32,7 @@ import Image from 'react-bootstrap/Image';
 import NavBar from 'react-bootstrap/NavBar';
 import { Link } from 'react-router-dom';
 
-const NavigationHeader = () => {
+function NavigationHeader() {
   const authenticatedUser = useContext(AuthContext);
 
   return (
@@ -52,6 +52,6 @@ const NavigationHeader = () => {
       </Col>
     </NavBar>
   );
-};
+}
 
 export default NavigationHeader;

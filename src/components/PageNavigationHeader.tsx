@@ -29,7 +29,7 @@ import NavBar from 'react-bootstrap/NavBar';
 import Nav from 'react-bootstrap/Nav';
 import { NavLink } from 'react-router-dom';
 
-const PageNavigationHeader = () => {
+function PageNavigationHeader() {
   const isAdmin = useIsUserAdmin();
 
   return (
@@ -50,6 +50,6 @@ const PageNavigationHeader = () => {
       </NavBar>
     </Container>
   );
-};
+}
 
 export default PageNavigationHeader;

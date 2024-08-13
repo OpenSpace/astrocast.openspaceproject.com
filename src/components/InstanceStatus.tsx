@@ -45,12 +45,12 @@ type InstanceStatusProps = {
   callback: (message: string) => void;
 };
 
-const InstanceStatus = ({ instance, statistics, callback }: InstanceStatusProps) => {
+function InstanceStatus({ instance, statistics, callback }: InstanceStatusProps) {
   const [showMore, setShowMore] = useState(false);
 
   const userName = useInstanceOwnerName(instance.owner);
 
-  const formatUpTime = (timestamp: number) => {
+  function formatUpTime(timestamp: number) {
     const now = Date.now();
     const diff = now - timestamp;
 
@@ -61,7 +61,7 @@ const InstanceStatus = ({ instance, statistics, callback }: InstanceStatusProps)
 
     // Format as a string
     return `${hours}h ${minutes}m ${seconds}s`;
-  };
+  }
 
   return (
     <InstanceWrapper>
@@ -156,6 +156,6 @@ const InstanceStatus = ({ instance, statistics, callback }: InstanceStatusProps)
       )}
     </InstanceWrapper>
   );
-};
+}
 
 export default InstanceStatus;

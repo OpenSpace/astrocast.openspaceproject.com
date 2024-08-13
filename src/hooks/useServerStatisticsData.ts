@@ -32,7 +32,7 @@ function useServerStatisticsData() {
   useEffect(() => {
     const statisticsRef = ref(db, 'Statistics');
 
-    const handleData = (snapshot: DataSnapshot) => {
+    function handleData(snapshot: DataSnapshot) {
       if (snapshot.exists()) {
         const data = snapshot.val();
 
@@ -55,12 +55,12 @@ function useServerStatisticsData() {
       } else {
         setStatistics([]);
       }
-    };
+    }
 
-    const handleError = (error: Error) => {
+    function handleError(error: Error) {
       console.log('Error fetching statistics data: ', error);
       setStatistics([]);
-    };
+    }
 
     const unsubscribe = onValue(statisticsRef, handleData, handleError);
 

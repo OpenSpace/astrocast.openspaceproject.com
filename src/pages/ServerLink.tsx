@@ -37,7 +37,7 @@ enum ConnectionState {
   DISCONNECTED
 }
 
-const ServerLink = () => {
+function ServerLink() {
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
 
@@ -52,7 +52,7 @@ const ServerLink = () => {
   const instance = useServerInstanceWithID(id);
 
   // Get the server instance from firebase
-  const connectToInstanceServer = async () => {
+  async function connectToInstanceServer() {
     if (!openspace) {
       setToastMessage('Not connected to OpenSpace');
       setShowToast(true);
@@ -80,7 +80,7 @@ const ServerLink = () => {
     setToastMessage(`Joined session: ${instance.roomName}`);
     setShowToast(true);
     setConnectionState(ConnectionState.CONNECTED);
-  };
+  }
 
   useEffect(() => {
     connectToInstanceServer();
@@ -127,6 +127,6 @@ const ServerLink = () => {
       </Container>
     </>
   );
-};
+}
 
 export default ServerLink;

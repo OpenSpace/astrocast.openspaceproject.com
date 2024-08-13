@@ -32,7 +32,7 @@ import { User } from 'firebase/auth';
 import { useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 
-const Home = () => {
+function Home() {
   const user = useContext(AuthContext);
 
   const [connectedInstance, setConnectedInstance] = useState<string>('');
@@ -41,15 +41,15 @@ const Home = () => {
 
   const instances = useServerInstanceData();
 
-  const onRoomCreate = (data: ServerInstanceData) => {
+  function onRoomCreate(data: ServerInstanceData) {
     setToastMessage(`New room created: ${data.roomName}`);
     setShowToast(true);
-  };
+  }
 
-  const onError = (message: string) => {
+  function onError(message: string) {
     setToastMessage(message);
     setShowToast(true);
-  };
+  }
 
   return (
     <>
@@ -87,5 +87,5 @@ const Home = () => {
       </Container>
     </>
   );
-};
+}
 export default Home;

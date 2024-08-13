@@ -36,7 +36,7 @@ function useServerInstanceData(isAdmin: boolean = false) {
   useEffect(() => {
     const instanceDbRef = ref(db, 'InstanceData');
 
-    const handleData = (snapshot: DataSnapshot) => {
+    function handleData(snapshot: DataSnapshot) {
       if (snapshot.exists()) {
         const data = snapshot.val();
 
@@ -64,13 +64,13 @@ function useServerInstanceData(isAdmin: boolean = false) {
         // TODO: Handle no data available
         setInstances([]);
       }
-    };
+    }
 
-    const handleError = (error: Error) => {
+    function handleError(error: Error) {
       // TODO: Handle error
       console.log('Error fetching instance data: ', error);
       setInstances([]);
-    };
+    }
 
     const unsubscribe = onValue(instanceDbRef, handleData, handleError);
 

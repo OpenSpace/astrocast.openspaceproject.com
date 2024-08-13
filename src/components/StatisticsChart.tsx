@@ -18,7 +18,7 @@ interface StatisticsChartProps {
   statistics: Statistics;
 }
 
-const StatisticsChart = ({ statistics }: StatisticsChartProps) => {
+function StatisticsChart({ statistics }: StatisticsChartProps) {
   // Set y-axis domain to at least (0,8)
   const yDomain = [0, Math.max(8, ...statistics.data.map((d) => d.nPeers))];
   const headers = [
@@ -26,12 +26,12 @@ const StatisticsChart = ({ statistics }: StatisticsChartProps) => {
     { label: 'nPeers', key: 'nPeers' }
   ];
 
-  const dateFormatter = (timestamp: number) => {
+  function dateFormatter(timestamp: number) {
     return new Date(timestamp).toLocaleDateString();
-  };
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const customTooltip = ({ payload, label, active }: TooltipProps<number, string>) => {
+  function customTooltip({ payload, label, active }: TooltipProps<number, string>) {
     const stats: StatisticData = payload?.[0]?.payload;
 
     if (!active && !stats) {
@@ -44,7 +44,7 @@ const StatisticsChart = ({ statistics }: StatisticsChartProps) => {
         <li>{`Timestamp: ${new Date(stats.timestamp).toLocaleTimeString()}`}</li>
       </ul>
     );
-  };
+  }
 
   return (
     <>
@@ -98,6 +98,6 @@ const StatisticsChart = ({ statistics }: StatisticsChartProps) => {
       </Container>
     </>
   );
-};
+}
 
 export default StatisticsChart;

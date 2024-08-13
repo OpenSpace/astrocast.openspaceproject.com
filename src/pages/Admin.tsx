@@ -37,7 +37,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import RequestAdminRightsForm from '@/components/RequestAdminRightsForm';
 
-const Admin = () => {
+function Admin() {
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -51,22 +51,22 @@ const Admin = () => {
     return b.created - a.created;
   });
 
-  const onRoomCreate = (data: ServerInstanceData) => {
+  function onRoomCreate(data: ServerInstanceData) {
     setShowModal(false);
     setToastMessage(`New room created: ${data.roomName}`);
     setShowToast(true);
-  };
+  }
 
-  const onRoomDestroyed = (message: string) => {
+  function onRoomDestroyed(message: string) {
     setToastMessage(message);
     setShowToast(true);
-  };
+  }
 
-  const onRoomCreateError = (msg: string) => {
+  function onRoomCreateError(msg: string) {
     setToastMessage(`Error creating room: ${msg}`);
     setShowToast(true);
     setShowModal(false);
-  };
+  }
 
   return (
     <>
@@ -138,6 +138,6 @@ const Admin = () => {
       </Container>
     </>
   );
-};
+}
 
 export default Admin;

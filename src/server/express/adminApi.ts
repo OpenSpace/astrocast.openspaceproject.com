@@ -34,7 +34,7 @@ import { DataSnapshot, EventType, getDatabase, Reference } from 'firebase-admin/
  * @param uid The user uid to set admin rights for
  * @param secret The secret to verify the request
  */
-export const setAdminRights = async (uid: string, secret: string) => {
+export async function setAdminRights(uid: string, secret: string) {
   // Verify the provided secret against the database secret
   const db = getDatabase(adminDbApp);
   const dbSecret = await db.ref('Admin/secret').get();
@@ -55,7 +55,7 @@ export const setAdminRights = async (uid: string, secret: string) => {
     LERROR('Internal error', (error as Error).message, `uid: '${uid}'`);
     throw error;
   }
-};
+}
 
 /**
  * Authorize a user to the firebase auth database.
@@ -63,11 +63,11 @@ export const setAdminRights = async (uid: string, secret: string) => {
  * @param token The client user id token to authorize
  * @return A promise that resolves with the user firebase uid
  */
-export const authorizeUser = async (token: string): Promise<string> => {
+export async function authorizeUser(token: string): Promise<string> {
   const auth = getAuth(adminAuthApp);
   const decodedToken = await auth.verifyIdToken(token);
   return decodedToken.uid;
-};
+}
 
 /**
  * Fetch the display name of a user given their uid.
@@ -75,7 +75,7 @@ export const authorizeUser = async (token: string): Promise<string> => {
  * @param token Token to fetch user information
  * @return A promise that resolves with the user information
  */
-export const getUserByID = async (token: string): Promise<UserRecord> => {
+export async function getUserByID(token: string): Promise<UserRecord> {
   const auth = getAuth(adminAuthApp);
   try {
     const user = await auth.getUser(token);
@@ -83,12 +83,12 @@ export const getUserByID = async (token: string): Promise<UserRecord> => {
   } catch (error) {
     throw error;
   }
-};
+}
 
 /**
  * @return A promise that resolves with an array of server instances or empty array
  */
-export const getServerInstancesFromDB = async (): Promise<ServerInstanceData[]> => {
+export async function getServerInstancesFromDB(): Promise<ServerInstanceData[]> {
   const db = getDatabase(adminDbApp);
   const snapshot = await db.ref('InstanceData').once('value');
   if (!snapshot.exists()) {
@@ -98,7 +98,7 @@ export const getServerInstancesFromDB = async (): Promise<ServerInstanceData[]> 
   const data = snapshot.val();
   const instances = Object.values<ServerInstanceData>(data);
   return instances;
-};
+}
 
 /**
  * Subscribe to the database at `path` and listen for `eventType` events.
@@ -108,16 +108,16 @@ export const getServerInstancesFromDB = async (): Promise<ServerInstanceData[]> 
  * @param callback The callback function when an event is triggered
  * @param onError The callback function when an error occurs
  */
-export const subscribeToDatabase = async (
+export async function subscribeToDatabase(
   path: string | Reference,
   eventType: EventType,
   callback: (snapshot: DataSnapshot, b?: string | null | undefined) => any,
   onError: (error: Error) => any
-) => {
+) {
   const db = getDatabase(adminDbApp);
   const instanceRef = db.ref(path);
   instanceRef.on(eventType, callback, onError);
-};
+}
 
 /**
  * Adds a new server instance to the database.
@@ -127,12 +127,12 @@ export const subscribeToDatabase = async (
  * @param isPrivate True if instance is private, false otherwise
  * @param uid The uid of the user who created this instance
  */
-export const postServerInstance = async (
+export async function postServerInstance(
   server: ServerInstance,
   profile: string,
   isPrivate: boolean,
   uid: string | null
-): Promise<ServerInstanceData> => {
+): Promise<ServerInstanceData> {
   const db = getDatabase(adminDbApp);
   const instanceRef = db.ref('InstanceData');
   const newPostRef = instanceRef.push();
@@ -162,16 +162,16 @@ export const postServerInstance = async (
     }
   });
   return data;
-};
+}
 
 /**
  * Add the `instance` to the history database.
  *
  * @param instance The instance data to add to the history database
  */
-export const postInstanceHistoryData = async (
+export async function postInstanceHistoryData(
   instance: ServerInstanceData
-): Promise<void> => {
+): Promise<void> {
   try {
     const db = getDatabase(adminDbApp);
     const uptime = Date.now() - instance.created;
@@ -195,7 +195,7 @@ export const postInstanceHistoryData = async (
   } catch (error) {
     LERROR('Error posting history data:', error);
   }
-};
+}
 
 /**
  * Attempts to remove the server instance with the given ID from the database.
@@ -203,7 +203,7 @@ export const postInstanceHistoryData = async (
  * @param instanceID The ID of the server instance to remove
  * @return A promise once the operation is complete or an exception if an error occurs
  */
-export const removeServerInstanceFromDb = async (instanceID: string): Promise<void> => {
+export async function removeServerInstanceFromDb(instanceID: string): Promise<void> {
   try {
     const db = getDatabase(adminDbApp);
     const instanceRef = db.ref(`InstanceData/${instanceID}`);
@@ -229,7 +229,7 @@ export const removeServerInstanceFromDb = async (instanceID: string): Promise<vo
     LERROR(errorMessage);
     throw new Error(errorMessage);
   }
-};
+}
 
 /**
  * Updates the active status of a server instance in the database.
@@ -237,10 +237,10 @@ export const removeServerInstanceFromDb = async (instanceID: string): Promise<vo
  * @param instanceID The ID of the server instance to update
  * @param online The new status of the server instance
  */
-export const updateActiveSessionStatus = async (
+export async function updateActiveSessionStatus(
   instanceID: string,
   online: boolean
-): Promise<void> => {
+): Promise<void> {
   const onUpdate = (error: Error | null) => {
     if (error) {
       throw error;
@@ -269,7 +269,7 @@ export const updateActiveSessionStatus = async (
   } catch (error) {
     LERROR(`Error updating session status for "${instanceID}:"`, error);
   }
-};
+}
 
 /**
  * Updates the current number of active users in a server instance.
@@ -277,10 +277,10 @@ export const updateActiveSessionStatus = async (
  * @param instanceID The ID of the server instance to update
  * @param nPeers The new number of active users
  */
-export const updateCurrentActiveUsers = async (
+export async function updateCurrentActiveUsers(
   instanceID: string,
   nPeers: number
-): Promise<void> => {
+): Promise<void> {
   try {
     const db = getDatabase(adminDbApp);
     const instanceRef = db.ref(`InstanceData/${instanceID}`);
@@ -301,7 +301,7 @@ export const updateCurrentActiveUsers = async (
     LERROR(`Error updating # active users for "${instanceID}:"`, error);
   }
   await updateStatistics(instanceID, nPeers);
-};
+}
 
 /**
  * Add a new statistics entry for the given `instanceID` instance.
@@ -309,10 +309,10 @@ export const updateCurrentActiveUsers = async (
  * @param instanceID The ID of the server instance to update
  * @param nPeers The new number of active users
  */
-export const updateStatistics = async (
+export async function updateStatistics(
   instanceID: string,
   nPeers: number
-): Promise<void> => {
+): Promise<void> {
   try {
     const db = getDatabase(adminDbApp);
     const statisticsRef = db.ref(`Statistics/${instanceID}`);
@@ -331,14 +331,14 @@ export const updateStatistics = async (
   } catch (error) {
     LERROR(`Error updating statistics for "${instanceID}:"`, error);
   }
-};
+}
 /**
  * Updates the current host of a server instance.
  *
  * @param instanceID The ID of the server instance to update
  * @param host The new host of the server instance
  */
-export const updateCurrentHost = async (instanceID: string, host: string) => {
+export async function updateCurrentHost(instanceID: string, host: string) {
   try {
     const db = getDatabase(adminDbApp);
     const instanceRef = db.ref(`InstanceData/${instanceID}`);
@@ -356,14 +356,14 @@ export const updateCurrentHost = async (instanceID: string, host: string) => {
   } catch (error) {
     LERROR(`Error updating current host for ${instanceID}:`, error);
   }
-};
+}
 
 /**
  * Updates the total number of users connected to a server instance.
  *
  * @param instanceID The ID of the server instance to update
  */
-export const updateUsage = async (instanceID: string) => {
+export async function updateUsage(instanceID: string) {
   try {
     const db = getDatabase(adminDbApp);
     const instanceRef = db.ref(`InstanceData/${instanceID}`);
@@ -382,4 +382,4 @@ export const updateUsage = async (instanceID: string) => {
   } catch (error) {
     LERROR(`Error updating instance ${instanceID} usage:`, error);
   }
-};
+}

@@ -24,13 +24,13 @@
 
 import { User } from 'firebase/auth';
 
-export const handleNewRoomForm = async (
+export async function handleNewRoomForm(
   e: React.FormEvent<HTMLFormElement>,
   user: User | null,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onSuccess: (data: ServerInstanceData) => void,
   onError: (message: string) => void
-) => {
+) {
   e.preventDefault();
 
   // Read the form data
@@ -68,9 +68,9 @@ export const handleNewRoomForm = async (
     .catch((error) => {
       onError(error.message);
     });
-};
+}
 
-export const handleAdminRightsForm = async (e: React.FormEvent<HTMLFormElement>) => {
+export async function handleAdminRightsForm(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
 
   const form = e.currentTarget;
@@ -92,11 +92,11 @@ export const handleAdminRightsForm = async (e: React.FormEvent<HTMLFormElement>)
     throw data.error;
   }
   return data.message;
-};
+}
 
-export const isUserAdmin = async (user: User | null): Promise<boolean> => {
+export async function isUserAdmin(user: User | null): Promise<boolean> {
   if (!user) return false;
 
   const tokenResult = await user.getIdTokenResult();
   return tokenResult.claims?.admin === true;
-};
+}

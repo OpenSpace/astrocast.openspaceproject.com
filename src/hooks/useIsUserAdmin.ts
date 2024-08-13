@@ -26,19 +26,19 @@ import { AuthContext } from '@/components/AuthProvider';
 import { isUserAdmin } from '@/shared/api';
 import { useContext, useEffect, useState } from 'react';
 
-const useIsUserAdmin = () => {
+function useIsUserAdmin() {
   const user = useContext(AuthContext);
 
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const checkIfAdmin = async () => {
+    async function checkIfAdmin() {
       const admin = await isUserAdmin(user);
       setIsAdmin(admin);
-    };
+    }
 
     checkIfAdmin();
   }, [user]);
   return isAdmin;
-};
+}
 export default useIsUserAdmin;

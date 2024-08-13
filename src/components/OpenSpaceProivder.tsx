@@ -37,7 +37,7 @@ interface AuthProviderProps {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const OpenSpaceContext = createContext<any | null>(null);
 
-const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
+function OpenSpaceProvider({ children }: AuthProviderProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [openspace, setOpenSpace] = useState<any | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -48,21 +48,21 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
   // State to control if we can click connect/disconnect button
   const [buttonValid, setButtonValid] = useState(true);
 
-  const connectOpenSpace = () => {
+  function connectOpenSpace() {
     if (isConnected) {
       return;
     }
     setButtonValid(false);
     apiRef?.connect();
-  };
+  }
 
-  const disconnectOpenSpace = () => {
+  function disconnectOpenSpace() {
     if (!isConnected) {
       return;
     }
     setButtonValid(false);
     apiRef?.disconnect();
-  };
+  }
 
   useEffect(() => {
     const api = OpenSpaceApi(
@@ -142,6 +142,6 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
       <OpenSpaceContext.Provider value={openspace}>{children}</OpenSpaceContext.Provider>
     </>
   );
-};
+}
 
 export default OpenSpaceProvider;

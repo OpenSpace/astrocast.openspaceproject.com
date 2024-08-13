@@ -50,11 +50,11 @@ type InstanceStatusProps = {
   setConnectedInstance: (instance: string) => void;
 };
 
-const DropDownWrapper = ({
+function DropDownWrapper({
   instance,
   connectedInstance,
   setConnectedInstance
-}: InstanceStatusProps) => {
+}: InstanceStatusProps) {
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
 
@@ -67,7 +67,7 @@ const DropDownWrapper = ({
   const isConnected = connectedInstance === instance.id;
 
   // Tell OpenSpace we want to disconnect from the current room
-  const disconnectFromInstanceServer = async () => {
+  async function disconnectFromInstanceServer() {
     // If we are connected to OpenSpace we send the disconnect message
     if (openspace) {
       await openspace.parallel.disconnect();
@@ -78,7 +78,7 @@ const DropDownWrapper = ({
     setConnectedInstance('');
     setToastMessage(`Left session: '${instance.roomName}'`);
     setShowToast(true);
-  };
+  }
 
   return (
     <InstanceWrapper>
@@ -201,6 +201,6 @@ const DropDownWrapper = ({
       )}
     </InstanceWrapper>
   );
-};
+}
 
 export default DropDownWrapper;
