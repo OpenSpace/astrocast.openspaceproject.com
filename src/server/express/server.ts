@@ -22,9 +22,9 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { ServerInstance } from "./serverinstance";
-import { LDEBUG, LERROR, LINFO } from "./utils";
-import * as net from "net";
+import { ServerInstance } from './serverinstance';
+import { LDEBUG, LERROR, LINFO } from './utils';
+import * as net from 'net';
 
 export const CurrentProtocolVersion = 7;
 
@@ -34,7 +34,7 @@ export enum MessageType {
   ConnectionStatus,
   HostshipRequest,
   HostshipResignation,
-  NConnections,
+  NConnections
 }
 
 export enum ConnectionStatus {
@@ -42,7 +42,7 @@ export enum ConnectionStatus {
   Connecting,
   ClientWithoutHost,
   ClientWithHost,
-  Host,
+  Host
 }
 
 export type Peer = {
@@ -119,26 +119,26 @@ class WormholeServer {
     // Setup the TCP server for handling incoming OpenSpace connections
     this.server = net.createServer();
 
-    this.server.on("connection", (socket: net.Socket) => {
-      LDEBUG("New connection", socket.remoteAddress);
+    this.server.on('connection', (socket: net.Socket) => {
+      LDEBUG('New connection', socket.remoteAddress);
 
       // The Peer is only added to the list if the authentication is succesful.
       // eslint-disable-next-line prefer-const
       let peer: Peer = {
         id: this.peerIdCounter, // TODO: assign a unique ID, see comment in ´onEnd´
-        name: "",
+        name: '',
         socket: socket,
         status: ConnectionStatus.Connecting,
-        serverName: "",
+        serverName: ''
       };
 
-      socket.on("data", (data: Buffer) => {
+      socket.on('data', (data: Buffer) => {
         this.onData(data, peer);
       });
-      socket.on("end", () => {
+      socket.on('end', () => {
         this.onEnd(peer);
       });
-      socket.on("error", (error) => {
+      socket.on('error', (error) => {
         LERROR(`Error: ${error} from peer ${peer.id}`);
         this.onEnd(peer);
       });
@@ -153,12 +153,12 @@ class WormholeServer {
    */
   public startWormholeServer(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      this.server.on("listening", () => {
+      this.server.on('listening', () => {
         LINFO(`Instance server listening on port ${this.port}`);
         resolve(true);
       });
 
-      this.server.on("error", (error: Error) => {
+      this.server.on('error', (error: Error) => {
         this.server.close();
         LERROR(`Error starting server: ${error.message}`);
         reject(error);
@@ -247,20 +247,20 @@ class WormholeServer {
    */
   private onData(data: Buffer, peer: Peer): void {
     const HeaderSize =
-      "OS".length + // OS prefix
+      'OS'.length + // OS prefix
       Uint8Array.BYTES_PER_ELEMENT + // protocol version number
       Uint8Array.BYTES_PER_ELEMENT + // message type identifier
       Uint32Array.BYTES_PER_ELEMENT; // payload size in bytes
 
     // Exit early if we don't have a valid header information
     if (data.length < HeaderSize) {
-      LDEBUG("Invalid header information");
+      LDEBUG('Invalid header information');
       return;
     }
 
-    const prefix = data.subarray(0, 2).toString("utf-8");
-    if (prefix !== "OS") {
-      LDEBUG("The message did not start with OS prefix");
+    const prefix = data.subarray(0, 2).toString('utf-8');
+    if (prefix !== 'OS') {
+      LDEBUG('The message did not start with OS prefix');
       return;
     }
 
@@ -268,25 +268,25 @@ class WormholeServer {
       data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)
     );
 
-    let offset = "OS".length;
+    let offset = 'OS'.length;
     const protocolVersion = dv.getUint8(offset);
     offset += Uint8Array.BYTES_PER_ELEMENT;
     if (protocolVersion !== CurrentProtocolVersion) {
-      LDEBUG("Invalid protocol version", protocolVersion);
+      LDEBUG('Invalid protocol version', protocolVersion);
       return;
     }
 
     const messageType = dv.getUint8(offset);
     offset += Uint8Array.BYTES_PER_ELEMENT;
     if (!(messageType in MessageType)) {
-      LDEBUG("Invalid message type: ", messageType);
+      LDEBUG('Invalid message type: ', messageType);
       return;
     }
 
     const messageSize = dv.getUint32(offset, true);
     offset += Uint32Array.BYTES_PER_ELEMENT;
     if (data.byteLength !== offset + messageSize) {
-      LDEBUG("The provided message size was not the same as the actual message length");
+      LDEBUG('The provided message size was not the same as the actual message length');
       LDEBUG(`Received message type: ${messageType}`);
       LDEBUG(`Header size: ${HeaderSize}`);
       LDEBUG(`Data size: ${data.byteLength}`);
@@ -360,23 +360,23 @@ class WormholeServer {
     offset += Uint16Array.BYTES_PER_ELEMENT;
     if (passwordLength === 0) {
       // The password length cannot be zero
-      LDEBUG("Invalid password length");
+      LDEBUG('Invalid password length');
       return;
     }
-    const password = data.subarray(offset, offset + passwordLength).toString("utf-8");
+    const password = data.subarray(offset, offset + passwordLength).toString('utf-8');
     offset += passwordLength;
 
     const hostPasswordLength = dv.getUint16(offset, true);
     offset += Uint16Array.BYTES_PER_ELEMENT;
     const hostPassword =
       hostPasswordLength === 0
-        ? ""
-        : data.subarray(offset, offset + hostPasswordLength).toString("utf-8");
+        ? ''
+        : data.subarray(offset, offset + hostPasswordLength).toString('utf-8');
     offset += hostPasswordLength;
 
     const serverNameLength = dv.getUint8(offset);
     offset += Uint8Array.BYTES_PER_ELEMENT;
-    const serverName = data.subarray(offset, offset + serverNameLength).toString("utf-8");
+    const serverName = data.subarray(offset, offset + serverNameLength).toString('utf-8');
     offset += serverNameLength;
     peer.serverName = serverName;
 
@@ -384,8 +384,8 @@ class WormholeServer {
     offset += Uint8Array.BYTES_PER_ELEMENT;
     peer.name =
       nameLength === 0
-        ? "Anonymous"
-        : data.subarray(offset, offset + nameLength).toString("utf-8");
+        ? 'Anonymous'
+        : data.subarray(offset, offset + nameLength).toString('utf-8');
 
     // Get the instance that this peer is trying to connect to
     const instance = this.instances[serverName];

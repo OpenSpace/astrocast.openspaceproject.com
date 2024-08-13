@@ -22,15 +22,15 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { auth, getProvider, supportedProviders } from "@/firebaseconfig";
-import { AuthContext } from "./AuthProvider";
-import CustomToast from "./CustomToast";
-import { linkWithPopup, signOut } from "firebase/auth";
-import { useContext, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Image from "react-bootstrap/Image";
-import Modal from "react-bootstrap/Modal";
-import Row from "react-bootstrap/Row";
+import { auth, getProvider, supportedProviders } from '@/firebaseconfig';
+import { AuthContext } from './AuthProvider';
+import CustomToast from './CustomToast';
+import { linkWithPopup, signOut } from 'firebase/auth';
+import { useContext, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image';
+import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
 
 function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -41,7 +41,7 @@ const UserProfile = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
 
   const linkedAccounts = user?.providerData.map((provider) => provider.providerId);
   const unlinkedAccounts = supportedProviders.filter(
@@ -58,13 +58,13 @@ const UserProfile = () => {
   const linkAccount = (provider: ProviderType) => {
     linkWithPopup(user!, getProvider(provider))
       .then((_result) => {
-        setToastMessage("Account linked successfully");
+        setToastMessage('Account linked successfully');
         setShowToast(true);
         unlinkedAccounts.splice(unlinkedAccounts.indexOf(provider), 1);
       })
       .catch((error) => {
         console.log(error);
-        setToastMessage("Error linking account. Please try again.");
+        setToastMessage('Error linking account. Please try again.');
         setShowToast(true);
         setShowModal(false);
       });
@@ -81,11 +81,11 @@ const UserProfile = () => {
       />
       {
         <Image
-          style={{ maxHeight: "58px" }}
-          role={"button"}
+          style={{ maxHeight: '58px' }}
+          role={'button'}
           // eslint-disable-next-line no-unneeded-ternary
           roundedCircle={user ? true : false}
-          src={user?.photoURL ?? "/images/icon.png"}
+          src={user?.photoURL ?? '/images/icon.png'}
           referrerPolicy="no-referrer"
           onClick={() => {
             setShowModal(true);
@@ -99,7 +99,7 @@ const UserProfile = () => {
         }}
       >
         <Modal.Header closeButton>
-          <Modal.Title as={"div"} className="ms-auto">
+          <Modal.Title as={'div'} className="ms-auto">
             {user?.email}
           </Modal.Title>
         </Modal.Header>
@@ -107,25 +107,25 @@ const UserProfile = () => {
           <Image
             // eslint-disable-next-line no-unneeded-ternary
             roundedCircle={user ? true : false}
-            src={user?.photoURL ?? "/images/icon.png"}
+            src={user?.photoURL ?? '/images/icon.png'}
             onError={(event) => {
               event.currentTarget.onerror = null;
-              event.currentTarget.src = "/images/icon.png";
+              event.currentTarget.src = '/images/icon.png';
             }}
           />
-          <h3>Hi {user?.displayName ?? "Anonymous"}!</h3>
+          <h3>Hi {user?.displayName ?? 'Anonymous'}!</h3>
           <Row>
             <p>Linking your account allows you to login using multiple providers</p>
             {unlinkedAccounts.map((provider) => (
               <Button
-                key={provider + "link"}
+                key={provider + 'link'}
                 onClick={() => {
                   linkAccount(provider);
                 }}
                 className="py-2 my-1"
                 variant="outline-dark"
               >
-                Link account with {capitalizeFirstLetter(provider.split(".")[0])}
+                Link account with {capitalizeFirstLetter(provider.split('.')[0])}
               </Button>
             ))}
           </Row>

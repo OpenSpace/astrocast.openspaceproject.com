@@ -22,10 +22,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { AuthContext } from "@/components/AuthProvider";
-import { db } from "@/firebaseconfig";
-import { DataSnapshot, onValue, ref } from "firebase/database";
-import { useContext, useEffect, useState } from "react";
+import { AuthContext } from '@/components/AuthProvider';
+import { db } from '@/firebaseconfig';
+import { DataSnapshot, onValue, ref } from 'firebase/database';
+import { useContext, useEffect, useState } from 'react';
 
 function useServerInstanceData(isAdmin: boolean = false) {
   const user = useContext(AuthContext);
@@ -34,7 +34,7 @@ function useServerInstanceData(isAdmin: boolean = false) {
   const [instances, setInstances] = useState<ServerInstanceData[]>([]);
 
   useEffect(() => {
-    const instanceDbRef = ref(db, "InstanceData");
+    const instanceDbRef = ref(db, 'InstanceData');
 
     const handleData = (snapshot: DataSnapshot) => {
       if (snapshot.exists()) {
@@ -68,7 +68,7 @@ function useServerInstanceData(isAdmin: boolean = false) {
 
     const handleError = (error: Error) => {
       // TODO: Handle error
-      console.log("Error fetching instance data: ", error);
+      console.log('Error fetching instance data: ', error);
       setInstances([]);
     };
 

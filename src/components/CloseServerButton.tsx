@@ -22,9 +22,9 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 interface CloseServerButtonProps {
   instanceID: string;
@@ -35,7 +35,7 @@ interface CloseServerButtonProps {
 const CloseServerButton = ({
   instanceID,
   text,
-  onRoomClosed,
+  onRoomClosed
 }: CloseServerButtonProps) => {
   const [isButtonActive, setButtonActive] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -67,14 +67,14 @@ const CloseServerButton = ({
       })
       .catch((error) => {
         console.log(`ERROR on server remove: ${error}`);
-        onRoomClosed("Internal server error, check logs.");
+        onRoomClosed('Internal server error, check logs.');
       });
   };
 
   return (
     <>
       <Button variant="outline-dark" disabled={!isButtonActive} onClick={handleShowModal}>
-        {!isButtonActive ? "Removing..." : text}
+        {!isButtonActive ? 'Removing...' : text}
       </Button>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>

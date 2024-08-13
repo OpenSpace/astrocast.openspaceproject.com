@@ -22,22 +22,22 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { AuthContext } from "@/components/AuthProvider";
-import CustomToast from "@/components/CustomToast";
-import DropDownWrapper from "@/components/DropDownWrapper";
-import RequestNewRoomForm from "@/components/RequestNewRoomForm";
-import useServerInstanceData from "@/hooks/useServerInstanceData";
-import { handleNewRoomForm } from "@/shared/api";
-import { User } from "firebase/auth";
-import { useContext, useState } from "react";
-import Container from "react-bootstrap/Container";
+import { AuthContext } from '@/components/AuthProvider';
+import CustomToast from '@/components/CustomToast';
+import DropDownWrapper from '@/components/DropDownWrapper';
+import RequestNewRoomForm from '@/components/RequestNewRoomForm';
+import useServerInstanceData from '@/hooks/useServerInstanceData';
+import { handleNewRoomForm } from '@/shared/api';
+import { User } from 'firebase/auth';
+import { useContext, useState } from 'react';
+import Container from 'react-bootstrap/Container';
 
 const Home = () => {
   const user = useContext(AuthContext);
 
-  const [connectedInstance, setConnectedInstance] = useState<string>("");
+  const [connectedInstance, setConnectedInstance] = useState<string>('');
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("New room created");
+  const [toastMessage, setToastMessage] = useState('New room created');
 
   const instances = useServerInstanceData();
 

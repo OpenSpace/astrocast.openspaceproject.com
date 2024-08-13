@@ -22,19 +22,19 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { handleAdminRightsForm } from "@/shared/api";
-import CustomToast from "./CustomToast";
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { handleAdminRightsForm } from '@/shared/api';
+import CustomToast from './CustomToast';
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
 const RequestAdminRightsForm = () => {
   const [validated, setValidated] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
 
   const requestAdminRights = async (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;

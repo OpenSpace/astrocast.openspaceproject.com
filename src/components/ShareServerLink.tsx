@@ -22,11 +22,11 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { useRef, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Overlay from "react-bootstrap/Overlay";
-import Tooltip from "react-bootstrap/Tooltip";
-import { FaRegCopy } from "react-icons/fa6";
+import { useRef, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Overlay from 'react-bootstrap/Overlay';
+import Tooltip from 'react-bootstrap/Tooltip';
+import { FaRegCopy } from 'react-icons/fa6';
 
 interface ShareServerLinkProps {
   instanceID: string;

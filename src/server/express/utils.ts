@@ -25,9 +25,9 @@
 const ChattyDebug = true;
 
 // Color codes for console logs
-const FgRed = "\x1b[31m";
-const FgGreen = "\x1b[32m";
-const FgWhite = "\x1b[37m";
+const FgRed = '\x1b[31m';
+const FgGreen = '\x1b[32m';
+const FgWhite = '\x1b[37m';
 
 /**
  * Logs a debug info message if `ChattyDebug` flage is set to true.

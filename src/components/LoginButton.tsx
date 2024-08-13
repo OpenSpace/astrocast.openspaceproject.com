@@ -22,40 +22,40 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { signInWith, supportedProviders } from "@/firebaseconfig";
-import CustomToast from "./CustomToast";
+import { signInWith, supportedProviders } from '@/firebaseconfig';
+import CustomToast from './CustomToast';
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   GithubAuthProvider,
-  TwitterAuthProvider,
-} from "firebase/auth";
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Row from "react-bootstrap/Row";
-import { FaGithub } from "react-icons/fa";
-import { FaSquareFacebook, FaXTwitter } from "react-icons/fa6";
-import { FcGoogle } from "react-icons/fc";
+  TwitterAuthProvider
+} from 'firebase/auth';
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
+import { FaGithub } from 'react-icons/fa';
+import { FaSquareFacebook, FaXTwitter } from 'react-icons/fa6';
+import { FcGoogle } from 'react-icons/fc';
 
 const LoginButton = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
 
   const icons = {
     [GoogleAuthProvider.PROVIDER_ID]: <FcGoogle />,
     [FacebookAuthProvider.PROVIDER_ID]: <FaSquareFacebook />,
     [GithubAuthProvider.PROVIDER_ID]: <FaGithub />,
-    [TwitterAuthProvider.PROVIDER_ID]: <FaXTwitter />,
+    [TwitterAuthProvider.PROVIDER_ID]: <FaXTwitter />
   };
 
   const onSignInError = (methods: string[]) => {
-    const methodNames = methods.map((method) => method.split(".")[0]);
+    const methodNames = methods.map((method) => method.split('.')[0]);
 
     setToastMessage(
       `An account with this email already exists. Please sign in with your ` +
-        `${methodNames.join("or ")} account, and link your accounts under account settings.`
+        `${methodNames.join('or ')} account, and link your accounts under account settings.`
     );
     setShowToast(true);
   };
@@ -97,8 +97,8 @@ const LoginButton = () => {
                 <span className="d-flex w-100 justify-content-center">
                   Continue with {}
                   {/*Removes the '.com' and capitalizes first letter */}
-                  {provider.split(".")[0][0].toUpperCase() +
-                    provider.split(".")[0].slice(1)}
+                  {provider.split('.')[0][0].toUpperCase() +
+                    provider.split('.')[0].slice(1)}
                 </span>
               </Button>
             </Row>

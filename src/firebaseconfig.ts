@@ -22,7 +22,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 import {
   getAuth,
   signInWithPopup,
@@ -30,9 +30,9 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   GithubAuthProvider,
-  TwitterAuthProvider,
-} from "firebase/auth";
-import { getDatabase } from "firebase/database";
+  TwitterAuthProvider
+} from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
 
 // Authentication Config
 const firebaseAuthenticationConfig = {
@@ -41,7 +41,7 @@ const firebaseAuthenticationConfig = {
   projectId: import.meta.env.VITE_AUTH_FIREBASE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_AUTH_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_AUTH_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_AUTH_FIREBASE_APP_ID,
+  appId: import.meta.env.VITE_AUTH_FIREBASE_APP_ID
 };
 
 // Realtime database config
@@ -52,11 +52,11 @@ const firebaseDatabaseConfig = {
   projectID: import.meta.env.VITE_DATABASE_FIREBASE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_DATABASE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_DATABASE_FIREBASE_MESSAGING_SENDER_ID,
-  appID: import.meta.env.VITE_DATABASE_FIREBASE_APP_ID,
+  appID: import.meta.env.VITE_DATABASE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseDatabaseConfig);
-const authApp = initializeApp(firebaseAuthenticationConfig, "auth");
+const authApp = initializeApp(firebaseAuthenticationConfig, 'auth');
 
 export const db = getDatabase(app);
 export const auth = getAuth(authApp);
@@ -65,7 +65,7 @@ export const supportedProviders = [
   GoogleAuthProvider.PROVIDER_ID,
   FacebookAuthProvider.PROVIDER_ID,
   GithubAuthProvider.PROVIDER_ID,
-  TwitterAuthProvider.PROVIDER_ID,
+  TwitterAuthProvider.PROVIDER_ID
 ] as const;
 
 /**
@@ -75,7 +75,7 @@ export const getProvider = (providerID: string) => {
   switch (providerID) {
     case GoogleAuthProvider.PROVIDER_ID:
       const googleProvider = new GoogleAuthProvider();
-      googleProvider.setCustomParameters({ prompt: "select_account" });
+      googleProvider.setCustomParameters({ prompt: 'select_account' });
       return googleProvider;
     case FacebookAuthProvider.PROVIDER_ID:
       return new FacebookAuthProvider();
@@ -102,7 +102,7 @@ export const signInWith = async (providerKey: string) => {
     await signInWithPopup(auth, provider);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    if (error.code === "auth/account-exists-with-different-credential") {
+    if (error.code === 'auth/account-exists-with-different-credential') {
       const email = error.customData.email;
       const methods = await fetchSignInMethodsForEmail(auth, email);
       throw methods;

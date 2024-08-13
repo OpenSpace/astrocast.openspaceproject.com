@@ -22,7 +22,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const useInstanceOwnerName = (userID: string | null) => {
   const [userName, setUserName] = useState<string | null>(null);

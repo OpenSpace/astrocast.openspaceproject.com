@@ -1,8 +1,8 @@
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import { CSVLink } from "react-csv";
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import { CSVLink } from 'react-csv';
 import {
   Area,
   AreaChart,
@@ -11,8 +11,8 @@ import {
   Tooltip,
   TooltipProps,
   XAxis,
-  YAxis,
-} from "recharts";
+  YAxis
+} from 'recharts';
 
 interface StatisticsChartProps {
   statistics: Statistics;
@@ -22,8 +22,8 @@ const StatisticsChart = ({ statistics }: StatisticsChartProps) => {
   // Set y-axis domain to at least (0,8)
   const yDomain = [0, Math.max(8, ...statistics.data.map((d) => d.nPeers))];
   const headers = [
-    { label: "timestamp", key: "timestamp" },
-    { label: "nPeers", key: "nPeers" },
+    { label: 'timestamp', key: 'timestamp' },
+    { label: 'nPeers', key: 'nPeers' }
   ];
 
   const dateFormatter = (timestamp: number) => {
@@ -88,8 +88,8 @@ const StatisticsChart = ({ statistics }: StatisticsChartProps) => {
               data={statistics.data}
               headers={headers}
               filename={`${statistics.id}.csv`}
-              enclosingCharacter={""}
-              separator={", "}
+              enclosingCharacter={''}
+              separator={', '}
             >
               <Button variant="success">Download CSV</Button>
             </CSVLink>

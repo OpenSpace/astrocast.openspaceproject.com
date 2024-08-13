@@ -22,10 +22,10 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import Col, { ColProps } from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import Col, { ColProps } from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 
 interface InstanceWrapperProps {
   children: React.ReactNode;
@@ -35,7 +35,7 @@ export const InstanceWrapper = ({ children }: InstanceWrapperProps) => {
   return (
     <div
       className="my-3"
-      style={{ background: "#ffff", boxShadow: "0 0 5px 0 #bdbdbd", borderRadius: 10 }}
+      style={{ background: '#ffff', boxShadow: '0 0 5px 0 #bdbdbd', borderRadius: 10 }}
     >
       {children}
     </div>
@@ -50,10 +50,10 @@ export const InstanceHeader = ({ children }: InstanceHeaderProps) => {
     <Row
       className="py-3 pe-3"
       style={{
-        backgroundColor: "#464646",
-        color: "#ffff",
-        boxShadow: "0 0 5px 0 #bdbdbd",
-        borderRadius: "10px",
+        backgroundColor: '#464646',
+        color: '#ffff',
+        boxShadow: '0 0 5px 0 #bdbdbd',
+        borderRadius: '10px'
       }}
     >
       {children}
@@ -69,7 +69,7 @@ interface InstanceHeaderEntryProps {
 export const InstanceHeaderEntry = ({
   header,
   value,
-  props,
+  props
 }: InstanceHeaderEntryProps) => {
   return (
     <Col md={props?.md}>
@@ -88,7 +88,7 @@ interface InstanceHeaderChevronProps {
 
 export const InstanceHeaderChevron = ({
   showMore,
-  callback,
+  callback
 }: InstanceHeaderChevronProps) => {
   return (
     <Col

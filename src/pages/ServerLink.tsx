@@ -22,19 +22,19 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { AuthContext } from "@/components/AuthProvider";
-import CustomToast from "@/components/CustomToast";
-import { OpenSpaceContext } from "@/components/OpenSpaceProivder";
-import useServerInstanceWithID from "@/hooks/useServerInstanceWithID";
-import { useContext, useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
-import { useParams } from "react-router-dom";
-import Container from "react-bootstrap/Container";
+import { AuthContext } from '@/components/AuthProvider';
+import CustomToast from '@/components/CustomToast';
+import { OpenSpaceContext } from '@/components/OpenSpaceProivder';
+import useServerInstanceWithID from '@/hooks/useServerInstanceWithID';
+import { useContext, useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import { useParams } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
 
 enum ConnectionState {
   CONNECTING = 0,
   CONNECTED,
-  DISCONNECTED,
+  DISCONNECTED
 }
 
 const ServerLink = () => {
@@ -43,9 +43,9 @@ const ServerLink = () => {
 
   const [connectionState, setConnectionState] = useState(ConnectionState.DISCONNECTED);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
 
-  const username = user?.displayName || "Guest";
+  const username = user?.displayName || 'Guest';
 
   // Retrieve the server ID from the URL
   const { id } = useParams();
@@ -54,7 +54,7 @@ const ServerLink = () => {
   // Get the server instance from firebase
   const connectToInstanceServer = async () => {
     if (!openspace) {
-      setToastMessage("Not connected to OpenSpace");
+      setToastMessage('Not connected to OpenSpace');
       setShowToast(true);
       return;
     }
@@ -62,7 +62,7 @@ const ServerLink = () => {
       return;
     }
     if (!instance) {
-      setToastMessage("Could not find the session");
+      setToastMessage('Could not find the session');
       setShowToast(true);
       return;
     }
@@ -74,7 +74,7 @@ const ServerLink = () => {
       import.meta.env.VITE_WORMHOLE_ADDRESS.toString(),
       instance.roomName,
       instance.password,
-      "",
+      '',
       username
     );
     setToastMessage(`Joined session: ${instance.roomName}`);
@@ -89,11 +89,11 @@ const ServerLink = () => {
   const statusText = () => {
     switch (connectionState) {
       case ConnectionState.CONNECTING:
-        return "Joining Session...";
+        return 'Joining Session...';
       case ConnectionState.CONNECTED:
-        return "Connected";
+        return 'Connected';
       case ConnectionState.DISCONNECTED:
-        return "Join Session";
+        return 'Join Session';
     }
   };
 

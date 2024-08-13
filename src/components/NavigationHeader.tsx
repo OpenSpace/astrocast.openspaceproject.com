@@ -22,28 +22,28 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import "@/styles/global.css";
-import { AuthContext } from "./AuthProvider";
-import LoginButton from "./LoginButton";
-import UserProfile from "./UserProfile";
-import { useContext } from "react";
-import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
-import NavBar from "react-bootstrap/NavBar";
-import { Link } from "react-router-dom";
+import '@/styles/global.css';
+import { AuthContext } from './AuthProvider';
+import LoginButton from './LoginButton';
+import UserProfile from './UserProfile';
+import { useContext } from 'react';
+import Col from 'react-bootstrap/Col';
+import Image from 'react-bootstrap/Image';
+import NavBar from 'react-bootstrap/NavBar';
+import { Link } from 'react-router-dom';
 
 const NavigationHeader = () => {
   const authenticatedUser = useContext(AuthContext);
 
   return (
-    <NavBar className="px-3" style={{ background: "#ffff", minHeight: 74 }}>
-      <NavBar.Brand as={Link} to={"/"}>
+    <NavBar className="px-3" style={{ background: '#ffff', minHeight: 74 }}>
+      <NavBar.Brand as={Link} to={'/'}>
         <Image
-          src={"/images/icon.png"}
+          src={'/images/icon.png'}
           width={30}
           height={30}
           className="d-inline-block align-top"
-        />{" "}
+        />{' '}
         <h4 className="d-inline-block">Parallel Connection</h4>
       </NavBar.Brand>
 

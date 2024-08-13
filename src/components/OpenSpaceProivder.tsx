@@ -22,13 +22,13 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import CustomToast from "./CustomToast";
-import OpenSpaceApi from "openspace-api-js";
-import { createContext, useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import CustomToast from './CustomToast';
+import OpenSpaceApi from 'openspace-api-js';
+import { createContext, useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -44,7 +44,7 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [apiRef, setApiRef] = useState<any | null>(null);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
   // State to control if we can click connect/disconnect button
   const [buttonValid, setButtonValid] = useState(true);
 
@@ -74,7 +74,7 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
       const os = await api.singleReturnLibrary();
       setOpenSpace(os);
       setIsConnected(true);
-      setToastMessage("Connected to OpenSpace");
+      setToastMessage('Connected to OpenSpace');
       setShowToast(true);
       setButtonValid(true);
     });
@@ -82,7 +82,7 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
     api.onDisconnect(async () => {
       setIsConnected(false);
       setOpenSpace(null);
-      setToastMessage("Disconnected from OpenSpace");
+      setToastMessage('Disconnected from OpenSpace');
       setShowToast(true);
       setButtonValid(true);
     });
@@ -105,14 +105,14 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
       <Container>
         <Container
           className="my-4 py-3"
-          style={{ background: "#3db4c1", borderRadius: 10 }}
+          style={{ background: '#3db4c1', borderRadius: 10 }}
         >
           <Row>
-            <Col style={{ color: "#ffff" }}>
+            <Col style={{ color: '#ffff' }}>
               <div style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>
                 Connected to OpenSpace
               </div>
-              <div> {isConnected ? "Yes" : "No"}</div>
+              <div> {isConnected ? 'Yes' : 'No'}</div>
             </Col>
             <Col className="d-flex justify-content-end align-items-center">
               {isConnected ? (
@@ -122,7 +122,7 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
                   onClick={disconnectOpenSpace}
                   disabled={!buttonValid}
                 >
-                  {buttonValid ? "Disconnect" : "Disconnecting..."}
+                  {buttonValid ? 'Disconnect' : 'Disconnecting...'}
                 </Button>
               ) : (
                 <Button
@@ -131,7 +131,7 @@ const OpenSpaceProvider = ({ children }: AuthProviderProps) => {
                   onClick={connectOpenSpace}
                   disabled={!buttonValid}
                 >
-                  {buttonValid ? "Connect" : "Connecting..."}
+                  {buttonValid ? 'Connect' : 'Connecting...'}
                 </Button>
               )}
             </Col>

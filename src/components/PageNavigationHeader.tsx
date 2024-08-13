@@ -22,12 +22,12 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import useIsUserAdmin from "@/hooks/useIsUserAdmin";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import NavBar from "react-bootstrap/NavBar";
-import Nav from "react-bootstrap/Nav";
-import { NavLink } from "react-router-dom";
+import useIsUserAdmin from '@/hooks/useIsUserAdmin';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import NavBar from 'react-bootstrap/NavBar';
+import Nav from 'react-bootstrap/Nav';
+import { NavLink } from 'react-router-dom';
 
 const PageNavigationHeader = () => {
   const isAdmin = useIsUserAdmin();
@@ -35,13 +35,13 @@ const PageNavigationHeader = () => {
   return (
     <Container>
       <NavBar>
-        <Col as={"h4"}>
-          <Nav style={{ boxShadow: "0px -1px 0px 0px #c3c3c3 inset" }}>
-            <Nav.Link as={NavLink} to={"/"}>
+        <Col as={'h4'}>
+          <Nav style={{ boxShadow: '0px -1px 0px 0px #c3c3c3 inset' }}>
+            <Nav.Link as={NavLink} to={'/'}>
               Home
-            </Nav.Link>{" "}
+            </Nav.Link>{' '}
             {isAdmin && (
-              <Nav.Link as={NavLink} to={"/admin"}>
+              <Nav.Link as={NavLink} to={'/admin'}>
                 Admin
               </Nav.Link>
             )}

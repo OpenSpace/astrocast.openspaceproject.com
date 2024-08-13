@@ -22,7 +22,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { User } from "firebase/auth";
+import { User } from 'firebase/auth';
 
 export const handleNewRoomForm = async (
   e: React.FormEvent<HTMLFormElement>,
@@ -42,17 +42,17 @@ export const handleNewRoomForm = async (
   // Add the user token id if they are online
   const uid = await user?.getIdToken();
   if (uid) {
-    formJson["token"] = uid;
+    formJson['token'] = uid;
   }
 
   const apiUrl = import.meta.env.VITE_SERVER_API_PATH;
 
   fetch(`${apiUrl}/request-server-instance`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(formJson),
+    body: JSON.stringify(formJson)
   })
     .then((response) => {
       if (!response.ok) {
@@ -79,11 +79,11 @@ export const handleAdminRightsForm = async (e: React.FormEvent<HTMLFormElement>)
   const apiUrl = import.meta.env.VITE_SERVER_API_PATH;
 
   const response = await fetch(`${apiUrl}/request-admin-rights`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(formJson),
+    body: JSON.stringify(formJson)
   });
 
   const data = await response.json();

@@ -22,9 +22,9 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { auth } from "@/firebaseconfig";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { createContext, useEffect, useState } from "react";
+import { auth } from '@/firebaseconfig';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { createContext, useEffect, useState } from 'react';
 
 interface AuthProviderProps {
   children: React.ReactNode;

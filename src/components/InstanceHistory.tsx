@@ -22,18 +22,18 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import useInstanceOwnerName from "@/hooks/useInstanceOwnerName";
-import StatisticsChart from "./StatisticsChart";
+import useInstanceOwnerName from '@/hooks/useInstanceOwnerName';
+import StatisticsChart from './StatisticsChart';
 import {
   InstanceBody,
   InstanceBodyEntry,
   InstanceHeader,
   InstanceHeaderChevron,
   InstanceHeaderEntry,
-  InstanceWrapper,
-} from "./InstanceMapper";
-import { useState } from "react";
-import Container from "react-bootstrap/Container";
+  InstanceWrapper
+} from './InstanceMapper';
+import { useState } from 'react';
+import Container from 'react-bootstrap/Container';
 
 interface InstanceHistoryProps {
   instance: InstanceHistoryData;

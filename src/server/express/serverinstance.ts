@@ -26,10 +26,10 @@ import {
   updateActiveSessionStatus,
   updateCurrentActiveUsers,
   updateCurrentHost,
-  updateUsage,
-} from "./adminApi";
-import { CurrentProtocolVersion, MessageType, ConnectionStatus, Peer } from "./server";
-import { LDEBUG } from "./utils";
+  updateUsage
+} from './adminApi';
+import { CurrentProtocolVersion, MessageType, ConnectionStatus, Peer } from './server';
+import { LDEBUG } from './utils';
 
 class ServerInstance {
   /**
@@ -106,7 +106,7 @@ class ServerInstance {
       serverName: this.name,
       password: this.password,
       hostPassword: this.hostPassword,
-      id: this.id,
+      id: this.id
     };
   }
 
@@ -140,7 +140,7 @@ class ServerInstance {
 
       for (const peer of this.peers) {
         // Handle if socket does not end properly
-        peer.socket.on("error", (err) => {
+        peer.socket.on('error', (err) => {
           checkAllDisconnected();
         });
 
@@ -168,7 +168,7 @@ class ServerInstance {
     console.assert(
       idx !== -1,
       `Server ${this.name}: Could not find peer with id ${peer.id} trying to ` +
-        "disconnect"
+        'disconnect'
     );
     this.peers.splice(idx, 1);
 
@@ -273,7 +273,7 @@ class ServerInstance {
       return;
     }
 
-    const password = data.subarray(offset, offset + passwordLength).toString("utf-8");
+    const password = data.subarray(offset, offset + passwordLength).toString('utf-8');
     if (password !== this.hostPassword) {
       // Wrong password so we don't do anything
       LDEBUG(
@@ -316,7 +316,7 @@ class ServerInstance {
    */
   private sendMessage(peer: Peer, messageType: MessageType, payload: ArrayBuffer): void {
     const buffer = new ArrayBuffer(
-      "OS".length + // OS prefix
+      'OS'.length + // OS prefix
         Uint8Array.BYTES_PER_ELEMENT + // protocol version number
         Uint8Array.BYTES_PER_ELEMENT + // message type identifier
         Uint32Array.BYTES_PER_ELEMENT + // payload size in bytes
@@ -327,9 +327,9 @@ class ServerInstance {
     let offset = 0;
 
     // Set OS header
-    dv.setUint8(offset, "OS".charCodeAt(0));
+    dv.setUint8(offset, 'OS'.charCodeAt(0));
     offset += Uint8Array.BYTES_PER_ELEMENT;
-    dv.setUint8(offset, "OS".charCodeAt(1));
+    dv.setUint8(offset, 'OS'.charCodeAt(1));
     offset += Uint8Array.BYTES_PER_ELEMENT;
 
     // Protocol version
@@ -363,7 +363,7 @@ class ServerInstance {
     );
 
     const host = this.currentHost();
-    const currentHostName = host === null ? "" : host.name;
+    const currentHostName = host === null ? '' : host.name;
 
     const buffer = new ArrayBuffer(
       Uint8Array.BYTES_PER_ELEMENT + // Status
@@ -475,7 +475,7 @@ class ServerInstance {
       this.sendConnectionStatus(p);
     });
 
-    updateCurrentHost(this.id!, "null");
+    updateCurrentHost(this.id!, 'null');
   }
 }
 

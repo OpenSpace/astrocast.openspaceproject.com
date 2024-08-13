@@ -95,11 +95,24 @@
         "varsIgnorePattern": "^_"
       }
     ],
+    "arrow-parens": ["error", "always"], // For consistency and to catch accidental >= operators
+    "comma-dangle": ["error", "never"], // Just nicer
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-func-assign": "off", // Is used all the time to connect dispatch and state to props
+    "indent": ["error", 2, { "SwitchCase": 1 }], // Indentation
+    "eol-last": ["error", "always"], // End of file
+    "key-spacing": [1, {
+      "mode": "strict",
+      "beforeColon": false, // Make it pretty :)
+      "afterColon": true // Make it pretty :)
+    }],
     "prettier/prettier": [
       "error",
       {
-        "endOfLine": "auto",
-        "trailingComma": "es5"
+        "endOfLine": "lf",
+        "trailingComma": "none",
+        "singleQuote": true,
+        "printWidth": 90
       }
     ],
     "no-import-assign": "error",

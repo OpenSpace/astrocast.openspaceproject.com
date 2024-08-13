@@ -22,15 +22,15 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { db } from "@/firebaseconfig";
-import { DataSnapshot, onValue, ref } from "firebase/database";
-import { useEffect, useState } from "react";
+import { db } from '@/firebaseconfig';
+import { DataSnapshot, onValue, ref } from 'firebase/database';
+import { useEffect, useState } from 'react';
 
 function useServerStatisticsData() {
   const [statistics, setStatistics] = useState<Statistics[]>([]);
 
   useEffect(() => {
-    const statisticsRef = ref(db, "Statistics");
+    const statisticsRef = ref(db, 'Statistics');
 
     const handleData = (snapshot: DataSnapshot) => {
       if (snapshot.exists()) {
@@ -47,7 +47,7 @@ function useServerStatisticsData() {
 
           const stat: Statistics = {
             id: id,
-            data: statsData,
+            data: statsData
           };
           tmp.push(stat);
         }
@@ -58,7 +58,7 @@ function useServerStatisticsData() {
     };
 
     const handleError = (error: Error) => {
-      console.log("Error fetching statistics data: ", error);
+      console.log('Error fetching statistics data: ', error);
       setStatistics([]);
     };
 

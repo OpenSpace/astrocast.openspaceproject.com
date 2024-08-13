@@ -22,25 +22,25 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import CustomToast from "@/components/CustomToast";
-import InstanceHistory from "@/components/InstanceHistory";
-import InstanceStatus from "@/components/InstanceStatus";
-import RequestNewRoomForm from "@/components/RequestNewRoomForm";
-import useServerInstanceData from "@/hooks/useServerInstanceData";
-import useServerInstanceHistory from "@/hooks/useServerInstanceHistory";
-import useServerStatisticsData from "@/hooks/useServerStatisticsData";
-import { handleNewRoomForm } from "@/shared/api";
-import { User } from "firebase/auth";
-import { useState } from "react";
-import Container from "react-bootstrap/Container";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import RequestAdminRightsForm from "@/components/RequestAdminRightsForm";
+import CustomToast from '@/components/CustomToast';
+import InstanceHistory from '@/components/InstanceHistory';
+import InstanceStatus from '@/components/InstanceStatus';
+import RequestNewRoomForm from '@/components/RequestNewRoomForm';
+import useServerInstanceData from '@/hooks/useServerInstanceData';
+import useServerInstanceHistory from '@/hooks/useServerInstanceHistory';
+import useServerStatisticsData from '@/hooks/useServerStatisticsData';
+import { handleNewRoomForm } from '@/shared/api';
+import { User } from 'firebase/auth';
+import { useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import RequestAdminRightsForm from '@/components/RequestAdminRightsForm';
 
 const Admin = () => {
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
 
   const instances = useServerInstanceData(true);
   const statistics = useServerStatisticsData();
@@ -130,7 +130,7 @@ const Admin = () => {
         <h2>History</h2>
         {history.map((instance: InstanceHistoryData) => (
           <InstanceHistory
-            key={instance.id + "-history"}
+            key={instance.id + '-history'}
             instance={instance}
             statistics={statistics.find((stat) => stat.id === instance.id)}
           />

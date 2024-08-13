@@ -22,9 +22,9 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { AuthContext } from "@/components/AuthProvider";
-import { isUserAdmin } from "@/shared/api";
-import { useContext, useEffect, useState } from "react";
+import { AuthContext } from '@/components/AuthProvider';
+import { isUserAdmin } from '@/shared/api';
+import { useContext, useEffect, useState } from 'react';
 
 const useIsUserAdmin = () => {
   const user = useContext(AuthContext);

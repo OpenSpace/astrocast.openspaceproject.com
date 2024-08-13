@@ -22,14 +22,14 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { AuthContext } from "./AuthProvider";
-import { User } from "firebase/auth";
-import { useContext, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { AuthContext } from './AuthProvider';
+import { User } from 'firebase/auth';
+import { useContext, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
 interface RequestNewRoomFormProps {
   onSubmitCallback: (
@@ -62,7 +62,7 @@ const RequestNewRoomForm = ({ onSubmitCallback }: RequestNewRoomFormProps) => {
       noValidate
       validated={validated}
       className="p-3 my-3"
-      style={{ boxShadow: "0 0 5px 0 #bdbdbd", borderRadius: 10, background: "#ffff" }}
+      style={{ boxShadow: '0 0 5px 0 #bdbdbd', borderRadius: 10, background: '#ffff' }}
     >
       <h2 className="mb-3">Create a new room</h2>
       <Row>

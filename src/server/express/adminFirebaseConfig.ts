@@ -22,22 +22,22 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import "dotenv/config";
-import { cert, initializeApp } from "firebase-admin/app";
+import 'dotenv/config';
+import { cert, initializeApp } from 'firebase-admin/app';
 
 // Setup admin auth app
 const authServiceAccount = require(process.env.ADMIN_AUTH_SDK_FILEPATH!);
 const authConfig = {
-  credential: cert(authServiceAccount),
+  credential: cert(authServiceAccount)
 };
 
-export const adminAuthApp = initializeApp(authConfig, "adminAuth");
+export const adminAuthApp = initializeApp(authConfig, 'adminAuth');
 
 // Setup admin database app
 const dbServiceAccount = require(process.env.ADMIN_DB_SDK_FILEPATH!);
 const dbConfig = {
   credential: cert(dbServiceAccount),
-  databaseURL: process.env.VITE_DATABASE_FIREBASE_DATABASE_URL,
+  databaseURL: process.env.VITE_DATABASE_FIREBASE_DATABASE_URL
 };
 
-export const adminDbApp = initializeApp(dbConfig, "adminDb");
+export const adminDbApp = initializeApp(dbConfig, 'adminDb');

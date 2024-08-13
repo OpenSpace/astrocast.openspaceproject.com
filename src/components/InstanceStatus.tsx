@@ -22,22 +22,22 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import useInstanceOwnerName from "@/hooks/useInstanceOwnerName";
-import CloseServerButton from "./CloseServerButton";
+import useInstanceOwnerName from '@/hooks/useInstanceOwnerName';
+import CloseServerButton from './CloseServerButton';
 import {
   InstanceBody,
   InstanceBodyEntry,
   InstanceHeader,
   InstanceHeaderChevron,
   InstanceHeaderEntry,
-  InstanceWrapper,
-} from "./InstanceMapper";
-import StatisticsChart from "./StatisticsChart";
-import { useState } from "react";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import { FaCheck, FaX } from "react-icons/fa6";
+  InstanceWrapper
+} from './InstanceMapper';
+import StatisticsChart from './StatisticsChart';
+import { useState } from 'react';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import { FaCheck, FaX } from 'react-icons/fa6';
 
 type InstanceStatusProps = {
   instance: ServerInstanceData;
@@ -121,7 +121,7 @@ const InstanceStatus = ({ instance, statistics, callback }: InstanceStatusProps)
             <InstanceBodyEntry header="Port" value={import.meta.env.VITE_WORMHOLE_PORT} />
             <InstanceBodyEntry
               header="Access"
-              value={instance.isPrivate ? "Private" : "Public"}
+              value={instance.isPrivate ? 'Private' : 'Public'}
             />
             <InstanceBodyEntry header="Total Usage" value={instance.usage} />
             {!instance.active && (

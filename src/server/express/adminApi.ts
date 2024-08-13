@@ -22,11 +22,11 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { adminAuthApp, adminDbApp } from "./adminFirebaseConfig";
-import { ServerInstance } from "./serverinstance";
-import { LDEBUG, LERROR, LINFO } from "./utils";
-import { getAuth, UserRecord } from "firebase-admin/auth";
-import { DataSnapshot, EventType, getDatabase, Reference } from "firebase-admin/database";
+import { adminAuthApp, adminDbApp } from './adminFirebaseConfig';
+import { ServerInstance } from './serverinstance';
+import { LDEBUG, LERROR, LINFO } from './utils';
+import { getAuth, UserRecord } from 'firebase-admin/auth';
+import { DataSnapshot, EventType, getDatabase, Reference } from 'firebase-admin/database';
 
 /**
  * Set admin rights for a user in the firebase auth database.
@@ -37,14 +37,14 @@ import { DataSnapshot, EventType, getDatabase, Reference } from "firebase-admin/
 export const setAdminRights = async (uid: string, secret: string) => {
   // Verify the provided secret against the database secret
   const db = getDatabase(adminDbApp);
-  const dbSecret = await db.ref("Admin/secret").get();
+  const dbSecret = await db.ref('Admin/secret').get();
 
   if (!dbSecret.exists()) {
-    throw new Error("Could not find admin secret in database");
+    throw new Error('Could not find admin secret in database');
   }
 
   if (secret !== dbSecret.val()) {
-    throw new Error("Invalid secret provided");
+    throw new Error('Invalid secret provided');
   }
 
   const auth = getAuth(adminAuthApp);
@@ -52,7 +52,7 @@ export const setAdminRights = async (uid: string, secret: string) => {
     await auth.setCustomUserClaims(uid, { admin: true });
     LINFO(`Successfully set admin rights for user: ${uid}`);
   } catch (error) {
-    LERROR("Internal error", (error as Error).message, `uid: '${uid}'`);
+    LERROR('Internal error', (error as Error).message, `uid: '${uid}'`);
     throw error;
   }
 };
@@ -90,7 +90,7 @@ export const getUserByID = async (token: string): Promise<UserRecord> => {
  */
 export const getServerInstancesFromDB = async (): Promise<ServerInstanceData[]> => {
   const db = getDatabase(adminDbApp);
-  const snapshot = await db.ref("InstanceData").once("value");
+  const snapshot = await db.ref('InstanceData').once('value');
   if (!snapshot.exists()) {
     return [];
   }
@@ -134,7 +134,7 @@ export const postServerInstance = async (
   uid: string | null
 ): Promise<ServerInstanceData> => {
   const db = getDatabase(adminDbApp);
-  const instanceRef = db.ref("InstanceData");
+  const instanceRef = db.ref('InstanceData');
   const newPostRef = instanceRef.push();
   const postID = newPostRef.key!;
 
@@ -147,18 +147,18 @@ export const postServerInstance = async (
     password: metadata.password,
     hostPassword: metadata.hostPassword,
     nPeers: 0,
-    currentHost: "null",
+    currentHost: 'null',
     roomName: metadata.serverName,
     profile: profile,
     id: postID,
     isPrivate: isPrivate,
-    owner: uid,
+    owner: uid
   };
   await newPostRef.set(data, (error) => {
     if (error) {
-      LERROR("Error posting instance to database:", error);
+      LERROR('Error posting instance to database:', error);
     } else {
-      LDEBUG("Posted a new instance to database:", data);
+      LDEBUG('Posted a new instance to database:', data);
     }
   });
   return data;
@@ -183,17 +183,17 @@ export const postInstanceHistoryData = async (
       uptime: uptime,
       usage: instance.usage,
       roomName: instance.roomName,
-      owner: instance.owner,
+      owner: instance.owner
     };
     await historyRef.set(history, (error) => {
       if (error) {
         throw error;
       } else {
-        LDEBUG("Posted history data to database:", history);
+        LDEBUG('Posted history data to database:', history);
       }
     });
   } catch (error) {
-    LERROR("Error posting history data:", error);
+    LERROR('Error posting history data:', error);
   }
 };
 
@@ -219,7 +219,7 @@ export const removeServerInstanceFromDb = async (instanceID: string): Promise<vo
     await postInstanceHistoryData(snapshot.val());
     await instanceRef.remove((error) => {
       if (error) {
-        LERROR("Error removing server instance from database:", error);
+        LERROR('Error removing server instance from database:', error);
       } else {
         LINFO(`Instance with id ${instanceID} was removed from the database`);
       }
@@ -318,14 +318,14 @@ export const updateStatistics = async (
     const statisticsRef = db.ref(`Statistics/${instanceID}`);
     const stats: StatisticData = {
       nPeers: nPeers,
-      timestamp: Date.now(),
+      timestamp: Date.now()
     };
 
     await statisticsRef.push(stats, (error) => {
       if (error) {
         throw error;
       } else {
-        LDEBUG("Pushed new statistics to database:", stats);
+        LDEBUG('Pushed new statistics to database:', stats);
       }
     });
   } catch (error) {

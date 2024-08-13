@@ -29,14 +29,14 @@ import {
   postServerInstance,
   removeServerInstanceFromDb,
   setAdminRights,
-  subscribeToDatabase,
-} from "./adminApi";
-import { Server } from "./server";
-import { LERROR, LINFO } from "./utils";
-import cors from "cors";
-import "dotenv/config";
-import express, { Response, Request } from "express";
-import { DataSnapshot } from "firebase-admin/database";
+  subscribeToDatabase
+} from './adminApi';
+import { Server } from './server';
+import { LERROR, LINFO } from './utils';
+import cors from 'cors';
+import 'dotenv/config';
+import express, { Response, Request } from 'express';
+import { DataSnapshot } from 'firebase-admin/database';
 
 class ServerManager {
   /**
@@ -119,7 +119,7 @@ class ServerManager {
     const instances = await getServerInstancesFromDB();
 
     if (!instances || !instances.length) {
-      LINFO("No existing instances found in database");
+      LINFO('No existing instances found in database');
       return;
     }
     // Add instances to internal array for bookkeeping
@@ -160,7 +160,7 @@ class ServerManager {
   private async handleRemoveServerInstance(req: Request, res: Response): Promise<void> {
     const instanceID = req.params.id;
     if (!instanceID) {
-      res.status(400).json({ error: "Instance ID is required" });
+      res.status(400).json({ error: 'Instance ID is required' });
       return;
     }
 
@@ -208,11 +208,11 @@ class ServerManager {
     const tokenID: string | null = req.body.token ?? null;
     // A server without passwords are not allowed
     if (!password || !hostPassword) {
-      res.status(400).json({ error: "Missing password or host password" });
+      res.status(400).json({ error: 'Missing password or host password' });
       return;
     }
     if (!roomName) {
-      res.status(400).json({ error: "Missing room name" });
+      res.status(400).json({ error: 'Missing room name' });
       return;
     }
 
@@ -223,14 +223,14 @@ class ServerManager {
     });
 
     if (!isRoomNameUnique) {
-      res.status(400).json({ error: "Room name is not unique" });
+      res.status(400).json({ error: 'Room name is not unique' });
       return;
     }
 
     // Attempt to create a new server instance
     try {
       if (!tokenID) {
-        res.status(401).json({ error: "Unauthorized: Could not verify user" });
+        res.status(401).json({ error: 'Unauthorized: Could not verify user' });
         return;
       }
 
@@ -256,7 +256,7 @@ class ServerManager {
       // can connect to it through OpenSpace
       res.json(serverInstance);
     } catch (e) {
-      LERROR("Error creating server instance:", e);
+      LERROR('Error creating server instance:', e);
       // Report an internal server error to the client
       res.status(500).json({ error: e });
       return;
@@ -279,10 +279,10 @@ class ServerManager {
     };
 
     const handleError = (error: Error) => {
-      LERROR("Error fetching instance data: ", error);
+      LERROR('Error fetching instance data: ', error);
     };
 
-    subscribeToDatabase("InstanceData", "value", handleData, handleError);
+    subscribeToDatabase('InstanceData', 'value', handleData, handleError);
 
     setInterval(
       async () => {
@@ -307,7 +307,7 @@ class ServerManager {
             await this.wormhole.removeServerInstance(instance.id);
             await removeServerInstanceFromDb(instance.id);
           } catch (error) {
-            LERROR("Error removing inactive server:", error);
+            LERROR('Error removing inactive server:', error);
           }
         }
       },

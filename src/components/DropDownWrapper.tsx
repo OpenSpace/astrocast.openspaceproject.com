@@ -22,27 +22,27 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { AuthContext } from "./AuthProvider";
-import CustomToast from "./CustomToast";
+import { AuthContext } from './AuthProvider';
+import CustomToast from './CustomToast';
 import {
   InstanceHeader,
   InstanceBody,
   InstanceBodyEntry,
   InstanceHeaderChevron,
   InstanceHeaderEntry,
-  InstanceWrapper,
-} from "./InstanceMapper";
-import JoinRoomForm from "./JoinRoomForm";
-import { OpenSpaceContext } from "./OpenSpaceProivder";
-import ShareServerLink from "./ShareServerLink";
-import { useContext, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Modal from "react-bootstrap/Modal";
-import Row from "react-bootstrap/Row";
-import { FaCheck, FaX } from "react-icons/fa6";
-import { RxEnter, RxExit } from "react-icons/rx";
+  InstanceWrapper
+} from './InstanceMapper';
+import JoinRoomForm from './JoinRoomForm';
+import { OpenSpaceContext } from './OpenSpaceProivder';
+import ShareServerLink from './ShareServerLink';
+import { useContext, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
+import { FaCheck, FaX } from 'react-icons/fa6';
+import { RxEnter, RxExit } from 'react-icons/rx';
 
 type InstanceStatusProps = {
   instance: ServerInstanceData;
@@ -53,7 +53,7 @@ type InstanceStatusProps = {
 const DropDownWrapper = ({
   instance,
   connectedInstance,
-  setConnectedInstance,
+  setConnectedInstance
 }: InstanceStatusProps) => {
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
@@ -61,7 +61,7 @@ const DropDownWrapper = ({
   const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
 
   // True if this instance is the server we are connected to, false otherwise
   const isConnected = connectedInstance === instance.id;
@@ -75,7 +75,7 @@ const DropDownWrapper = ({
     // We also reset the connected instance regardless of the OpenSpace connection
     // This might be beacuse the OpenSpace connection was lost but the disconnect button
     // is still visible
-    setConnectedInstance("");
+    setConnectedInstance('');
     setToastMessage(`Left session: '${instance.roomName}'`);
     setShowToast(true);
   };
@@ -123,7 +123,7 @@ const DropDownWrapper = ({
 
           <InstanceHeaderEntry
             header="Access"
-            value={instance.isPrivate ? "Private" : "Public"}
+            value={instance.isPrivate ? 'Private' : 'Public'}
             props={{ md: 1 }}
           />
 
@@ -147,7 +147,7 @@ const DropDownWrapper = ({
             <InstanceBodyEntry header="In Session" value={instance.nPeers} />
             <InstanceBodyEntry
               header="Host"
-              value={instance.currentHost !== "null" ? instance.currentHost : "No host"}
+              value={instance.currentHost !== 'null' ? instance.currentHost : 'No host'}
             />
 
             {user?.uid === instance.owner && (

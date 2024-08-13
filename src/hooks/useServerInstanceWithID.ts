@@ -22,9 +22,9 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { db } from "@/firebaseconfig";
-import { get, ref } from "firebase/database";
-import { useEffect, useState } from "react";
+import { db } from '@/firebaseconfig';
+import { get, ref } from 'firebase/database';
+import { useEffect, useState } from 'react';
 
 function useServerInstanceWithID(id?: string) {
   const [instance, setInstance] = useState<ServerInstanceData | null>(null);
@@ -46,7 +46,7 @@ function useServerInstanceWithID(id?: string) {
           setInstance(null);
         }
       } catch (error) {
-        console.log("Error fetching instance data: ", error);
+        console.log('Error fetching instance data: ', error);
         setInstance(null);
       }
     };

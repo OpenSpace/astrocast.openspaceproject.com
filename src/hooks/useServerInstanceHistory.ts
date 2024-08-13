@@ -22,15 +22,15 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { db } from "@/firebaseconfig";
-import { DataSnapshot, onValue, ref } from "firebase/database";
-import { useEffect, useState } from "react";
+import { db } from '@/firebaseconfig';
+import { DataSnapshot, onValue, ref } from 'firebase/database';
+import { useEffect, useState } from 'react';
 
 function useServerInstanceHistory() {
   const [instances, setInstances] = useState<InstanceHistoryData[]>([]);
 
   useEffect(() => {
-    const instanceDbRef = ref(db, "InstanceHistory");
+    const instanceDbRef = ref(db, 'InstanceHistory');
 
     const handleData = (snapshot: DataSnapshot) => {
       if (snapshot.exists()) {
@@ -44,7 +44,7 @@ function useServerInstanceHistory() {
 
     const handleError = (error: Error) => {
       // TODO: Handle error
-      console.log("Error fetching instance data: ", error);
+      console.log('Error fetching instance data: ', error);
       setInstances([]);
     };
 

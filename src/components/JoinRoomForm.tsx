@@ -22,17 +22,17 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import { AuthContext } from "./AuthProvider";
-import { OpenSpaceContext } from "./OpenSpaceProivder";
-import { useContext } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Row from "react-bootstrap/Row";
-import Tooltip from "react-bootstrap/Tooltip";
-import { RxEnter } from "react-icons/rx";
+import { AuthContext } from './AuthProvider';
+import { OpenSpaceContext } from './OpenSpaceProivder';
+import { useContext } from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Row from 'react-bootstrap/Row';
+import Tooltip from 'react-bootstrap/Tooltip';
+import { RxEnter } from 'react-icons/rx';
 
 interface JoinRoomFormProps {
   instance: ServerInstanceData;
@@ -45,7 +45,7 @@ const JoinRoomForm = ({
   instance,
   setConnectedInstance,
   onCallback,
-  onConnectCallback,
+  onConnectCallback
 }: JoinRoomFormProps) => {
   const openspace = useContext(OpenSpaceContext);
   const user = useContext(AuthContext);
@@ -60,8 +60,8 @@ const JoinRoomForm = ({
     const form = event.currentTarget;
     const formData = new FormData(form);
     const formJson = Object.fromEntries(formData.entries());
-    const hostPassword = formJson["hostpassword"];
-    const username = formJson["username"] || "Guest";
+    const hostPassword = formJson['hostpassword'];
+    const username = formJson['username'] || 'Guest';
     // Join the OpenSpace room
     await openspace.parallel.joinServer(
       import.meta.env.VITE_WORMHOLE_PORT.toString(),
@@ -71,7 +71,7 @@ const JoinRoomForm = ({
       hostPassword,
       // If we are signed in but the user set a username we will use that, if no username
       // was set we use the display name of the user, otherwise it defaults to guest
-      user && username === "Guest" ? user.displayName : username
+      user && username === 'Guest' ? user.displayName : username
     );
     setConnectedInstance(instance.id);
     onConnectCallback();
@@ -95,7 +95,7 @@ const JoinRoomForm = ({
               <Tooltip id="button-tooltip" {...props}>
                 {user
                   ? `Defaults to ${user.displayName} if left empty`
-                  : "Optional username shown in OpenSpace"}
+                  : 'Optional username shown in OpenSpace'}
               </Tooltip>
             )}
           >

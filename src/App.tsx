@@ -22,20 +22,20 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                         *
  ****************************************************************************************/
 
-import NavigationHeader from "@/components/NavigationHeader";
-import OpenSpaceProvider from "@/components/OpenSpaceProivder";
-import PageNavigationHeader from "@/components/PageNavigationHeader";
-import Admin from "@/pages/Admin";
-import Home from "@/pages/Home";
-import ServerLink from "@/pages/ServerLink";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import NavigationHeader from '@/components/NavigationHeader';
+import OpenSpaceProvider from '@/components/OpenSpaceProivder';
+import PageNavigationHeader from '@/components/PageNavigationHeader';
+import Admin from '@/pages/Admin';
+import Home from '@/pages/Home';
+import ServerLink from '@/pages/ServerLink';
+import './App.css';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <>
       <NavigationHeader />
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <OpenSpaceProvider>
           <PageNavigationHeader />
           <Routes>
