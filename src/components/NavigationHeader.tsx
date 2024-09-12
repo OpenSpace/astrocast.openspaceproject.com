@@ -29,7 +29,7 @@ import UserProfile from './UserProfile';
 import { useContext } from 'react';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
-import NavBar from 'react-bootstrap/NavBar';
+import NavBar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 
 function NavigationHeader() {
