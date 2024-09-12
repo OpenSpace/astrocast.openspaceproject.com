@@ -39,7 +39,7 @@ function ShareServerLink({ instanceID }: ShareServerLinkProps) {
 
   function copyToClipboard() {
     /*TODO: copy correct addres/port to clipboard */
-    navigator.clipboard.writeText(`http://localhost:5173/join-server/${instanceID}`);
+    navigator.clipboard.writeText(`${window.location.origin}/join-server/${instanceID}`);
     setShowOverlay(true);
     setTimeout(() => {
       setShowOverlay(false);
