@@ -104,6 +104,12 @@ class ServerManager {
    */
   private async handleRequestgetUserNameByID(req: Request, res: Response): Promise<void> {
     const token = req.params.token;
+
+    if (!token || typeof token !== 'string') {
+      res.status(400).json({ error: 'Invalid token' });
+      return;
+    }
+
     try {
       const user = await getUserByID(token);
       res.json({ name: user.displayName });
@@ -144,6 +150,11 @@ class ServerManager {
     const uid = req.body.uid;
     const secret = req.body.secret;
 
+    if (!uid || !secret || typeof uid !== 'string' || typeof secret !== 'string') {
+      res.status(400).json({ error: 'Missing uid or secret' });
+      return;
+    }
+
     try {
       await setAdminRights(uid, secret);
       res.status(200).json({ message: `Successfully set admin rights for user: ${uid}` });
@@ -159,7 +170,8 @@ class ServerManager {
    */
   private async handleRemoveServerInstance(req: Request, res: Response): Promise<void> {
     const instanceID = req.params.id;
-    if (!instanceID) {
+
+    if (!instanceID || typeof instanceID !== 'string') {
       res.status(400).json({ error: 'Instance ID is required' });
       return;
     }
@@ -206,12 +218,26 @@ class ServerManager {
     const profile = req.body.profile;
     const isPrivateRoom = req.body.roomaccess ? true : false;
     const tokenID: string | null = req.body.token ?? null;
+
+    if (!tokenID) {
+      res.status(401).json({ error: 'Unauthorized: Could not verify user' });
+      return;
+    }
     // A server without passwords are not allowed
-    if (!password || !hostPassword) {
+    if (
+      !password ||
+      !hostPassword ||
+      typeof password !== 'string' ||
+      typeof hostPassword !== 'string'
+    ) {
       res.status(400).json({ error: 'Missing password or host password' });
       return;
     }
-    if (!roomName) {
+    if (!roomName || typeof roomName !== 'string') {
+      res.status(400).json({ error: 'Missing room name' });
+      return;
+    }
+    if (!profile || typeof profile !== 'string') {
       res.status(400).json({ error: 'Missing room name' });
       return;
     }
@@ -223,17 +249,14 @@ class ServerManager {
     });
 
     if (!isRoomNameUnique) {
-      res.status(400).json({ error: 'Room name is not unique' });
+      res
+        .status(400)
+        .json({ error: 'A room with that name already exists, must be unique' });
       return;
     }
 
     // Attempt to create a new server instance
     try {
-      if (!tokenID) {
-        res.status(401).json({ error: 'Unauthorized: Could not verify user' });
-        return;
-      }
-
       // Authorize potential user
       const uid = await authorizeUser(tokenID);
 
