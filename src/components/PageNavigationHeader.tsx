@@ -25,7 +25,7 @@
 import useIsUserAdmin from '@/hooks/useIsUserAdmin';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import NavBar from 'react-bootstrap/NavBar';
+import NavBar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { NavLink } from 'react-router-dom';
 
