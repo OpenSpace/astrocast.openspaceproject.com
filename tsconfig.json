@@ -6,6 +6,7 @@
     "paths": {
       "@/api/*": ["./src/api/*"],
       "@/components/*": ["./src/components/*"],
+      "@/hooks/*": ["./src/hooks/*"],
       "@/redux/*": ["./src/redux/*"],
       "@/types/*": ["./src/types/*"]
     },
@@ -25,7 +26,6 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "strict": true
   },
 
