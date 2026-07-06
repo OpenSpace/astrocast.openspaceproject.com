@@ -1,7 +1,9 @@
-import { AdminIcon, HomeIcon } from '@/icons/icons';
+import { Link, Outlet } from 'react-router';
 import { AppShell, Burger, Group, Image, NavLink, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Link, Outlet } from 'react-router';
+
+import { AdminIcon, HomeIcon } from '@/icons/icons';
+
 import { Profile } from './Profile';
 
 export function AppLayout() {

@@ -9,11 +9,19 @@ export default defineConfig({
     alias: {
       '@/api': '/src/api',
       '@/components': '/src/components',
+      '@/firebase': '/src/firebase',
       '@/icons': '/src/icons',
       '@/hooks': '/src/hooks',
       '@/pages': '/src/pages',
       '@/redux': '/src/redux',
       '@/types': '/src/types'
+    }
+  },
+  server: {
+    proxy: {
+      '/api/v1': {
+        target: 'http://localhost:25000'
+      }
     }
   }
 });

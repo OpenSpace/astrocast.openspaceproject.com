@@ -1,14 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import { databaseApi } from './api/databaseApiSlice';
+import { wormholeApi } from './api/wormholeApiSlice';
+import { authReducer } from './auth/authSlice';
 import { connectionReducer } from './connection/connectionSlice';
+import { localReducer } from './local/localSlice';
 import { listenerMiddleware } from './listenerMiddleware';
 
 export const store = configureStore({
   reducer: {
-    connection: connectionReducer
+    [databaseApi.reducerPath]: databaseApi.reducer,
+    [wormholeApi.reducerPath]: wormholeApi.reducer,
+    auth: authReducer,
+    connection: connectionReducer,
+    local: localReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([listenerMiddleware.middleware]),
+    getDefaultMiddleware().concat([
+      listenerMiddleware.middleware,
+      databaseApi.middleware,
+      wormholeApi.middleware
+    ]),
   devTools: true
 });
 
