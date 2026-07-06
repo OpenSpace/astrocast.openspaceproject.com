@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Button, Checkbox, Group, Modal, Stack, TextInput } from '@mantine/core';
 
-import { useOpenSpaceApi } from '@/api/hooks';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setConnectedSessionId } from '@/redux/local/localSlice';
+import { useJoinSession } from '@/hooks/useJoinSession';
+import { useAppSelector } from '@/redux/hooks';
 import type { SessionData } from '@/types/types';
 
 interface Props {
@@ -21,24 +20,17 @@ export function JoinSessionModal({
   hostPassword: hostPw
 }: Props) {
   const { user } = useAppSelector((state) => state.auth);
-  const [hostPassword, setHostPassword] = useState(hostPw ?? '');
-  const [username, setUsername] = useState(user?.displayName || 'Guest');
-  const [takeOwnership, setTakeOwnership] = useState(isOwner);
-  const luaApi = useOpenSpaceApi();
-  const dispatch = useAppDispatch();
+  const [hostPasswordOverride, setHostPasswordOverride] = useState<string | null>(null);
+  const [usernameOverride, setUsernameOverride] = useState<string | null>(null);
+  const [takeOwnershipOverride, setTakeOwnershipOverride] = useState<boolean | null>(
+    null
+  );
 
-  function joinSession() {
-    luaApi?.parallel.joinServer(
-      import.meta.env.VITE_WORMHOLE_PORT,
-      import.meta.env.VITE_WORMHOLE_ADDRESS,
-      session.roomName,
-      session.password ?? '',
-      takeOwnership ? hostPassword.trim() : '',
-      username.trim() ?? 'Guest'
-    );
-    dispatch(setConnectedSessionId(session.id));
-    close();
-  }
+  const hostPassword = (hostPasswordOverride ?? hostPw ?? '').trim();
+  const username = usernameOverride ?? user?.displayName ?? 'Guest';
+  const takeOwnership = takeOwnershipOverride ?? isOwner;
+
+  const joinSession = useJoinSession(session, hostPassword, username);
 
   return (
     <Modal.Root opened={opened} onClose={close}>
@@ -53,7 +45,7 @@ export function JoinSessionModal({
             <TextInput
               label={'Host Password'}
               value={hostPassword}
-              onChange={(event) => setHostPassword(event.currentTarget.value)}
+              onChange={(event) => setHostPasswordOverride(event.currentTarget.value)}
               placeholder={'Enter host password'}
               description={'Optional host password of this session'}
             />
@@ -63,12 +55,12 @@ export function JoinSessionModal({
                 'Check if you want to take hostship, other connected users will follow you'
               }
               checked={takeOwnership}
-              onChange={(event) => setTakeOwnership(event.currentTarget.checked)}
+              onChange={(event) => setTakeOwnershipOverride(event.currentTarget.checked)}
             />
             <TextInput
               label={'Username'}
               value={username}
-              onChange={(event) => setUsername(event.currentTarget.value)}
+              onChange={(event) => setUsernameOverride(event.currentTarget.value)}
               placeholder={'Enter username'}
               description={'Optional username shown in OpenSpace'}
             />
@@ -77,7 +69,14 @@ export function JoinSessionModal({
             <Button onClick={close} variant="outline" color="gray">
               Cancel
             </Button>
-            <Button onClick={joinSession}>Join Session</Button>
+            <Button
+              onClick={() => {
+                joinSession();
+                close();
+              }}
+            >
+              Join Session
+            </Button>
           </Group>
         </Modal.Body>
       </Modal.Content>

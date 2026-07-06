@@ -1,10 +1,9 @@
 import { Button, CopyButton, DataList, Divider, Group, Loader } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useIsConnectionStatus } from '@/hooks/util';
-import { useGetHostPasswordQuery } from '@/redux/api/wormholeApiSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
 import { ConnectionStatus } from '@/types/enums';
@@ -24,16 +23,11 @@ export function SessionEntry({ session }: Props) {
   const isConnectedToSession = useAppSelector(
     (state) => state.local.connectedSessionId === session.id
   );
-  const isOwner = user?.uid === session.owner;
-  // There is a caching issue with hostPassword, where it is stored after a user sign-out,
-  // possibly due to not sending a new query if we're no longer the owner of this session
-  const { data: hostPassword, isLoading } = useGetHostPasswordQuery(
-    isOwner ? session.id : skipToken
-  );
+  const { isOwner, hostPassword, isLoading } = useGetHostPassword(session);
+
   const dispatch = useAppDispatch();
 
   const canJoinSession = isConnectedToOpenSpace && luaApi !== null;
-
   const data = [
     { label: 'Address', value: import.meta.env.VITE_WORMHOLE_ADDRESS },
     { label: 'Port', value: import.meta.env.VITE_WORMHOLE_PORT },
@@ -44,7 +38,7 @@ export function SessionEntry({ session }: Props) {
       value: session.currentHost !== '' ? session.currentHost : 'No host'
     }
   ];
-  if (isOwner && hostPassword) {
+  if (hostPassword) {
     data.push({ label: 'Host Password', value: hostPassword });
   }
 
@@ -65,7 +59,7 @@ export function SessionEntry({ session }: Props) {
         opened={opened}
         close={close}
         isOwner={isOwner}
-        hostPassword={isOwner ? hostPassword : ''}
+        hostPassword={hostPassword}
       />
       <DataList withDivider>
         {data.map((item) => (

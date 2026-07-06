@@ -10,14 +10,14 @@ export interface SessionData {
   active: boolean;
   inactiveTimestamp: number;
   created: number;
-  password: string | null;
+  password: string;
   usage: number;
   nPeers: number;
   currentHost: string;
   roomName: string;
   profile: string;
   isPrivate: boolean;
-  owner: string | null;
+  owner: string;
 }
 
 export interface SessionHistoryData {

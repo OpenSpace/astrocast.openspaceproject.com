@@ -55,17 +55,19 @@ export function OpenSpaceConnection() {
 
   return (
     <>
-      <Text fw={700}>OpenSpace: {connectionStatus}</Text>
-      <Group gap={'xs'} align={'center'}>
-        <Button
-          onClick={() => (isConnected ? disconnect() : connect())}
-          variant="outline"
-        >
-          {isConnected ? 'Disconnect' : isConnecting ? 'Connecting...' : 'Connect'}
-        </Button>
-        <ActionIcon onClick={openSettings} aria-label={'Open connection settings'}>
-          <SettingsIcon />
-        </ActionIcon>
+      <Group justify="space-between">
+        <Text fw={700}>OpenSpace: {connectionStatus}</Text>
+        <Group gap={'xs'} align={'center'}>
+          <Button
+            onClick={() => (isConnected ? disconnect() : connect())}
+            variant="outline"
+          >
+            {isConnected ? 'Disconnect' : isConnecting ? 'Connecting...' : 'Connect'}
+          </Button>
+          <ActionIcon onClick={openSettings} aria-label={'Open connection settings'}>
+            <SettingsIcon />
+          </ActionIcon>
+        </Group>
       </Group>
       <Modal
         opened={opened}
@@ -75,6 +77,9 @@ export function OpenSpaceConnection() {
       >
         <TextInput
           label={'Address'}
+          description={
+            'The address of the running OpenSpace instance you want to connect to.'
+          }
           placeholder={'Set address, for example "localhost"'}
           {...(address_.length === 0 ? { error: 'Invalid address' } : undefined)}
           value={address_}
@@ -82,6 +87,9 @@ export function OpenSpaceConnection() {
         />
         <NumberInput
           label={'Port'}
+          description={
+            'The port of the running OpenSpace instance you want to connect to.'
+          }
           placeholder={'Set Port, for example 4682'}
           value={port_}
           onChange={setPort_}

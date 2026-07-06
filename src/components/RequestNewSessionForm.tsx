@@ -32,7 +32,7 @@ export function RequestNewSessionForm() {
         roomName: values.sessionName.trim(),
         profile: values.profileName.trim(),
         isPrivate: values.isPrivate,
-        password: values.password.trim() || undefined,
+        password: values.password.trim(),
         hostPassword: values.hostPassword.trim()
       }).unwrap();
       notifications.show({
