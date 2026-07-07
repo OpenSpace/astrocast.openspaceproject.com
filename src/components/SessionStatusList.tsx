@@ -1,11 +1,13 @@
 import { Accordion, Text } from '@mantine/core';
 
 import { useSessions } from '@/hooks/useSessions';
+import { useGetStatisticsQuery } from '@/redux/api/databaseApiSlice';
 
-import { SessionEntry } from './SessionEntry';
+import { SessionStatusEntry } from './SessionStatusEntry';
 
-export function Sessions() {
+export function SessionStatusList() {
   const { sessions, isLoading, isError } = useSessions();
+  const { data: statistics } = useGetStatisticsQuery();
 
   if (isLoading) {
     return <Text>Loading sessions...</Text>;
@@ -22,7 +24,11 @@ export function Sessions() {
   return (
     <Accordion order={3}>
       {sessions.map((session) => (
-        <SessionEntry key={session.id} session={session} />
+        <SessionStatusEntry
+          key={session.id}
+          session={session}
+          statistics={statistics?.find((stat) => stat.id === session.id)}
+        />
       ))}
     </Accordion>
   );

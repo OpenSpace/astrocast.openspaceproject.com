@@ -30,7 +30,11 @@ export function JoinSessionModal({
   const username = usernameOverride ?? user?.displayName ?? 'Guest';
   const takeOwnership = takeOwnershipOverride ?? isOwner;
 
-  const joinSession = useJoinSession(session, hostPassword, username);
+  const joinSession = useJoinSession(
+    session,
+    takeOwnership ? hostPassword : null,
+    username
+  );
 
   return (
     <Modal.Root opened={opened} onClose={close}>

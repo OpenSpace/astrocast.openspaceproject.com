@@ -1,4 +1,4 @@
-import { Button, CopyButton, DataList, Divider, Group, Loader } from '@mantine/core';
+import { Accordion, Button, CopyButton, Divider, Group, Loader } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -7,8 +7,10 @@ import { useIsConnectionStatus } from '@/hooks/util';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
 import { ConnectionStatus } from '@/types/enums';
-import type { SessionData } from '@/types/types';
+import type { DetailItem, SessionData } from '@/types/types';
 
+import { AccordionHeaderRow } from './AccordionHeaderRow';
+import { DetailsList } from './DetailsList';
 import { JoinSessionModal } from './JoinSessionModal';
 
 interface Props {
@@ -28,7 +30,7 @@ export function SessionEntry({ session }: Props) {
   const dispatch = useAppDispatch();
 
   const canJoinSession = isConnectedToOpenSpace && luaApi !== null;
-  const data = [
+  const data: DetailItem[] = [
     { label: 'Address', value: import.meta.env.VITE_WORMHOLE_ADDRESS },
     { label: 'Port', value: import.meta.env.VITE_WORMHOLE_PORT },
     { label: 'Password', value: session.password || 'N/A' },
@@ -47,50 +49,56 @@ export function SessionEntry({ session }: Props) {
     dispatch(setConnectedSessionId(null));
   }
 
-  if (isLoading) {
-    return <Loader size={'sm'} type="bars" />;
-  }
-
   return (
-    <>
-      <JoinSessionModal
-        key={`${user?.uid ?? 'anon'}:${isOwner}:${hostPassword ?? ''}`}
-        session={session}
-        opened={opened}
-        close={close}
-        isOwner={isOwner}
-        hostPassword={hostPassword}
-      />
-      <DataList withDivider>
-        {data.map((item) => (
-          <DataList.Item
-            key={item.label}
-            px={'xs'}
-            style={{ justifyContent: 'space-between' }}
-          >
-            <DataList.ItemLabel>{item.label}</DataList.ItemLabel>
-            <DataList.ItemValue>{item.value}</DataList.ItemValue>
-          </DataList.Item>
-        ))}
-      </DataList>
-      <Divider my={'xs'} />
-      <Group justify={'flex-end'}>
-        <CopyButton value={`${window.location.origin}/join-server/${session.id}`}>
-          {({ copied, copy }) => (
-            <Button onClick={copy} color={copied ? 'teal' : 'gray'} variant={'outline'}>
-              {copied ? 'Copied' : 'Copy Link'}
-            </Button>
-          )}
-        </CopyButton>
-        {}
-        {isConnectedToSession ? (
-          <Button onClick={disconnect}>Leave Session</Button>
+    <Accordion.Item value={session.id}>
+      <Accordion.Control>
+        <AccordionHeaderRow
+          fields={[
+            { label: 'Session Name', value: session.roomName, span: 6 },
+            { label: 'Profile', value: session.profile, span: 2 },
+            { label: 'Status', value: session.active ? 'Active' : 'Inactive', span: 1 },
+            { label: 'Access', value: session.isPrivate ? 'Private' : 'Public', span: 1 }
+          ]}
+        />
+      </Accordion.Control>
+      <Accordion.Panel>
+        {isLoading ? (
+          <Loader size={'sm'} type="bars" />
         ) : (
-          <Button onClick={open} disabled={!canJoinSession}>
-            Join Session
-          </Button>
+          <>
+            <JoinSessionModal
+              key={`${user?.uid ?? 'anon'}:${isOwner}:${hostPassword ?? ''}`}
+              session={session}
+              opened={opened}
+              close={close}
+              isOwner={isOwner}
+              hostPassword={hostPassword}
+            />
+            <DetailsList items={data} />
+            <Divider my={'xs'} />
+            <Group justify={'flex-end'}>
+              <CopyButton value={`${window.location.origin}/join-server/${session.id}`}>
+                {({ copied, copy }) => (
+                  <Button
+                    onClick={copy}
+                    color={copied ? 'teal' : 'gray'}
+                    variant={'outline'}
+                  >
+                    {copied ? 'Copied' : 'Copy Link'}
+                  </Button>
+                )}
+              </CopyButton>
+              {isConnectedToSession ? (
+                <Button onClick={disconnect}>Leave Session</Button>
+              ) : (
+                <Button onClick={open} disabled={!canJoinSession}>
+                  Join Session
+                </Button>
+              )}
+            </Group>
+          </>
         )}
-      </Group>
-    </>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 }

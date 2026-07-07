@@ -2,10 +2,26 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { onValue, ref, type Unsubscribe } from 'firebase/database';
 
 import { db } from '@/firebase/config';
-import type { SessionData, SessionHistoryData, Statistics } from '@/types/types';
+import type {
+  SessionData,
+  SessionHistoryData,
+  StatisticData,
+  Statistics
+} from '@/types/types';
 
 function toArray<T>(obj: Record<string, T>): T[] {
   return Object.values(obj);
+}
+
+// Statistics are stored in Firebase as `{ [sessionId]: { [dataPointId]: StatisticData } }`,
+// so the session id lives in the outer key and must be preserved when flattening to an array.
+function toStatisticsArray(
+  obj: Record<string, Record<string, StatisticData>>
+): Statistics[] {
+  return Object.entries(obj).map(([id, dataPoints]) => ({
+    id,
+    data: Object.values(dataPoints)
+  }));
 }
 
 export const databaseApi = createApi({
@@ -98,7 +114,7 @@ export const databaseApi = createApi({
           await cacheDataLoaded;
           unsubscribe = onValue(statisticsRef, (snapshot) => {
             updateCachedData(() =>
-              snapshot.exists() ? toArray<Statistics>(snapshot.val()) : []
+              snapshot.exists() ? toStatisticsArray(snapshot.val()) : []
             );
           });
         } catch {

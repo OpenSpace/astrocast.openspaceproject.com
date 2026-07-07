@@ -14,7 +14,8 @@ export default defineConfig({
       '@/hooks': '/src/hooks',
       '@/pages': '/src/pages',
       '@/redux': '/src/redux',
-      '@/types': '/src/types'
+      '@/types': '/src/types',
+      '@/utils': '/src/utils'
     }
   },
   server: {

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { UserInfo } from 'firebase/auth';
 
 export type AuthUser = Pick<UserInfo, 'uid' | 'displayName' | 'email' | 'photoURL'> & {
@@ -10,8 +11,8 @@ export interface SessionData {
   active: boolean;
   inactiveTimestamp: number;
   created: number;
-  password: string;
   usage: number;
+  password: string;
   nPeers: number;
   currentHost: string;
   roomName: string;
@@ -25,9 +26,9 @@ export interface SessionHistoryData {
   inactiveTimestamp: number;
   created: number;
   uptime: number;
-  usagE: number;
+  usage: number;
   roomName: string;
-  owner: string | null;
+  owner: string;
 }
 
 export interface StatisticData {
@@ -38,4 +39,9 @@ export interface StatisticData {
 export interface Statistics {
   id: string;
   data: StatisticData[];
+}
+
+export interface DetailItem {
+  label: string;
+  value: ReactNode;
 }

@@ -63,7 +63,7 @@ export const wormholeApi = createApi({
     }),
     removeSession: builder.mutation<{ message: string }, string>({
       query: (sessionId) => ({
-        url: `/session/${sessionId}`,
+        url: `/session/${sessionId}/remove`,
         method: 'DELETE'
       })
     })

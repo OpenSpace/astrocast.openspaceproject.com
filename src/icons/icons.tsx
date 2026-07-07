@@ -6,6 +6,7 @@ export {
 } from 'react-icons/fa';
 export { FaXTwitter as TwitterIcon } from 'react-icons/fa6';
 export {
+  MdBlock as AccessDeniedIcon,
   MdAdminPanelSettings as AdminIcon,
   MdSettings as SettingsIcon
 } from 'react-icons/md';
