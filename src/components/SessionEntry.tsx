@@ -29,7 +29,8 @@ interface Props {
 
 export function SessionEntry({ session }: Props) {
   const { user } = useAppSelector((state) => state.auth);
-  const [opened, { open, close }] = useDisclosure();
+  const [joinSessionOpened, { open: openJoinSession, close: closeJoinSession }] =
+    useDisclosure();
   const [claimHostOpened, { open: openClaimHost, close: closeClaimHost }] =
     useDisclosure();
   const luaApi = useOpenSpaceApi();
@@ -82,8 +83,8 @@ export function SessionEntry({ session }: Props) {
             <JoinSessionModal
               key={`${user?.uid ?? 'anon'}:${isOwner}:${hostPassword ?? ''}`}
               session={session}
-              opened={opened}
-              close={close}
+              opened={joinSessionOpened}
+              close={closeJoinSession}
               isOwner={isOwner}
               hostPassword={hostPassword}
             />
@@ -127,7 +128,7 @@ export function SessionEntry({ session }: Props) {
               {isConnectedToSession ? (
                 <Button onClick={disconnect}>Leave Session</Button>
               ) : (
-                <Button onClick={open} disabled={!canJoinSession}>
+                <Button onClick={openJoinSession} disabled={!canJoinSession}>
                   Join Session
                 </Button>
               )}

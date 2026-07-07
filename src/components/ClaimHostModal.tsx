@@ -23,6 +23,8 @@ export function ClaimHostModal({ session, opened, close, hostPassword: hostPw }:
   async function handleConfirm() {
     try {
       const result = await claimHost({ sessionId: session.id, password }).unwrap();
+      // @ts-expect-error API not yet updated, requesting hostship will only work on
+      // latest OpenSpace master
       luaApi?.parallel.requestHostship(password);
       notifications.show({
         title: 'Host Claimed',

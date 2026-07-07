@@ -29,7 +29,6 @@ export function AdminPage() {
   return (
     <Container>
       <OpenSpaceConnection />
-
       <Accordion mt={'sm'}>
         <Accordion.Item value={'create-session'}>
           <Accordion.Control>Create New Session</Accordion.Control>
@@ -44,7 +43,6 @@ export function AdminPage() {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
-
       <Title order={2} mt={'md'}>
         Session Status
       </Title>
