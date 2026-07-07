@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { env } from '@/config/env';
 import { auth } from '@/firebase/config';
 import type { SessionData } from '@/types/types';
 
@@ -19,7 +20,7 @@ export type AdminRightsRequest = {
 export const wormholeApi = createApi({
   reducerPath: 'wormholeApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_SERVER_API_PATH,
+    baseUrl: env.VITE_SERVER_API_PATH,
     prepareHeaders: async (headers) => {
       const token = await auth.currentUser?.getIdToken();
       if (token) {

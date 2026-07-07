@@ -10,6 +10,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { env } from '@/config/env';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useIsConnectionStatus } from '@/hooks/util';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -43,8 +44,8 @@ export function SessionEntry({ session }: Props) {
   const canJoinSession = isConnectedToOpenSpace && luaApi !== null;
   const canClaimHost = isConnectedToSession && user !== null;
   const data: DetailItem[] = [
-    { label: 'Address', value: import.meta.env.VITE_WORMHOLE_ADDRESS },
-    { label: 'Port', value: import.meta.env.VITE_WORMHOLE_PORT },
+    { label: 'Address', value: env.VITE_WORMHOLE_ADDRESS },
+    { label: 'Port', value: env.VITE_WORMHOLE_PORT },
     { label: 'Password', value: session.password || 'N/A' },
     { label: 'In Session', value: session.nPeers },
     {

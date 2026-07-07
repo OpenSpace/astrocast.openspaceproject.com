@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { env } from '@/config/env';
 import { useAppDispatch } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
 import type { SessionData } from '@/types/types';
@@ -19,8 +20,8 @@ export function useJoinSession(
     }
 
     luaApi?.parallel.joinServer(
-      import.meta.env.VITE_WORMHOLE_PORT,
-      import.meta.env.VITE_WORMHOLE_ADDRESS,
+      env.VITE_WORMHOLE_PORT,
+      env.VITE_WORMHOLE_ADDRESS,
       session.roomName,
       session.password,
       hostPassword ?? '',

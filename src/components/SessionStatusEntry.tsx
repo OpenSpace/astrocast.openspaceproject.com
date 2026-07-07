@@ -3,6 +3,7 @@ import { Accordion, Divider, Group, Stack } from '@mantine/core';
 
 import { RemoveSessionButton } from '@/components/RemoveSessionButton';
 import { UsageChart } from '@/components/UsageChart';
+import { env } from '@/config/env';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useSessionOwnerName } from '@/hooks/useSessionOwnerName';
 import type { DetailItem, SessionData, Statistics } from '@/types/types';
@@ -43,8 +44,8 @@ export function SessionStatusEntry({ session, statistics }: Props) {
       label: 'Uptime',
       value: formatDuration(time.valueOf() - session.created)
     },
-    { label: 'Address', value: import.meta.env.VITE_WORMHOLE_ADDRESS },
-    { label: 'Port', value: import.meta.env.VITE_WORMHOLE_PORT },
+    { label: 'Address', value: env.VITE_WORMHOLE_ADDRESS },
+    { label: 'Port', value: env.VITE_WORMHOLE_PORT },
     { label: 'Access', value: session.isPrivate ? 'Private' : 'Public' },
     { label: 'Password', value: session.password || 'N/A' },
     { label: 'Profile', value: session.profile },
