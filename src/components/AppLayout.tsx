@@ -20,7 +20,7 @@ export function AppLayout() {
             <Group gap={'xs'}>
               <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size={'sm'} />
               <Image
-                src={`images/icon.png`}
+                src={'/images/icon.png'}
                 alt={'OpenSpace logo'}
                 height={40}
                 w={'auto'}

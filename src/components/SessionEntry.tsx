@@ -1,4 +1,12 @@
-import { Accordion, Button, CopyButton, Divider, Group, Loader } from '@mantine/core';
+import {
+  Accordion,
+  Button,
+  CopyButton,
+  Divider,
+  Group,
+  Loader,
+  Tooltip
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { useOpenSpaceApi } from '@/api/hooks';
@@ -10,6 +18,7 @@ import { ConnectionStatus } from '@/types/enums';
 import type { DetailItem, SessionData } from '@/types/types';
 
 import { AccordionHeaderRow } from './AccordionHeaderRow';
+import { ClaimHostModal } from './ClaimHostModal';
 import { DetailsList } from './DetailsList';
 import { JoinSessionModal } from './JoinSessionModal';
 
@@ -20,6 +29,8 @@ interface Props {
 export function SessionEntry({ session }: Props) {
   const { user } = useAppSelector((state) => state.auth);
   const [opened, { open, close }] = useDisclosure();
+  const [claimHostOpened, { open: openClaimHost, close: closeClaimHost }] =
+    useDisclosure();
   const luaApi = useOpenSpaceApi();
   const isConnectedToOpenSpace = useIsConnectionStatus(ConnectionStatus.Connected);
   const isConnectedToSession = useAppSelector(
@@ -30,6 +41,7 @@ export function SessionEntry({ session }: Props) {
   const dispatch = useAppDispatch();
 
   const canJoinSession = isConnectedToOpenSpace && luaApi !== null;
+  const canClaimHost = isConnectedToSession && user !== null;
   const data: DetailItem[] = [
     { label: 'Address', value: import.meta.env.VITE_WORMHOLE_ADDRESS },
     { label: 'Port', value: import.meta.env.VITE_WORMHOLE_PORT },
@@ -74,6 +86,13 @@ export function SessionEntry({ session }: Props) {
               isOwner={isOwner}
               hostPassword={hostPassword}
             />
+            <ClaimHostModal
+              key={`claim:${user?.uid ?? 'anon'}:${isOwner}:${hostPassword ?? ''}`}
+              session={session}
+              opened={claimHostOpened}
+              close={closeClaimHost}
+              hostPassword={hostPassword}
+            />
             <DetailsList items={data} />
             <Divider my={'xs'} />
             <Group justify={'flex-end'}>
@@ -88,6 +107,22 @@ export function SessionEntry({ session }: Props) {
                   </Button>
                 )}
               </CopyButton>
+              <Tooltip
+                label={
+                  user
+                    ? 'You must join this session to claim host'
+                    : 'You must sign-in to claim host'
+                }
+                disabled={canClaimHost}
+              >
+                <Button
+                  onClick={openClaimHost}
+                  disabled={!canClaimHost}
+                  variant={'outline'}
+                >
+                  Claim Host
+                </Button>
+              </Tooltip>
               {isConnectedToSession ? (
                 <Button onClick={disconnect}>Leave Session</Button>
               ) : (
