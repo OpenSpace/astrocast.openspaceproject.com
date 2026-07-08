@@ -6,14 +6,14 @@ import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 
 import { LuaApiProvider } from '@/api/LuaApiProvider';
-import { AppLayout } from '@/components/AppLayout.tsx';
-import { AdminPage } from '@/pages/AdminPage.tsx';
+import { AppLayout } from '@/components/AppLayout';
+import { AdminPage } from '@/pages/AdminPage';
 import { HomePage } from '@/pages/HomePage';
-import { ServerLinkPage } from '@/pages/ServerLinkPage.tsx';
+import { ServerLinkPage } from '@/pages/ServerLinkPage';
 import { store } from '@/redux/store';
 
-import { AuthListener } from './components/AuthListener.tsx';
-import { theme } from './mantineTheme.ts';
+import { AuthListener } from './components/AuthListener';
+import { theme } from './mantineTheme';
 
 import '@mantine/core/styles.css';
 import '@mantine/charts/styles.css';

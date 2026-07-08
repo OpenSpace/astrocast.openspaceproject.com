@@ -36,6 +36,8 @@ export function LuaApiProvider({ children }: PropsWithChildren) {
 
     if (isConnected) {
       fetchLuaApi();
+    } else {
+      setLuaApi(null);
     }
   }, [isConnected]);
 
