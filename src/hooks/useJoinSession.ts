@@ -19,7 +19,7 @@ export function useJoinSession(
       return;
     }
 
-    luaApi?.parallel.joinServer(
+    luaApi?.astrocast.joinServer(
       env.VITE_WORMHOLE_PORT,
       env.VITE_WORMHOLE_ADDRESS,
       session.roomName,

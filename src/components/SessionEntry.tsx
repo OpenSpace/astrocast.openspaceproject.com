@@ -59,7 +59,7 @@ export function SessionEntry({ session }: Props) {
   }
 
   function disconnect() {
-    luaApi?.parallel.disconnect();
+    luaApi?.astrocast.disconnect();
     dispatch(setConnectedSessionId(null));
   }
 

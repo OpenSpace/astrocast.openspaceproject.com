@@ -42,7 +42,7 @@ export function ServerLinkPage() {
   }, [isLoading, session, luaApi, joinSession]);
 
   function disconnect() {
-    luaApi?.parallel.disconnect();
+    luaApi?.astrocast.disconnect();
     dispatch(setConnectedSessionId(null));
   }
 
