@@ -87,7 +87,7 @@ export const addConnectionListener = (startListening: AppStartListening) => {
     actionCreator: closeConnection,
     effect: async (_, listenerApi) => {
       const { connectionStatus } = listenerApi.getState().connection;
-      if (connectionStatus === ConnectionStatus.Connected) {
+      if (connectionStatus !== ConnectionStatus.Disconnected) {
         api.disconnect();
       }
     }

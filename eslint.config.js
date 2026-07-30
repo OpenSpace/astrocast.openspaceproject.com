@@ -54,14 +54,6 @@ export default defineConfig([
           ]
         }
       ],
-      // 'react/jsx-curly-brace-presence': [
-      //   'error',
-      //   {
-      //     props: 'always',
-      //     children: 'never',
-      //     propElementValues: 'always'
-      //   }
-      // ]
       // Guards against stupidity
       'no-self-compare': 'error',
       'no-unreachable-loop': 'error',
