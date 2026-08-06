@@ -54,6 +54,17 @@ export default defineConfig([
           ]
         }
       ],
+      // The following rule requires Eslint to support V10, once this has been fixed
+      // upstream we can use this rule as well, see
+      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3977
+      // 'react/jsx-curly-brace-presence': [
+      //   'error',
+      //   {
+      //     props: 'always',
+      //     children: 'never',
+      //     propElementValues: 'always'
+      //   }
+      // ]
       // Guards against stupidity
       'no-self-compare': 'error',
       'no-unreachable-loop': 'error',
