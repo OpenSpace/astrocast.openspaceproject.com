@@ -1,10 +1,13 @@
 import {
   Accordion,
+  ActionIcon,
   Button,
   CopyButton,
   Divider,
   Group,
   Loader,
+  Menu,
+  Stack,
   Tooltip
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -14,6 +17,7 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { env } from '@/config/env';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useIsConnectionStatus } from '@/hooks/util';
+import { CopyIcon, VerticalDotsIcon } from '@/icons/icons';
 import { useLazyDownloadRecordingFileQuery } from '@/redux/api/wormholeApiSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
@@ -70,6 +74,7 @@ export function SessionEntry({ session }: Props) {
   async function downloadRecording() {
     try {
       await triggerDownload(session.id).unwrap();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const code = error?.status || '';
       const codeMessage = code ? `Error ${code} - ` : '';
@@ -86,7 +91,12 @@ export function SessionEntry({ session }: Props) {
       <Accordion.Control>
         <AccordionHeaderRow
           fields={[
-            { label: 'Session Name', value: session.roomName, span: 6 },
+            { label: 'Session Name', value: session.roomName, span: 4 },
+            {
+              label: 'Created',
+              value: new Date(session.created).toLocaleString(),
+              span: 2
+            },
             { label: 'Profile', value: session.profile, span: 2 },
             { label: 'Status', value: session.active ? 'Active' : 'Inactive', span: 1 },
             { label: 'Access', value: session.isPrivate ? 'Private' : 'Public', span: 1 }
@@ -115,34 +125,7 @@ export function SessionEntry({ session }: Props) {
             />
             <DetailsList items={data} />
             <Divider my={'xs'} />
-            <Group justify={'flex-end'}>
-              <CopyButton value={`${window.location.origin}/join-server/${session.id}`}>
-                {({ copied, copy }) => (
-                  <Button
-                    onClick={copy}
-                    color={copied ? 'teal' : 'gray'}
-                    variant={'outline'}
-                  >
-                    {copied ? 'Copied' : 'Copy Link'}
-                  </Button>
-                )}
-              </CopyButton>
-              <Tooltip
-                label={
-                  user
-                    ? 'You must join this session to claim host'
-                    : 'You must sign-in to claim host'
-                }
-                disabled={canClaimHost}
-              >
-                <Button
-                  onClick={openClaimHost}
-                  disabled={!canClaimHost}
-                  variant={'outline'}
-                >
-                  Claim Host
-                </Button>
-              </Tooltip>
+            <Group justify={'flex-end'} gap={'xs'}>
               {isConnectedToSession ? (
                 <Button onClick={disconnect}>Leave Session</Button>
               ) : (
@@ -150,22 +133,62 @@ export function SessionEntry({ session }: Props) {
                   Join Session
                 </Button>
               )}
-              <Tooltip
-                label={
-                  user
-                    ? 'Download session file'
-                    : 'You must sign-in to download session file'
-                }
-              >
-                <Button
-                  onClick={downloadRecording}
-                  loading={isDownloading}
-                  variant={'outline'}
-                  disabled={user === null}
-                >
-                  Download Session
-                </Button>
-              </Tooltip>
+              <CopyButton value={`${window.location.origin}/join-server/${session.id}`}>
+                {({ copied, copy }) => (
+                  <Tooltip label={'Copy invite link'}>
+                    <ActionIcon
+                      onClick={copy}
+                      color={copied ? 'teal' : 'gray'}
+                      variant={'outline'}
+                    >
+                      <CopyIcon />
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </CopyButton>
+              <Menu>
+                <Menu.Target>
+                  <ActionIcon aria-label="Open menu" variant="outline" color="gray">
+                    <VerticalDotsIcon />
+                  </ActionIcon>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Stack>
+                    <Tooltip
+                      label={
+                        user
+                          ? 'You must join this session to claim host'
+                          : 'You must sign-in to claim host'
+                      }
+                      disabled={canClaimHost}
+                    >
+                      <Button
+                        onClick={openClaimHost}
+                        disabled={!canClaimHost}
+                        variant={'outline'}
+                      >
+                        Claim Host
+                      </Button>
+                    </Tooltip>
+                    <Tooltip
+                      label={
+                        user
+                          ? 'Download session file'
+                          : 'You must sign-in to download session file'
+                      }
+                    >
+                      <Button
+                        onClick={downloadRecording}
+                        loading={isDownloading}
+                        variant={'outline'}
+                        disabled={user === null}
+                      >
+                        Download Session
+                      </Button>
+                    </Tooltip>
+                  </Stack>
+                </Menu.Dropdown>
+              </Menu>
             </Group>
           </>
         )}

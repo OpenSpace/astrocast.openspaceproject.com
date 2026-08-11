@@ -1,3 +1,4 @@
+export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
 export {
   FaFacebook as FacebookIcon,
   FaGithub as GithubIcon,
@@ -8,5 +9,6 @@ export { FaXTwitter as TwitterIcon } from 'react-icons/fa6';
 export {
   MdBlock as AccessDeniedIcon,
   MdAdminPanelSettings as AdminIcon,
+  MdContentCopy as CopyIcon,
   MdSettings as SettingsIcon
 } from 'react-icons/md';

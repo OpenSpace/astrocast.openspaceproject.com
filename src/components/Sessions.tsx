@@ -6,6 +6,7 @@ import { SessionEntry } from './SessionEntry';
 
 export function Sessions() {
   const { sessions, isLoading, isError } = useSessions();
+  const sortedSessions = Array.from(sessions).sort((a, b) => b.created - a.created);
 
   if (isLoading) {
     return <Text>Loading sessions...</Text>;
@@ -21,7 +22,7 @@ export function Sessions() {
 
   return (
     <Accordion order={3}>
-      {sessions.map((session) => (
+      {sortedSessions.map((session) => (
         <SessionEntry key={session.id} session={session} />
       ))}
     </Accordion>
