@@ -8,11 +8,13 @@ import {
   Tooltip
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { env } from '@/config/env';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useIsConnectionStatus } from '@/hooks/util';
+import { useLazyDownloadRecordingFileQuery } from '@/redux/api/wormholeApiSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
 import { ConnectionStatus } from '@/types/enums';
@@ -39,6 +41,8 @@ export function SessionEntry({ session }: Props) {
     (state) => state.local.connectedSessionId === session.id
   );
   const { isOwner, hostPassword, isLoading } = useGetHostPassword(session);
+  const [triggerDownload, { isFetching: isDownloading }] =
+    useLazyDownloadRecordingFileQuery();
 
   const dispatch = useAppDispatch();
 
@@ -61,6 +65,20 @@ export function SessionEntry({ session }: Props) {
   function disconnect() {
     luaApi?.astrocast.disconnect();
     dispatch(setConnectedSessionId(null));
+  }
+
+  async function downloadRecording() {
+    try {
+      await triggerDownload(session.id).unwrap();
+    } catch (error: any) {
+      const code = error?.status || '';
+      const codeMessage = code ? `Error ${code} - ` : '';
+      notifications.show({
+        title: `${codeMessage}Failed to download recording file`,
+        message: (error as Error).message,
+        color: 'red'
+      });
+    }
   }
 
   return (
@@ -132,6 +150,22 @@ export function SessionEntry({ session }: Props) {
                   Join Session
                 </Button>
               )}
+              <Tooltip
+                label={
+                  user
+                    ? 'Download session file'
+                    : 'You must sign-in to download session file'
+                }
+              >
+                <Button
+                  onClick={downloadRecording}
+                  loading={isDownloading}
+                  variant={'outline'}
+                  disabled={user === null}
+                >
+                  Download Session
+                </Button>
+              </Tooltip>
             </Group>
           </>
         )}
