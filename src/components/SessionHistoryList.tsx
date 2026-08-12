@@ -8,16 +8,12 @@ import {
 import { SessionHistoryEntry } from './SessionHistoryEntry';
 
 export function SessionHistoryList() {
-  const { data, isLoading, isError } = useGetSessionsHistoryQuery();
+  const { data, isLoading } = useGetSessionsHistoryQuery();
   const { data: statistics } = useGetStatisticsQuery();
   const history = [...(data ?? [])].sort((a, b) => b.created - a.created);
 
   if (isLoading) {
     return <Text>Loading history...</Text>;
-  }
-
-  if (isError) {
-    return <Text c={'red'}>Failed to load history</Text>;
   }
 
   if (history.length === 0) {

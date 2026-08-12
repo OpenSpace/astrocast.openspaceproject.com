@@ -6,15 +6,11 @@ import { useGetStatisticsQuery } from '@/redux/api/databaseApiSlice';
 import { SessionStatusEntry } from './SessionStatusEntry';
 
 export function SessionStatusList() {
-  const { sessions, isLoading, isError } = useSessions();
+  const { sessions, isLoading } = useSessions();
   const { data: statistics } = useGetStatisticsQuery();
 
   if (isLoading) {
     return <Text>Loading sessions...</Text>;
-  }
-
-  if (isError) {
-    return <Text c={'red'}>Failed to load sessions</Text>;
   }
 
   if (sessions.length === 0) {

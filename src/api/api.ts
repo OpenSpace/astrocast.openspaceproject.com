@@ -7,7 +7,7 @@ export function initApi(address: string, port: number) {
   // event from the discarded instance no-op
   api.onConnect(() => {});
   api.onDisconnect(() => {});
-
   api.disconnect();
+
   api = OpenSpaceApi(address, port);
 }
