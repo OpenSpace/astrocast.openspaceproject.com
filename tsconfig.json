@@ -1,29 +1,38 @@
 {
+  "files": [],
   "compilerOptions": {
-    "target": "es2022",
-    "jsx": "preserve",
-    "module": "es2022",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "./.local/vite/dist",
-    "rootDir": ".",
-    "resolveJsonModule": true,
-    "preserveConstEnums": true,
-    "esModuleInterop": true,
-    "baseUrl": ".",
+    "target": "es2023",
+    "module": "esnext",
     "paths": {
-      "@/*": ["src/*"]
+      "@/api/*": ["./src/api/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/firebase/*": ["./src/firebase/*"],
+      "@/icons/*": ["./src/icons/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/redux/*": ["./src/redux/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"]
     },
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    /* Linting */
+    "allowUnreachableCode": false,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "types": ["node"],
-    "typeRoots": ["./src/typings/*.d.ts", "./node_modules/@types"],
-
     "noImplicitOverride": true,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
