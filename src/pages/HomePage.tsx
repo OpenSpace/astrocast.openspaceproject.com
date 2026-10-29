@@ -1,4 +1,4 @@
-import { Container, Title } from '@mantine/core';
+import { Accordion, Container, Divider, Title } from '@mantine/core';
 
 import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
 import { RequestNewSessionForm } from '@/components/RequestNewSessionForm';
@@ -16,7 +16,14 @@ export function HomePage() {
       </Title>
       <Sessions />
       {user ? (
-        <RequestNewSessionForm />
+        <Accordion mt={'xs'}>
+          <Accordion.Item value={'create-session'}>
+            <Accordion.Control pl={0}>Create New Session</Accordion.Control>
+            <Accordion.Panel>
+              <RequestNewSessionForm />
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
       ) : (
         <Title order={3} mt={'md'}>
           Login to create a new session
