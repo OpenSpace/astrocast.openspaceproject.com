@@ -55,12 +55,13 @@ export function OpenSpaceConnection() {
 
   return (
     <>
-      <Group justify="space-between">
+      <Group justify="space-between" bg={'dark.6'} p={'xs'}>
         <Text fw={700}>OpenSpace: {connectionStatus}</Text>
         <Group gap={'xs'} align={'center'}>
           <Button
             onClick={() => (isConnected ? disconnect() : connect())}
             variant="outline"
+            disabled={isConnecting}
           >
             {isConnected ? 'Disconnect' : isConnecting ? 'Connecting...' : 'Connect'}
           </Button>
