@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
-import { Button, Container, Group, Text, Title } from '@mantine/core';
+import { Button, Container, Group, Text, Title, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { skipToken } from '@reduxjs/toolkit/query';
 
@@ -9,9 +9,11 @@ import { JoinSessionModal } from '@/components/JoinSessionModal';
 import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useJoinSession } from '@/hooks/useJoinSession';
+import { useIsConnectionStatus } from '@/hooks/util';
 import { useGetSessionByIdQuery } from '@/redux/api/databaseApiSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
+import { ConnectionStatus } from '@/types/enums';
 
 export function ServerLinkPage() {
   const { id } = useParams();
@@ -21,11 +23,14 @@ export function ServerLinkPage() {
   const { isOwner, hostPassword } = useGetHostPassword(session);
   const joinSession = useJoinSession(session, hostPassword, user?.displayName ?? 'Guest');
   const luaApi = useOpenSpaceApi();
+  const isConnectedToOpenSpace = useIsConnectionStatus(ConnectionStatus.Connected);
 
   const isConnectedToSession = useAppSelector(
     (state) => state.local.connectedSessionId === id
   );
   const dispatch = useAppDispatch();
+
+  const canJoinSession = isConnectedToOpenSpace && luaApi !== null;
 
   // Auto-join once per session id. Joining updates the session's live data, which would
   // otherwise change `joinSession`'s identity and re-trigger this effect, causing an
@@ -90,7 +95,17 @@ export function ServerLinkPage() {
         below.
       </Text>
       <Group>
-        <Button onClick={open}>Join Session</Button>
+        <Tooltip
+          label={
+            canJoinSession
+              ? 'Join this session'
+              : 'Cannot join session; Astrocast is not connected to OpenSpace'
+          }
+        >
+          <Button onClick={open} disabled={!canJoinSession}>
+            Join Session
+          </Button>
+        </Tooltip>
         <Button onClick={disconnect} disabled={!isConnectedToSession}>
           Leave Session
         </Button>

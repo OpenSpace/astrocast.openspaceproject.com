@@ -10,5 +10,7 @@ export {
   MdBlock as AccessDeniedIcon,
   MdAdminPanelSettings as AdminIcon,
   MdContentCopy as CopyIcon,
-  MdSettings as SettingsIcon
-} from 'react-icons/md';
+  MdOutlineSettingsRemote as HostIcon,
+  MdLogin as JoinSessionIcon,
+  MdSettings as SettingsIcon} from 'react-icons/md';
+export { TbFileDownload as DownloadFileIcon } from 'react-icons/tb';

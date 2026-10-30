@@ -6,7 +6,8 @@ import {
   Modal,
   NumberInput,
   Text,
-  TextInput
+  TextInput,
+  Tooltip
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -65,9 +66,11 @@ export function OpenSpaceConnection() {
           >
             {isConnected ? 'Disconnect' : isConnecting ? 'Connecting...' : 'Connect'}
           </Button>
-          <ActionIcon onClick={openSettings} aria-label={'Open connection settings'}>
-            <SettingsIcon />
-          </ActionIcon>
+          <Tooltip label={'Open connection settings'}>
+            <ActionIcon onClick={openSettings} aria-label={'Open connection settings'}>
+              <SettingsIcon />
+            </ActionIcon>
+          </Tooltip>
         </Group>
       </Group>
       <Modal

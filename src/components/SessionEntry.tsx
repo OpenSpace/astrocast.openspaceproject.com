@@ -17,11 +17,17 @@ import { useOpenSpaceApi } from '@/api/hooks';
 import { env } from '@/config/env';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useIsConnectionStatus } from '@/hooks/util';
-import { CopyIcon, VerticalDotsIcon } from '@/icons/icons';
+import {
+  CopyIcon,
+  DownloadFileIcon,
+  HostIcon,
+  JoinSessionIcon,
+  VerticalDotsIcon
+} from '@/icons/icons';
 import { useLazyDownloadRecordingFileQuery } from '@/redux/api/wormholeApiSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
-import { ConnectionStatus } from '@/types/enums';
+import { ConnectionStatus, IconSize } from '@/types/enums';
 import type { DetailItem, SessionData } from '@/types/types';
 
 import { AccordionHeaderRow } from './AccordionHeaderRow';
@@ -129,9 +135,21 @@ export function SessionEntry({ session }: Props) {
               {isConnectedToSession ? (
                 <Button onClick={disconnect}>Leave Session</Button>
               ) : (
-                <Button onClick={openJoinSession} disabled={!canJoinSession}>
-                  Join Session
-                </Button>
+                <Tooltip
+                  label={
+                    canJoinSession
+                      ? 'Join this session'
+                      : 'Cannot join session; Astrocast is not connected to OpenSpace'
+                  }
+                >
+                  <Button
+                    onClick={openJoinSession}
+                    disabled={!canJoinSession}
+                    rightSection={<JoinSessionIcon size={IconSize.xs} />}
+                  >
+                    Join Session
+                  </Button>
+                </Tooltip>
               )}
               <CopyButton value={`${window.location.origin}/join-server/${session.id}`}>
                 {({ copied, copy }) => (
@@ -148,9 +166,11 @@ export function SessionEntry({ session }: Props) {
               </CopyButton>
               <Menu>
                 <Menu.Target>
-                  <ActionIcon aria-label="Open menu" variant="outline" color="gray">
-                    <VerticalDotsIcon />
-                  </ActionIcon>
+                  <Tooltip label={'More options'}>
+                    <ActionIcon aria-label="Open menu" variant="outline" color="gray">
+                      <VerticalDotsIcon />
+                    </ActionIcon>
+                  </Tooltip>
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Stack>
@@ -162,13 +182,14 @@ export function SessionEntry({ session }: Props) {
                       }
                       disabled={canClaimHost}
                     >
-                      <Button
+                      <Menu.Item
                         onClick={openClaimHost}
                         disabled={!canClaimHost}
                         variant={'outline'}
+                        leftSection={<HostIcon size={IconSize.xs} />}
                       >
                         Claim Host
-                      </Button>
+                      </Menu.Item>
                     </Tooltip>
                     <Tooltip
                       label={
@@ -182,6 +203,7 @@ export function SessionEntry({ session }: Props) {
                         loading={isDownloading}
                         variant={'outline'}
                         disabled={user === null}
+                        leftSection={<DownloadFileIcon size={IconSize.xs} />}
                       >
                         Download Session
                       </Button>

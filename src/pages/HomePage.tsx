@@ -1,4 +1,4 @@
-import { Accordion, Container, Divider, Title } from '@mantine/core';
+import { Accordion, Container, Title } from '@mantine/core';
 
 import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
 import { RequestNewSessionForm } from '@/components/RequestNewSessionForm';
