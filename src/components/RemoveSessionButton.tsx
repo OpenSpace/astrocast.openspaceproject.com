@@ -3,6 +3,7 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 
 import { useRemoveSessionMutation } from '@/redux/api/wormholeApiSlice';
+import { showApiErrorNotification } from '@/utils/notifications';
 
 interface Props {
   sessionId: string;
@@ -20,15 +21,8 @@ export function RemoveSessionButton({ sessionId, roomName }: Props) {
         message: result.message,
         color: 'green'
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const code = error?.status || '';
-      const codeMessage = code ? `Error ${code} - ` : '';
-      notifications.show({
-        title: `${codeMessage}Failed to remove session`,
-        message: error.data?.error,
-        color: 'red'
-      });
+    } catch (error) {
+      showApiErrorNotification('Failed to remove session', error);
     }
   }
 
