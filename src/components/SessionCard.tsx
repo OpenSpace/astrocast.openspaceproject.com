@@ -76,10 +76,10 @@ export function SessionCard({ session }: Props) {
     data.push({ label: 'Host Password', value: hostPassword });
   }
 
-  const description = session.description?.trim() ?? '';
-  const version = session.version?.trim() ?? '';
-  const profile = session.profile?.trim() ?? '';
-  const keepAlive = session.keepAlive === true;
+  const description = session.description.trim();
+  const version = session.version.trim();
+  const profile = session.profile.trim();
+  const { keepAlive } = session;
   const schedule = formatSchedule(session.startDate, session.endDate);
   const badges: { color: MantineColor; label: string }[] = [
     {
@@ -130,11 +130,7 @@ export function SessionCard({ session }: Props) {
               {description}
             </ClampedText>
           )}
-          {schedule && (
-            <Text size={'sm'} c={'dark.1'}>
-              {schedule}
-            </Text>
-          )}
+          {schedule && <Text size={'sm'}>{schedule}</Text>}
           {(version || profile) && (
             <Group gap={5} align="center" wrap="wrap">
               {version && (
@@ -142,11 +138,7 @@ export function SessionCard({ session }: Props) {
                   Version: {version}
                 </TruncatedText>
               )}
-              {profile && (
-                <Text size={'sm'} c={'dark.1'}>
-                  Profile: {profile}
-                </Text>
-              )}
+              {profile && <Text size={'sm'}>Profile: {profile}</Text>}
             </Group>
           )}
           <Button

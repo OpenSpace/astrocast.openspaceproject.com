@@ -20,13 +20,14 @@ export interface SessionData {
   profile: string;
   isPrivate: boolean;
   owner: string;
-  // Optional by design: users may not provide them. The backend validates the
-  // format of all sessions.
-  description?: string;
-  version?: string;
-  keepAlive?: boolean;
-  startDate?: number;
-  endDate?: number;
+  // Always present: the backend writes these on every session, applying
+  // defaults when the creator omits them (description/version default to '',
+  // keepAlive to false, start/end dates to 0 = unset).
+  description: string;
+  version: string;
+  keepAlive: boolean;
+  startDate: number;
+  endDate: number;
 }
 
 export interface SessionHistoryData {
