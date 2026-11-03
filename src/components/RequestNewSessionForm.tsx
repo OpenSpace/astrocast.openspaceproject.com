@@ -122,10 +122,11 @@ export function RequestNewSessionForm() {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Title order={2}>Create a new session</Title>
         <Stack>
-          <Group grow align="flex-start">
+          <Group grow align="flex-end">
             <TextInput
               withAsterisk
               label={'Session name'}
+              description={'The name of the session, shown in the session list.'}
               maxLength={100}
               key={form.key('sessionName')}
               {...form.getInputProps('sessionName')}
@@ -133,14 +134,20 @@ export function RequestNewSessionForm() {
             <TextInput
               withAsterisk
               label={'Profile name'}
+              description={
+                'The OpenSpace profile to use. It should contain all assets and content related to the session stream.'
+              }
               maxLength={100}
               key={form.key('profileName')}
               {...form.getInputProps('profileName')}
             />
           </Group>
-          <Group grow align="flex-start">
+          <Group grow align="flex-end">
             <TextInput
               label={'Password'}
+              description={
+                'Optional. A light lock (public and visible) used to enter a private session.'
+              }
               maxLength={100}
               key={form.key('password')}
               {...form.getInputProps('password')}
@@ -148,6 +155,7 @@ export function RequestNewSessionForm() {
             <TextInput
               withAsterisk
               label={'Host password'}
+              description={'Used to take control of the session and become the pilot.'}
               maxLength={100}
               key={form.key('hostPassword')}
               {...form.getInputProps('hostPassword')}
@@ -165,16 +173,18 @@ export function RequestNewSessionForm() {
             key={form.key('description')}
             {...form.getInputProps('description')}
           />
-          <Group grow align="flex-start">
+          <Group grow align="flex-end">
             <DateTimePicker
               label={'Start date/time'}
               description={'Optional start of the planned session.'}
+              clearable
               key={form.key('startDate')}
               {...form.getInputProps('startDate')}
             />
             <DateTimePicker
               label={'End date/time'}
               description={'Optional end of the planned session.'}
+              clearable
               key={form.key('endDate')}
               {...form.getInputProps('endDate')}
             />
