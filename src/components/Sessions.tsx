@@ -1,8 +1,8 @@
-import { Accordion, Text } from '@mantine/core';
+import { SimpleGrid, Text } from '@mantine/core';
 
 import { useSessions } from '@/hooks/useSessions';
 
-import { SessionEntry } from './SessionEntry';
+import { SessionCard } from './SessionCard';
 
 export function Sessions() {
   const { sessions, isLoading } = useSessions();
@@ -17,10 +17,10 @@ export function Sessions() {
   }
 
   return (
-    <Accordion order={3}>
+    <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing={'md'}>
       {sortedSessions.map((session) => (
-        <SessionEntry key={session.id} session={session} />
+        <SessionCard key={session.id} session={session} />
       ))}
-    </Accordion>
+    </SimpleGrid>
   );
 }

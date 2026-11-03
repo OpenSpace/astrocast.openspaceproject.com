@@ -14,11 +14,19 @@ export interface SessionData {
   usage: number;
   password: string;
   nPeers: number;
-  currentHost: string;
+  // Display name of the current host; may be omitted to avoid exposing PII.
+  currentHost?: string;
   roomName: string;
   profile: string;
   isPrivate: boolean;
   owner: string;
+  // Optional by design: users may not provide them. The backend validates the
+  // format of all sessions.
+  description?: string;
+  version?: string;
+  keepAlive?: boolean;
+  startDate?: number;
+  endDate?: number;
 }
 
 export interface SessionHistoryData {
@@ -29,6 +37,8 @@ export interface SessionHistoryData {
   usage: number;
   roomName: string;
   owner: string;
+  // Copied from the session when it is archived, older history entries lack it.
+  description?: string;
 }
 
 export interface StatisticData {

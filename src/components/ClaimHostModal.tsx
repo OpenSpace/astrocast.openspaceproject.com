@@ -23,8 +23,6 @@ export function ClaimHostModal({ session, opened, close, hostPassword: hostPw }:
   async function handleConfirm() {
     try {
       const result = await claimHost({ sessionId: session.id, password }).unwrap();
-      // @ts-expect-error API not yet updated, requesting hostship will only work on
-      // latest OpenSpace master
       luaApi?.astrocast.requestHostship(password);
       notifications.show({
         title: 'Host Claimed',
@@ -61,6 +59,7 @@ export function ClaimHostModal({ session, opened, close, hostPassword: hostPw }:
               onChange={(event) => setPasswordOverride(event.currentTarget.value)}
               placeholder={'Enter host password'}
               description={'Host password required to claim host of this session'}
+              maxLength={100}
               withAsterisk
             />
           </Stack>

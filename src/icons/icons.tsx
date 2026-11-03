@@ -9,8 +9,13 @@ export { FaXTwitter as TwitterIcon } from 'react-icons/fa6';
 export {
   MdBlock as AccessDeniedIcon,
   MdAdminPanelSettings as AdminIcon,
+  MdOutlinePowerOff as CloseSessionIcon,
   MdContentCopy as CopyIcon,
+  MdExpandMore as ExpandMoreIcon,
+  MdHistory as HistoryIcon,
   MdOutlineSettingsRemote as HostIcon,
   MdLogin as JoinSessionIcon,
-  MdSettings as SettingsIcon} from 'react-icons/md';
+  MdSearch as SearchIcon,
+  MdSettings as SettingsIcon
+} from 'react-icons/md';
 export { TbFileDownload as DownloadFileIcon } from 'react-icons/tb';

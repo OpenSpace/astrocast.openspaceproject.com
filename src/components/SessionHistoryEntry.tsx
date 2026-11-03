@@ -3,7 +3,7 @@ import { Accordion } from '@mantine/core';
 import { UsageChart } from '@/components/UsageChart';
 import { useSessionOwnerName } from '@/hooks/useSessionOwnerName';
 import type { DetailItem, SessionHistoryData, Statistics } from '@/types/types';
-import { formatDuration } from '@/utils/format';
+import { formatDateTime, formatDuration } from '@/utils/format';
 
 import { AccordionHeaderRow } from './AccordionHeaderRow';
 import { DetailsList } from './DetailsList';
@@ -31,12 +31,12 @@ export function SessionHistoryEntry({ session, statistics }: Props) {
             { label: 'Session Name', value: session.roomName, span: 3 },
             {
               label: 'Created',
-              value: new Date(session.created).toLocaleString(),
+              value: formatDateTime(session.created),
               span: 2
             },
             {
               label: 'Last Used',
-              value: new Date(session.inactiveTimestamp).toLocaleString(),
+              value: formatDateTime(session.inactiveTimestamp),
               span: 2
             }
           ]}

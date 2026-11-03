@@ -2,7 +2,7 @@ import { Link, Outlet } from 'react-router';
 import { AppShell, Burger, Group, Image, NavLink, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { AdminIcon, HomeIcon } from '@/icons/icons';
+import { AdminIcon, HistoryIcon, HomeIcon } from '@/icons/icons';
 
 import { Profile } from './Profile';
 
@@ -41,6 +41,13 @@ export function AppLayout() {
           to={'/'}
           label={'Home'}
           leftSection={<HomeIcon />}
+          onClick={close}
+        />
+        <NavLink
+          component={Link}
+          to={'/my-sessions'}
+          label={'My Sessions'}
+          leftSection={<HistoryIcon />}
           onClick={close}
         />
         <NavLink
