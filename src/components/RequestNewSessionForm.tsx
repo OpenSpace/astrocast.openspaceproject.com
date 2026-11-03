@@ -165,7 +165,7 @@ export function RequestNewSessionForm() {
             label={'Description'}
             placeholder={'Optional description of the session'}
             description={
-              'Shown on the session card, for example what the session is about.'
+              'Shown on the session card, for example, what the session is about.'
             }
             maxLength={500}
             autosize
