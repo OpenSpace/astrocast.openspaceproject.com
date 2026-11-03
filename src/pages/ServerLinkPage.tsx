@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { skipToken } from '@reduxjs/toolkit/query';
 
 import { useOpenSpaceApi } from '@/api/hooks';
+import { ClampedText } from '@/components/ClampedText';
 import { JoinSessionModal } from '@/components/JoinSessionModal';
 import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
@@ -14,10 +15,15 @@ import { useGetSessionByIdQuery } from '@/redux/api/databaseApiSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
 import { ConnectionStatus } from '@/types/enums';
+import { SessionIdPattern } from '@/utils/validate';
 
 export function ServerLinkPage() {
   const { id } = useParams();
-  const { data: session, isLoading } = useGetSessionByIdQuery(id ?? skipToken);
+  // The id comes from the URL and is user-controlled; only query for it if it
+  // looks like a valid session id, so crafted links cannot traverse database
+  // paths or API routes.
+  const isValidId = id != null && SessionIdPattern.test(id);
+  const { data: session, isLoading } = useGetSessionByIdQuery(isValidId ? id : skipToken);
   const { user } = useAppSelector((state) => state.auth);
   const [opened, { open, close }] = useDisclosure();
   const { isOwner, hostPassword } = useGetHostPassword(session);
@@ -81,6 +87,14 @@ export function ServerLinkPage() {
       <OpenSpaceConnection />
       <Title order={2}>Join Session</Title>
 
+      {session.description && <Text>{session.description}</Text>}
+      {(session.version || session.profile) && (
+        <ClampedText c={'dark.1'} lineClamp={1}>
+          {[session.version ? `OpenSpace ${session.version}` : null, session.profile]
+            .filter(Boolean)
+            .join(' - ')}
+        </ClampedText>
+      )}
       <Text>
         Session is currently {session.active ? 'active' : 'inactive'}{' '}
         {session.active && session.currentHost
