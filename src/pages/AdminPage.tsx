@@ -1,5 +1,6 @@
-import { Accordion, Alert, Container, Title } from '@mantine/core';
+import { Accordion, Alert, Container, Stack, Text, Title } from '@mantine/core';
 
+import { LoginButton } from '@/components/LoginButton';
 import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
 import { RequestAdminRightsForm } from '@/components/RequestAdminRightsForm';
 import { RequestNewSessionForm } from '@/components/RequestNewSessionForm';
@@ -20,7 +21,10 @@ export function AdminPage() {
           icon={<AccessDeniedIcon />}
           mt={'md'}
         >
-          You do not have permission to view this page.
+          <Stack align="flex-start" gap={'xs'}>
+            <Text>You do not have permission to view this page.</Text>
+            <LoginButton />
+          </Stack>
         </Alert>
       </Container>
     );
