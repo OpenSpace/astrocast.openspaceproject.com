@@ -55,7 +55,7 @@ export function MySessionsPage() {
     .filter((session) => session.owner === user.uid)
     .sort((a, b) => b.created - a.created);
   const history = [...(historySessions ?? [])]
-    .filter((session) => session.owner === user.uid)
+    .filter((session) => session.owner === user.uid && !session.removedByUser)
     .sort((a, b) => b.created - a.created);
 
   const query = search.trim().toLowerCase();

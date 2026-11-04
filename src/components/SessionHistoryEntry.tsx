@@ -6,9 +6,9 @@ import type { DetailItem, SessionHistoryData, Statistics } from '@/types/types';
 import { formatDateTime, formatDuration } from '@/utils/format';
 
 import { AccordionHeaderRow } from './AccordionHeaderRow';
+import { DeleteSessionHistoryButton } from './DeleteSessionHistoryButton';
 import { DetailsList } from './DetailsList';
 import { DownloadSessionButton } from './DownloadSessionButton';
-import { RemoveSessionHistoryButton } from './RemoveSessionHistoryButton';
 
 interface Props {
   session: SessionHistoryData;
@@ -49,7 +49,7 @@ export function SessionHistoryEntry({ session, statistics }: Props) {
         {statistics && <UsageChart statistics={statistics} />}
         <Group mt={'xs'} gap={'xs'}>
           <DownloadSessionButton sessionId={session.id} />
-          <RemoveSessionHistoryButton
+          <DeleteSessionHistoryButton
             sessionId={session.id}
             roomName={session.roomName}
           />

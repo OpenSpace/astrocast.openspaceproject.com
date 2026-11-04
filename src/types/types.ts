@@ -40,6 +40,8 @@ export interface SessionHistoryData {
   owner: string;
   // Copied from the session when it is archived, older history entries lack it.
   description?: string;
+  // Set when the owner removes the session; hidden from users, still visible to admins.
+  removedByUser?: boolean;
 }
 
 export interface StatisticData {

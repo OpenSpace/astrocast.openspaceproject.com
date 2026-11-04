@@ -62,6 +62,10 @@ export function AdminPage() {
       </Title>
       <SessionStatusList />
       <Title order={2} mt={'md'}>
+        Removed by User
+      </Title>
+      <SessionHistoryList removed />
+      <Title order={2} mt={'md'}>
         History
       </Title>
       <SessionHistoryList />

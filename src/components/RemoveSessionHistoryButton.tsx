@@ -31,9 +31,8 @@ export function RemoveSessionHistoryButton({ sessionId, roomName }: Props) {
       title: 'Remove Session',
       children: (
         <Text>
-          {`Are you sure you want to remove the session '${roomName}'? The session
-          and its recording file will be deleted from the server. This action cannot
-          be undone.`}
+          {`Are you sure you want to remove the session '${roomName}'? It will no
+          longer be shown in your list of sessions.`}
         </Text>
       ),
       labels: {

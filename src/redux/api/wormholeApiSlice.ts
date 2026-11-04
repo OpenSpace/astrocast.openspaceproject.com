@@ -109,7 +109,13 @@ export const wormholeApi = createApi({
     }),
     removeSessionHistory: builder.mutation<{ message: string }, string>({
       query: (sessionId) => ({
-        url: `/session/${sessionId}/history`,
+        url: `/session/${sessionId}/history/remove`,
+        method: 'POST'
+      })
+    }),
+    deleteSessionHistory: builder.mutation<{ message: string }, string>({
+      query: (sessionId) => ({
+        url: `/session/${sessionId}/history/delete`,
         method: 'DELETE'
       })
     })
@@ -125,7 +131,8 @@ export const {
   useClaimHostMutation,
   useRemoveSessionMutation,
   useCloseSessionMutation,
-  useRemoveSessionHistoryMutation
+  useRemoveSessionHistoryMutation,
+  useDeleteSessionHistoryMutation
 } = wormholeApi;
 
 function handleDownload(blob: Blob, filename: string) {

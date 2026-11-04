@@ -4,8 +4,8 @@ import { useDisclosure } from '@mantine/hooks';
 
 import { AdminIcon, HistoryIcon, HomeIcon } from '@/icons/icons';
 
-import { Profile } from './Profile';
 import { OpenSpaceConnection } from './OpenSpaceConnection';
+import { Profile } from './Profile';
 
 export function AppLayout() {
   const [opened, { toggle, close }] = useDisclosure();
