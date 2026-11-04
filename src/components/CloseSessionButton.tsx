@@ -14,7 +14,7 @@ interface Props {
   onClosed?: () => void;
 }
 
-export function CloseSessionButton({ sessionId, roomName, onClosed }: Props) {
+export function CloseSessionButton({ sessionId, roomName, onClosed, ...props }: Props) {
   const [closeSession, { isLoading: isClosingSession }] = useCloseSessionMutation();
 
   async function handleClose() {
@@ -52,6 +52,7 @@ export function CloseSessionButton({ sessionId, roomName, onClosed }: Props) {
 
   return (
     <Button
+      {...props}
       onClick={openConfirmModal}
       loading={isClosingSession}
       color={'red'}

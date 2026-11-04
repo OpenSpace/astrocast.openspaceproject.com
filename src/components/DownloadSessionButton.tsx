@@ -14,7 +14,7 @@ interface Props {
 export function DownloadSessionButton({
   sessionId,
   label = 'Download Recording',
-  disabled
+  ...props
 }: Props) {
   const [triggerDownload, { isFetching: isDownloading }] =
     useLazyDownloadRecordingFileQuery();
@@ -29,9 +29,9 @@ export function DownloadSessionButton({
 
   return (
     <Button
+      {...props}
       onClick={handleDownload}
       loading={isDownloading}
-      disabled={disabled}
       variant={'outline'}
       leftSection={<DownloadFileIcon size={IconSize.xs} />}
     >

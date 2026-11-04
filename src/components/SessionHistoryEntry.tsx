@@ -1,4 +1,4 @@
-import { Accordion } from '@mantine/core';
+import { Accordion, Group } from '@mantine/core';
 
 import { UsageChart } from '@/components/UsageChart';
 import { useSessionOwnerName } from '@/hooks/useSessionOwnerName';
@@ -7,6 +7,8 @@ import { formatDateTime, formatDuration } from '@/utils/format';
 
 import { AccordionHeaderRow } from './AccordionHeaderRow';
 import { DetailsList } from './DetailsList';
+import { DownloadSessionButton } from './DownloadSessionButton';
+import { RemoveSessionHistoryButton } from './RemoveSessionHistoryButton';
 
 interface Props {
   session: SessionHistoryData;
@@ -45,6 +47,13 @@ export function SessionHistoryEntry({ session, statistics }: Props) {
       <Accordion.Panel>
         <DetailsList items={details} />
         {statistics && <UsageChart statistics={statistics} />}
+        <Group mt={'xs'} gap={'xs'}>
+          <DownloadSessionButton sessionId={session.id} />
+          <RemoveSessionHistoryButton
+            sessionId={session.id}
+            roomName={session.roomName}
+          />
+        </Group>
       </Accordion.Panel>
     </Accordion.Item>
   );

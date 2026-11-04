@@ -36,9 +36,17 @@ export function ClampedText({ children, lineClamp = 3, style, ...textProps }: Pr
     if (!element) {
       return;
     }
-    const clampedHeight = element.clientHeight;
-    const fullHeight = element.scrollHeight;
-    setOverflows(fullHeight > clampedHeight + 1);
+
+    const measure = () => {
+      setOverflows(element.scrollHeight > element.clientHeight + 1);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
   }, [children, expanded, lineClamp]);
 
   return (
