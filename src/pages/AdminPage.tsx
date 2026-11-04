@@ -32,7 +32,6 @@ export function AdminPage() {
 
   return (
     <Container>
-      <OpenSpaceConnection />
       <Accordion mt={'sm'}>
         <Accordion.Item value={'create-session'}>
           <Accordion.Control>
