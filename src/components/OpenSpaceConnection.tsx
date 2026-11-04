@@ -58,9 +58,20 @@ export function OpenSpaceConnection() {
 
   return (
     <>
-      <Group justify="space-between" bg={'dark.6'} p={'xs'}>
-        <Group gap={'xs'}>
-          <Text fw={700}>OpenSpace:</Text>
+      <Group
+        justify="space-between"
+        wrap="nowrap"
+        bg={'dark.6'}
+        p={'xs'}
+        flex={1}
+        miw={0}
+        maw={700}
+        style={{ borderRadius: 'var(--mantine-radius-md)' }}
+      >
+        <Group gap={'sm'} wrap="nowrap">
+          <Text fw={700} visibleFrom="lg">
+            OpenSpace:
+          </Text>
           <span
             style={{
               display: 'inline-block',
@@ -70,11 +81,11 @@ export function OpenSpaceConnection() {
               backgroundColor: `var(--mantine-color-${statusColor}-6)`
             }}
           />
-          <Text fw={700} c={statusColor}>
+          <Text fw={700} c={statusColor} visibleFrom="md">
             {connectionStatus}
           </Text>
         </Group>
-        <Group gap={'xs'} align={'center'}>
+        <Group gap={'xs'} align={'center'} wrap="nowrap">
           <Button
             onClick={() => (isConnected ? disconnect() : connect())}
             variant="outline"

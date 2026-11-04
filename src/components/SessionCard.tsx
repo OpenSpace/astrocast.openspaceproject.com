@@ -70,6 +70,10 @@ export function SessionCard({ session }: Props) {
     {
       label: 'Host',
       value: session.currentHost || 'No host'
+    },
+    {
+      label: 'Created',
+      value: formatDateTime(session.created)
     }
   ];
   if (hostPassword) {
@@ -83,16 +87,12 @@ export function SessionCard({ session }: Props) {
   const schedule = formatSchedule(session.startDate, session.endDate);
   const badges: { color: MantineColor; label: string }[] = [
     {
-      color: session.active ? 'green' : 'red',
-      label: session.active ? 'Active' : 'Inactive'
-    },
-    {
-      color: session.isPrivate ? 'orange' : 'blue',
+      color: session.isPrivate ? '#e57f58' : '#3dbdee',
       label: session.isPrivate ? 'Private' : 'Public'
     }
   ];
   if (keepAlive) {
-    badges.push({ color: 'teal', label: 'Kept' });
+    badges.push({ color: '#5cdd8b', label: 'Kept' });
   }
 
   function disconnect() {
@@ -110,21 +110,24 @@ export function SessionCard({ session }: Props) {
     <Card withBorder>
       <Card.Section p={'xs'} flex={1} withBorder>
         <Stack gap={'xs'}>
-          <Group justify="space-between" align="flex-start" gap={'xs'}>
-            <Text fw={700} size={'lg'} lineClamp={2}>
+          <Group align="center" gap={'xs'}>
+            {session.active && (
+              <Tooltip label={'Session is active'}>
+                <span
+                  style={{
+                    display: 'inline-block',
+                    width: IconSize.xs,
+                    height: IconSize.xs,
+                    borderRadius: '50%',
+                    backgroundColor: '#5cdd8b'
+                  }}
+                />
+              </Tooltip>
+            )}
+            <TruncatedText fw={700} flex={1}>
               {session.roomName}
-            </Text>
-            <Group gap={'xs'}>
-              {badges.map((badge) => (
-                <Badge key={badge.label} variant="dot" color={badge.color}>
-                  {badge.label}
-                </Badge>
-              ))}
-            </Group>
+            </TruncatedText>
           </Group>
-          <Text size={'sm'} c={'dark.1'}>
-            Created: {formatDateTime(session.created)}
-          </Text>
           {description && (
             <ClampedText size={'sm'} lineClamp={3}>
               {description}
@@ -141,6 +144,7 @@ export function SessionCard({ session }: Props) {
               {profile && <Text size={'sm'}>Profile: {profile}</Text>}
             </Group>
           )}
+
           <Button
             variant="subtle"
             size="xs"
@@ -175,6 +179,15 @@ export function SessionCard({ session }: Props) {
             )}
           </Collapse>
         </Stack>
+      </Card.Section>
+      <Card.Section px={'xs'} mt={'xs'}>
+        <Group gap={'xs'}>
+          {badges.map((badge) => (
+            <Badge key={badge.label} variant="dot" color={badge.color}>
+              {badge.label}
+            </Badge>
+          ))}
+        </Group>
       </Card.Section>
       <Card.Section p={'xs'}>
         <Group justify="space-between" gap={'xs'}>
