@@ -1,7 +1,6 @@
 import { Accordion, Alert, Container, Group, Stack, Text, Title } from '@mantine/core';
 
 import { LoginButton } from '@/components/LoginButton';
-import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
 import { RequestAdminRightsForm } from '@/components/RequestAdminRightsForm';
 import { RequestNewSessionForm } from '@/components/RequestNewSessionForm';
 import { SessionHistoryList } from '@/components/SessionHistoryList';
