@@ -180,6 +180,11 @@ export function RequestNewSessionForm() {
               clearable
               key={form.key('startDate')}
               {...form.getInputProps('startDate')}
+              timePickerProps={{
+                withDropdown: true,
+                popoverProps: { withinPortal: false },
+                format: '24h'
+              }}
             />
             <DateTimePicker
               label={'End date/time'}
@@ -187,6 +192,11 @@ export function RequestNewSessionForm() {
               clearable
               key={form.key('endDate')}
               {...form.getInputProps('endDate')}
+              timePickerProps={{
+                withDropdown: true,
+                popoverProps: { withinPortal: false },
+                format: '24h'
+              }}
             />
           </Group>
           <TextInput
