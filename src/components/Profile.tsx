@@ -12,8 +12,9 @@ export function Profile() {
   return (
     <>
       {user ? (
-        <Group>
+        <Group wrap={'nowrap'}>
           <Avatar
+            visibleFrom={'sm'}
             src={user?.photoURL}
             name={user.displayName || ''}
             color={'initials'}

@@ -9,6 +9,7 @@ import { LuaApiProvider } from '@/api/LuaApiProvider';
 import { AppLayout } from '@/components/AppLayout';
 import { AdminPage } from '@/pages/AdminPage';
 import { HomePage } from '@/pages/HomePage';
+import { MySessionsPage } from '@/pages/MySessionsPage';
 import { ServerLinkPage } from '@/pages/ServerLinkPage';
 import { store } from '@/redux/store';
 
@@ -16,6 +17,7 @@ import { AuthListener } from './components/AuthListener';
 import { theme } from './mantineTheme';
 
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import '@mantine/charts/styles.css';
 import '@mantine/notifications/styles.css';
 import './App.css';
@@ -36,6 +38,7 @@ function App() {
                 <Routes>
                   <Route element={<AppLayout />}>
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/my-sessions" element={<MySessionsPage />} />
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/join-server/:id" element={<ServerLinkPage />} />
                     {/* Fallback route for any undefined paths */}

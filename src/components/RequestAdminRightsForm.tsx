@@ -3,6 +3,8 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 
 import { useRequestAdminRightsMutation } from '@/redux/api/wormholeApiSlice';
+import { showApiErrorNotification } from '@/utils/notifications';
+import { validateText } from '@/utils/validate';
 
 export function RequestAdminRightsForm() {
   const [requestAdminRights, { isLoading }] = useRequestAdminRightsMutation();
@@ -14,8 +16,18 @@ export function RequestAdminRightsForm() {
       secret: ''
     },
     validate: {
-      uid: (value) => (value.trim().length > 0 ? null : 'User ID is required'),
-      secret: (value) => (value.trim().length > 0 ? null : 'Secret is required')
+      uid: (value) =>
+        validateText(value, {
+          required: true,
+          maxLength: 128,
+          requiredMessage: 'User ID is required'
+        }),
+      secret: (value) =>
+        validateText(value, {
+          required: true,
+          maxLength: 128,
+          requiredMessage: 'Secret is required'
+        })
     }
   });
 
@@ -31,15 +43,8 @@ export function RequestAdminRightsForm() {
         color: 'green'
       });
       form.reset();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const code = error?.status || '';
-      const codeMessage = code ? `Error ${code} - ` : '';
-      notifications.show({
-        title: `${codeMessage}Failed to grant admin rights`,
-        message: error.data?.error,
-        color: 'red'
-      });
+    } catch (error) {
+      showApiErrorNotification('Failed to grant admin rights', error);
     }
   }
 
@@ -52,12 +57,14 @@ export function RequestAdminRightsForm() {
             <TextInput
               withAsterisk
               label={'User ID'}
+              maxLength={128}
               key={form.key('uid')}
               {...form.getInputProps('uid')}
             />
             <TextInput
               withAsterisk
               label={'Secret'}
+              maxLength={128}
               key={form.key('secret')}
               {...form.getInputProps('secret')}
             />

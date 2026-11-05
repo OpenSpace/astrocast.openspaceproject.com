@@ -10,6 +10,11 @@ export type CreateSessionRequest = {
   isPrivate: boolean;
   password?: string;
   hostPassword: string;
+  description?: string;
+  version?: string;
+  keepAlive?: boolean;
+  startDate?: number;
+  endDate?: number;
 };
 
 export type AdminRightsRequest = {
@@ -95,6 +100,24 @@ export const wormholeApi = createApi({
         url: `/session/${sessionId}/remove`,
         method: 'DELETE'
       })
+    }),
+    closeSession: builder.mutation<{ message: string }, string>({
+      query: (sessionId) => ({
+        url: `/session/${sessionId}/close`,
+        method: 'POST'
+      })
+    }),
+    removeSessionHistory: builder.mutation<{ message: string }, string>({
+      query: (sessionId) => ({
+        url: `/session/${sessionId}/history/remove`,
+        method: 'POST'
+      })
+    }),
+    deleteSessionHistory: builder.mutation<{ message: string }, string>({
+      query: (sessionId) => ({
+        url: `/session/${sessionId}/history/delete`,
+        method: 'DELETE'
+      })
     })
   })
 });
@@ -106,7 +129,10 @@ export const {
   useCreateSessionMutation,
   useRequestAdminRightsMutation,
   useClaimHostMutation,
-  useRemoveSessionMutation
+  useRemoveSessionMutation,
+  useCloseSessionMutation,
+  useRemoveSessionHistoryMutation,
+  useDeleteSessionHistoryMutation
 } = wormholeApi;
 
 function handleDownload(blob: Blob, filename: string) {

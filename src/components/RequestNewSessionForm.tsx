@@ -1,28 +1,94 @@
-import { Button, Checkbox, Group, Paper, Stack, TextInput, Title } from '@mantine/core';
+import {
+  Button,
+  Checkbox,
+  Group,
+  Paper,
+  Stack,
+  Textarea,
+  TextInput,
+  Title
+} from '@mantine/core';
+import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 
 import { useCreateSessionMutation } from '@/redux/api/wormholeApiSlice';
+import { showApiErrorNotification } from '@/utils/notifications';
+import { validateText } from '@/utils/validate';
+
+// DateTimePicker values are 'YYYY-MM-DD HH:mm:ss' strings, parsed as local time.
+function toEpochMs(value: string): number {
+  return new Date(value.replace(' ', 'T')).getTime();
+}
+
+type NewSessionFormValues = {
+  sessionName: string;
+  profileName: string;
+  password: string;
+  hostPassword: string;
+  isPrivate: boolean;
+  description: string;
+  version: string;
+  keepAlive: boolean;
+  startDate: string | null;
+  endDate: string | null;
+};
 
 export function RequestNewSessionForm() {
   const [createSession, { isLoading }] = useCreateSessionMutation();
 
-  const form = useForm({
+  const form = useForm<NewSessionFormValues>({
     mode: 'uncontrolled',
     initialValues: {
       sessionName: '',
       profileName: '',
       password: '',
       hostPassword: '',
-      isPrivate: false
+      isPrivate: false,
+      description: '',
+      version: '',
+      keepAlive: false,
+      startDate: null,
+      endDate: null
     },
     validate: {
       sessionName: (value) =>
-        value.trim().length > 0 ? null : 'Session name is required',
+        validateText(value, {
+          required: true,
+          maxLength: 100,
+          requiredMessage: 'Session name is required'
+        }),
       profileName: (value) =>
-        value.trim().length > 0 ? null : 'Profile name is required',
+        validateText(value, {
+          required: true,
+          maxLength: 100,
+          requiredMessage: 'Profile name is required'
+        }),
+      password: (value) => validateText(value, { maxLength: 100 }),
       hostPassword: (value) =>
-        value.trim().length > 0 ? null : 'Host password is required'
+        validateText(value, {
+          required: true,
+          maxLength: 100,
+          requiredMessage: 'Host password is required'
+        }),
+      description: (value) => validateText(value, { maxLength: 500, multiline: true }),
+      version: (value) => validateText(value, { maxLength: 50 }),
+      startDate: (value, formValues) => {
+        if (!value || !formValues.endDate) {
+          return null;
+        }
+        return toEpochMs(value) < toEpochMs(formValues.endDate)
+          ? null
+          : 'Start date must be before end date';
+      },
+      endDate: (value, formValues) => {
+        if (!value || !formValues.startDate) {
+          return null;
+        }
+        return toEpochMs(value) > toEpochMs(formValues.startDate)
+          ? null
+          : 'End date must be after start date';
+      }
     }
   });
 
@@ -33,7 +99,12 @@ export function RequestNewSessionForm() {
         profile: values.profileName.trim(),
         isPrivate: values.isPrivate,
         password: values.password.trim(),
-        hostPassword: values.hostPassword.trim()
+        hostPassword: values.hostPassword.trim(),
+        description: values.description.trim() || undefined,
+        version: values.version.trim() || undefined,
+        keepAlive: values.keepAlive || undefined,
+        startDate: values.startDate ? toEpochMs(values.startDate) : undefined,
+        endDate: values.endDate ? toEpochMs(values.endDate) : undefined
       }).unwrap();
       notifications.show({
         title: 'Session Created',
@@ -41,16 +112,8 @@ export function RequestNewSessionForm() {
         color: 'green'
       });
       form.reset();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const code = error?.status || '';
-      const codeMessage = code ? `Error ${code} - ` : '';
-      const title = `${codeMessage}Failed to Create Session`;
-      notifications.show({
-        title: title,
-        message: error.data?.error,
-        color: 'red'
-      });
+    } catch (error) {
+      showApiErrorNotification('Failed to Create Session', error);
     }
   }
 
@@ -59,33 +122,94 @@ export function RequestNewSessionForm() {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Title order={2}>Create a new session</Title>
         <Stack>
-          <Group grow align="flex-start">
+          <Group grow align="flex-end">
             <TextInput
               withAsterisk
               label={'Session name'}
+              description={'The name of the session, shown in the session list.'}
+              maxLength={100}
               key={form.key('sessionName')}
               {...form.getInputProps('sessionName')}
             />
             <TextInput
-              label={'Password'}
-              key={form.key('password')}
-              {...form.getInputProps('password')}
-            />
-          </Group>
-          <Group grow align="flex-start">
-            <TextInput
               withAsterisk
               label={'Profile name'}
+              description={
+                'The OpenSpace profile to use. It should contain all assets and content related to the session stream.'
+              }
+              maxLength={100}
               key={form.key('profileName')}
               {...form.getInputProps('profileName')}
+            />
+          </Group>
+          <Group grow align="flex-end">
+            <TextInput
+              label={'Password'}
+              description={
+                'Optional. A light lock (public and visible) used to enter a private session.'
+              }
+              maxLength={100}
+              key={form.key('password')}
+              {...form.getInputProps('password')}
             />
             <TextInput
               withAsterisk
               label={'Host password'}
+              description={'Used to take control of the session and become the pilot.'}
+              maxLength={100}
               key={form.key('hostPassword')}
               {...form.getInputProps('hostPassword')}
             />
           </Group>
+          <Textarea
+            label={'Description'}
+            placeholder={'Optional description of the session'}
+            description={
+              'Shown on the session card, for example, what the session is about.'
+            }
+            maxLength={500}
+            autosize
+            minRows={2}
+            key={form.key('description')}
+            {...form.getInputProps('description')}
+          />
+          <Group grow align="flex-end">
+            <DateTimePicker
+              label={'Start date/time'}
+              description={'Optional start of the planned session.'}
+              clearable
+              key={form.key('startDate')}
+              {...form.getInputProps('startDate')}
+              timePickerProps={{
+                withDropdown: true,
+                popoverProps: { withinPortal: false },
+                format: '24h'
+              }}
+            />
+            <DateTimePicker
+              label={'End date/time'}
+              description={'Optional end of the planned session.'}
+              clearable
+              key={form.key('endDate')}
+              {...form.getInputProps('endDate')}
+              timePickerProps={{
+                withDropdown: true,
+                popoverProps: { withinPortal: false },
+                format: '24h'
+              }}
+            />
+          </Group>
+          <TextInput
+            label={'OpenSpace version'}
+            placeholder={'e.g. 1.0 or master'}
+            description={'The OpenSpace version this session targets.'}
+            maxLength={50}
+            key={form.key('version')}
+            {...form.getInputProps('version')}
+            maw={
+              'calc(50% - (var(--mantine-spacing-md) - var(--mantine-spacing-md) / 2))'
+            }
+          />
 
           <Group grow justify="space-between" align="flex-start">
             <Checkbox
@@ -95,6 +219,14 @@ export function RequestNewSessionForm() {
               }
               key={form.key('isPrivate')}
               {...form.getInputProps('isPrivate', { type: 'checkbox' })}
+            />
+            <Checkbox
+              label={'Keep session'}
+              description={
+                'The session will not be removed automatically after 30 minutes of inactivity. It persists until closed or removed by an admin.'
+              }
+              key={form.key('keepAlive')}
+              {...form.getInputProps('keepAlive', { type: 'checkbox' })}
             />
             <Group justify={'flex-end'}>
               <Button type={'submit'} loading={isLoading}>
