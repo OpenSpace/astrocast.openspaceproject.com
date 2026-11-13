@@ -4,6 +4,7 @@ import {
   Group,
   Paper,
   Stack,
+  Text,
   Textarea,
   TextInput,
   Title
@@ -13,12 +14,26 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 
 import { useCreateSessionMutation } from '@/redux/api/wormholeApiSlice';
+import { getTimeZoneLabel } from '@/utils/format';
 import { showApiErrorNotification } from '@/utils/notifications';
 import { validateText } from '@/utils/validate';
 
 // DateTimePicker values are 'YYYY-MM-DD HH:mm:ss' strings, parsed as local time.
 function toEpochMs(value: string): number {
   return new Date(value.replace(' ', 'T')).getTime();
+}
+
+// Lets the user specify a time upto 15 min past now
+const StartGraceMs = 15 * 60 * 1000;
+
+// Floored to the minute since the picker has minute precision.
+function earliestAllowedMs(): number {
+  return Math.floor((Date.now() - StartGraceMs) / 60000) * 60000;
+}
+
+// Minute precision, so the current minute isn't flagged as past.
+function isBeforeCurrentMinute(epochMs: number): boolean {
+  return epochMs < Math.floor(Date.now() / 60000) * 60000;
 }
 
 type NewSessionFormValues = {
@@ -38,7 +53,6 @@ export function RequestNewSessionForm() {
   const [createSession, { isLoading }] = useCreateSessionMutation();
 
   const form = useForm<NewSessionFormValues>({
-    mode: 'uncontrolled',
     initialValues: {
       sessionName: '',
       profileName: '',
@@ -74,6 +88,9 @@ export function RequestNewSessionForm() {
       description: (value) => validateText(value, { maxLength: 500, multiline: true }),
       version: (value) => validateText(value, { maxLength: 50 }),
       startDate: (value, formValues) => {
+        if (value && toEpochMs(value) < earliestAllowedMs()) {
+          return "Start date can't be more than 15 minutes in the past";
+        }
         if (!value || !formValues.endDate) {
           return null;
         }
@@ -91,6 +108,15 @@ export function RequestNewSessionForm() {
       }
     }
   });
+
+  const endDateInPast =
+    !!form.values.endDate && isBeforeCurrentMinute(toEpochMs(form.values.endDate));
+
+  const timeZoneLabel = getTimeZoneLabel();
+
+  // Day-level limit; past times today only get a warning.
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
 
   async function handleSubmit(values: typeof form.values) {
     try {
@@ -122,7 +148,7 @@ export function RequestNewSessionForm() {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Title order={2}>Create a new session</Title>
         <Stack>
-          <Group grow align="flex-end">
+          <Group grow align="flex-start">
             <TextInput
               withAsterisk
               label={'Session name'}
@@ -135,14 +161,14 @@ export function RequestNewSessionForm() {
               withAsterisk
               label={'Profile name'}
               description={
-                'The OpenSpace profile to use. It should contain all assets and content related to the session stream.'
+                'The OpenSpace profile with all assets and content for the session.'
               }
               maxLength={100}
               key={form.key('profileName')}
               {...form.getInputProps('profileName')}
             />
           </Group>
-          <Group grow align="flex-end">
+          <Group grow align="flex-start">
             <TextInput
               label={'Password'}
               description={
@@ -173,11 +199,13 @@ export function RequestNewSessionForm() {
             key={form.key('description')}
             {...form.getInputProps('description')}
           />
-          <Group grow align="flex-end">
+          <Group grow align="flex-start">
             <DateTimePicker
               label={'Start date/time'}
-              description={'Optional start of the planned session.'}
+              description={`Optional start of the planned session, in your local time (${timeZoneLabel}).`}
               clearable
+              // Clamps to a whole minute so the picked value passes validation.
+              minDate={new Date(earliestAllowedMs())}
               key={form.key('startDate')}
               {...form.getInputProps('startDate')}
               timePickerProps={{
@@ -188,8 +216,19 @@ export function RequestNewSessionForm() {
             />
             <DateTimePicker
               label={'End date/time'}
-              description={'Optional end of the planned session.'}
+              description={`Optional end of the planned session, in your local time (${timeZoneLabel}).`}
               clearable
+              minDate={startOfToday}
+              inputContainer={(children) => (
+                <>
+                  {children}
+                  {endDateInPast && (
+                    <Text size="xs" c="yellow" mt={4}>
+                      End time is in the past
+                    </Text>
+                  )}
+                </>
+              )}
               key={form.key('endDate')}
               {...form.getInputProps('endDate')}
               timePickerProps={{
@@ -201,7 +240,7 @@ export function RequestNewSessionForm() {
           </Group>
           <TextInput
             label={'OpenSpace version'}
-            placeholder={'e.g. 1.0 or master'}
+            placeholder={'e.g. 0.22.1'}
             description={'The OpenSpace version this session targets.'}
             maxLength={50}
             key={form.key('version')}

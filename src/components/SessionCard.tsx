@@ -23,6 +23,7 @@ import {
   ExpandMoreIcon,
   HostIcon,
   JoinSessionIcon,
+  LeaveSessionIcon,
   VerticalDotsIcon
 } from '@/icons/icons';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -108,7 +109,7 @@ export function SessionCard({ session }: Props) {
 
   return (
     <Card withBorder>
-      <Card.Section p={'xs'} flex={1} withBorder>
+      <Card.Section p={'xs'} withBorder>
         <Stack gap={'xs'}>
           <Group align="center" gap={'xs'}>
             {session.active && (
@@ -124,10 +125,14 @@ export function SessionCard({ session }: Props) {
                 />
               </Tooltip>
             )}
-            <TruncatedText fw={700} flex={1}>
+            <TruncatedText fw={700} flex={1} size="lg">
               {session.roomName}
             </TruncatedText>
           </Group>
+        </Stack>
+      </Card.Section>
+      <Card.Section withBorder p={'xs'} flex={1}>
+        <Stack>
           {description && (
             <ClampedText size={'sm'} lineClamp={3}>
               {description}
@@ -192,7 +197,9 @@ export function SessionCard({ session }: Props) {
       <Card.Section p={'xs'}>
         <Group justify="space-between" gap={'xs'}>
           {isConnectedToSession ? (
-            <Button onClick={disconnect}>Leave Session</Button>
+            <Button onClick={disconnect} rightSection={<LeaveSessionIcon />} color="red">
+              Leave Session
+            </Button>
           ) : (
             <Tooltip
               label={

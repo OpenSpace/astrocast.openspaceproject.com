@@ -1,20 +1,21 @@
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
-import { Button, Container, Group, Text, Title, Tooltip } from '@mantine/core';
+import { Button, Container, Group, Paper, Text, Title, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { skipToken } from '@reduxjs/toolkit/query';
 
 import { useOpenSpaceApi } from '@/api/hooks';
-import { ClampedText } from '@/components/ClampedText';
 import { JoinSessionModal } from '@/components/JoinSessionModal';
 import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
+import { TruncatedText } from '@/components/TruncatedText';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useJoinSession } from '@/hooks/useJoinSession';
 import { useIsConnectionStatus } from '@/hooks/util';
+import { JoinSessionIcon, LeaveSessionIcon } from '@/icons/icons';
 import { useGetSessionByIdQuery } from '@/redux/api/databaseApiSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setConnectedSessionId } from '@/redux/local/localSlice';
-import { ConnectionStatus } from '@/types/enums';
+import { ConnectionStatus, IconSize } from '@/types/enums';
 import { SessionIdPattern } from '@/utils/validate';
 
 export function ServerLinkPage() {
@@ -84,25 +85,48 @@ export function ServerLinkPage() {
         isOwner={isOwner}
         hostPassword={hostPassword}
       />
-      <OpenSpaceConnection />
       <Title order={2}>Join Session</Title>
 
-      {session.description && <Text>{session.description}</Text>}
-      {(session.version || session.profile) && (
-        <ClampedText c={'dark.1'} lineClamp={1}>
-          {[session.version ? `OpenSpace ${session.version}` : null, session.profile]
-            .filter(Boolean)
-            .join(' - ')}
-        </ClampedText>
-      )}
+      <Paper p={'md'} withBorder>
+        <Group align="center" gap={'xs'}>
+          {session.active && (
+            <Tooltip label={'Session is active'}>
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: IconSize.xs,
+                  height: IconSize.xs,
+                  borderRadius: '50%',
+                  backgroundColor: '#5cdd8b'
+                }}
+              />
+            </Tooltip>
+          )}
+          <Text fw={700} flex={1} size="lg">
+            {session.roomName}
+          </Text>
+        </Group>
+        {session.description && <Text>Description: {session.description}</Text>}
+
+        {(session.version || session.profile) && (
+          <Group gap={5} align="center" wrap="wrap">
+            {session.version && (
+              <TruncatedText size="sm" c={'dark.1'}>
+                Version: {session.version}
+              </TruncatedText>
+            )}
+            {session.profile && <Text size={'sm'}>Profile: {session.profile}</Text>}
+          </Group>
+        )}
+        <Text>
+          Session is currently {session.active ? 'active' : 'inactive'}{' '}
+          {session.active && session.currentHost
+            ? `and hosted by ${session.currentHost}.`
+            : ', no host has joined.'}
+        </Text>
+      </Paper>
       <Text>
-        Session is currently {session.active ? 'active' : 'inactive'}{' '}
-        {session.active && session.currentHost
-          ? `and hosted by ${session.currentHost}.`
-          : ', no host has joined.'}
-      </Text>
-      <Text>
-        If you don't see the session, click{' '}
+        If you did not auto connect to the session, click{' '}
         <Text span fw={700}>
           Join Session
         </Text>{' '}
@@ -116,11 +140,20 @@ export function ServerLinkPage() {
               : 'Cannot join session; Astrocast is not connected to OpenSpace'
           }
         >
-          <Button onClick={open} disabled={!canJoinSession}>
+          <Button
+            onClick={open}
+            rightSection={<JoinSessionIcon />}
+            disabled={!canJoinSession}
+          >
             Join Session
           </Button>
         </Tooltip>
-        <Button onClick={disconnect} disabled={!isConnectedToSession}>
+        <Button
+          onClick={disconnect}
+          rightSection={<LeaveSessionIcon />}
+          color="red"
+          disabled={!isConnectedToSession}
+        >
           Leave Session
         </Button>
       </Group>

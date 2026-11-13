@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import {
-  Alert,
   Card,
   Container,
   Group,
+  Paper,
   SimpleGrid,
   Stack,
   Text,
@@ -13,10 +13,10 @@ import {
 
 import { ClampedText } from '@/components/ClampedText';
 import { DownloadSessionButton } from '@/components/DownloadSessionButton';
-import { LoginButton } from '@/components/LoginButton';
 import { RemoveSessionHistoryButton } from '@/components/RemoveSessionHistoryButton';
 import { SessionCard } from '@/components/SessionCard';
-import { AccessDeniedIcon, SearchIcon } from '@/icons/icons';
+import { SignInAlert } from '@/components/SignInAlert';
+import { SearchIcon } from '@/icons/icons';
 import {
   useGetSessionsHistoryQuery,
   useGetSessionsQuery
@@ -36,17 +36,7 @@ export function MySessionsPage() {
   if (!user) {
     return (
       <Container>
-        <Alert
-          color={'red'}
-          title={'Sign in required'}
-          icon={<AccessDeniedIcon />}
-          mt={'md'}
-        >
-          <Stack align="flex-start" gap={'xs'}>
-            <Text>You need to sign in to view your sessions.</Text>
-            <LoginButton />
-          </Stack>
-        </Alert>
+        <SignInAlert />
       </Container>
     );
   }
@@ -82,16 +72,20 @@ export function MySessionsPage() {
         onChange={(event) => setSearch(event.currentTarget.value)}
       />
       {isLoading ? (
-        <Text>Loading sessions...</Text>
+        <Paper p={'lg'} withBorder>
+          <Text>Loading sessions...</Text>
+        </Paper>
       ) : (
         <>
           <Title order={3} mt={'md'}>
             Active Sessions
           </Title>
           {filteredActive.length === 0 ? (
-            <Text>
-              {query ? 'No active sessions match your search' : 'No active sessions'}
-            </Text>
+            <Paper p={'lg'} withBorder>
+              <Text>
+                {query ? 'No active sessions match your search' : 'No active sessions'}
+              </Text>
+            </Paper>
           ) : (
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={'md'}>
               {filteredActive.map((session) => (
@@ -103,9 +97,11 @@ export function MySessionsPage() {
             Historic Sessions
           </Title>
           {filteredHistory.length === 0 ? (
-            <Text>
-              {query ? 'No history sessions match your search' : 'No history sessions'}
-            </Text>
+            <Paper p={'lg'} withBorder>
+              <Text>
+                {query ? 'No history sessions match your search' : 'No history sessions'}
+              </Text>
+            </Paper>
           ) : (
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={'md'}>
               {filteredHistory.map((session) => (

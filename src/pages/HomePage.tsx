@@ -2,6 +2,7 @@ import { Accordion, Container, Group, Title } from '@mantine/core';
 
 import { RequestNewSessionForm } from '@/components/RequestNewSessionForm';
 import { Sessions } from '@/components/Sessions';
+import { SignInAlert } from '@/components/SignInAlert';
 import { CreateSessionIcon, SessionsIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -17,25 +18,19 @@ export function HomePage() {
         </Group>
       </Title>
       <Sessions />
-      {user ? (
-        <Accordion mt={'xs'}>
-          <Accordion.Item value={'create-session'}>
-            <Accordion.Control pl={0}>
-              <Group gap={'xs'}>
-                <CreateSessionIcon />
-                Create New Session
-              </Group>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <RequestNewSessionForm />
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
-      ) : (
-        <Title order={3} mt={'md'}>
-          Sign in to create a new session
-        </Title>
-      )}
+      <Accordion mt={'xs'}>
+        <Accordion.Item value={'create-session'}>
+          <Accordion.Control pl={0}>
+            <Group gap={'xs'}>
+              <CreateSessionIcon />
+              Create New Session
+            </Group>
+          </Accordion.Control>
+          <Accordion.Panel>
+            {user ? <RequestNewSessionForm /> : <SignInAlert />}
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     </Container>
   );
 }

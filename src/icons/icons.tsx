@@ -2,7 +2,9 @@ export { BsThreeDotsVertical as VerticalDotsIcon } from 'react-icons/bs';
 export {
   FaFacebook as FacebookIcon,
   FaGithub as GithubIcon,
-  FaGoogle as GoogleIcon
+  FaGoogle as GoogleIcon,
+  FaUser as SignInIcon,
+  FaUserSlash as SignOutIcon
 } from 'react-icons/fa';
 export { FaXTwitter as TwitterIcon } from 'react-icons/fa6';
 export { IoHomeOutline as HomeIcon } from 'react-icons/io5';
@@ -16,6 +18,7 @@ export {
   MdHistory as HistoryIcon,
   MdOutlineSettingsRemote as HostIcon,
   MdLogin as JoinSessionIcon,
+  MdLogout as LeaveSessionIcon,
   MdSearch as SearchIcon,
   MdSettings as SettingsIcon
 } from 'react-icons/md';

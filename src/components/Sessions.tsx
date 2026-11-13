@@ -1,13 +1,18 @@
-import { SimpleGrid, Text } from '@mantine/core';
+import { Paper, SimpleGrid, Text } from '@mantine/core';
 
 import { useSessions } from '@/hooks/useSessions';
+import { useAppSelector } from '@/redux/hooks';
 
 import { SessionCard } from './SessionCard';
 
 export function Sessions() {
   const { sessions, isLoading } = useSessions();
-  // Scheduled sessions first (earliest start first); startDate 0 means unscheduled.
+  const connectedSessionId = useAppSelector((state) => state.local.connectedSessionId);
+  // Connected session first, then scheduled sessions (earliest start first); startDate 0 means unscheduled.
   const sortedSessions = Array.from(sessions).sort((a, b) => {
+    if ((a.id === connectedSessionId) !== (b.id === connectedSessionId)) {
+      return a.id === connectedSessionId ? -1 : 1;
+    }
     if (a.startDate && b.startDate && a.startDate !== b.startDate) {
       return a.startDate - b.startDate;
     }
@@ -18,11 +23,19 @@ export function Sessions() {
   });
 
   if (isLoading) {
-    return <Text>Loading sessions...</Text>;
+    return (
+      <Paper p={'xl'} withBorder>
+        <Text>Loading sessions...</Text>
+      </Paper>
+    );
   }
 
   if (sessions.length === 0) {
-    return <Text>No sessions available</Text>;
+    return (
+      <Paper p={'xl'} withBorder>
+        <Text>No sessions available</Text>
+      </Paper>
+    );
   }
 
   return (
