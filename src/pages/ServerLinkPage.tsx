@@ -6,7 +6,6 @@ import { skipToken } from '@reduxjs/toolkit/query';
 
 import { useOpenSpaceApi } from '@/api/hooks';
 import { JoinSessionModal } from '@/components/JoinSessionModal';
-import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
 import { TruncatedText } from '@/components/TruncatedText';
 import { useGetHostPassword } from '@/hooks/useGetHostPassword';
 import { useJoinSession } from '@/hooks/useJoinSession';
@@ -61,8 +60,9 @@ export function ServerLinkPage() {
   if (isLoading) {
     return (
       <Container>
-        <OpenSpaceConnection />
-        <Text>Fetching session...</Text>
+        <Paper p={'md'}>
+          <Text>Fetching session...</Text>
+        </Paper>
       </Container>
     );
   }
@@ -70,8 +70,9 @@ export function ServerLinkPage() {
   if (!session) {
     return (
       <Container>
-        <OpenSpaceConnection />
-        <Text>Could not find session</Text>
+        <Paper p={'md'}>
+          <Text>Could not find session: {id}</Text>
+        </Paper>
       </Container>
     );
   }

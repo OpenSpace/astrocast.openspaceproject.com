@@ -30,7 +30,7 @@ function App() {
       handle this well.*/}
       <LuaApiProvider>
         <StrictMode>
-          <MantineProvider theme={theme} defaultColorScheme="dark">
+          <MantineProvider theme={theme} forceColorScheme="dark">
             <ModalsProvider>
               <Notifications autoClose={6000} />
               <AuthListener />
