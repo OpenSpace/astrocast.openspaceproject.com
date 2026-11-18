@@ -4,6 +4,7 @@ import { notifications } from '@mantine/notifications';
 
 import type { ProviderKey } from '@/firebase/types';
 import { providerIcon, supportedProviders } from '@/firebase/utils';
+import { SignInIcon } from '@/icons/icons';
 import { signInWithProvider } from '@/redux/auth/authMiddleware';
 import { useAppDispatch } from '@/redux/hooks';
 
@@ -45,7 +46,9 @@ export function LoginButton() {
           })}
         </Stack>
       </Modal>
-      <Button onClick={open}>Sign in</Button>
+      <Button onClick={open} leftSection={<SignInIcon />}>
+        Sign in
+      </Button>
     </>
   );
 }

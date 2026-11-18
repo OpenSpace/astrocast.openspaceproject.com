@@ -1,11 +1,11 @@
-import { Accordion, Alert, Container, Title } from '@mantine/core';
+import { Accordion, Alert, Container, Group, Stack, Text, Title } from '@mantine/core';
 
-import { OpenSpaceConnection } from '@/components/OpenSpaceConnection';
+import { LoginButton } from '@/components/LoginButton';
 import { RequestAdminRightsForm } from '@/components/RequestAdminRightsForm';
 import { RequestNewSessionForm } from '@/components/RequestNewSessionForm';
 import { SessionHistoryList } from '@/components/SessionHistoryList';
 import { SessionStatusList } from '@/components/SessionStatusList';
-import { AccessDeniedIcon } from '@/icons/icons';
+import { AccessDeniedIcon, AdminIcon, CreateSessionIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
 export function AdminPage() {
@@ -20,7 +20,10 @@ export function AdminPage() {
           icon={<AccessDeniedIcon />}
           mt={'md'}
         >
-          You do not have permission to view this page.
+          <Stack align="flex-start" gap={'xs'}>
+            <Text>You do not have permission to view this page.</Text>
+            <LoginButton />
+          </Stack>
         </Alert>
       </Container>
     );
@@ -28,16 +31,25 @@ export function AdminPage() {
 
   return (
     <Container>
-      <OpenSpaceConnection />
       <Accordion mt={'sm'}>
         <Accordion.Item value={'create-session'}>
-          <Accordion.Control>Create New Session</Accordion.Control>
+          <Accordion.Control>
+            <Group gap={'xs'}>
+              <CreateSessionIcon />
+              Create New Session
+            </Group>
+          </Accordion.Control>
           <Accordion.Panel>
             <RequestNewSessionForm />
           </Accordion.Panel>
         </Accordion.Item>
         <Accordion.Item value={'grant-admin-rights'}>
-          <Accordion.Control>Grant Admin Rights</Accordion.Control>
+          <Accordion.Control>
+            <Group gap={'xs'}>
+              <AdminIcon />
+              Grant Admin Rights
+            </Group>
+          </Accordion.Control>
           <Accordion.Panel>
             <RequestAdminRightsForm />
           </Accordion.Panel>
@@ -47,6 +59,10 @@ export function AdminPage() {
         Session Status
       </Title>
       <SessionStatusList />
+      <Title order={2} mt={'md'}>
+        Removed by User
+      </Title>
+      <SessionHistoryList removed />
       <Title order={2} mt={'md'}>
         History
       </Title>

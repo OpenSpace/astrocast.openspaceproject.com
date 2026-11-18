@@ -2,6 +2,7 @@ import { Avatar, Button, Group } from '@mantine/core';
 import { signOut } from 'firebase/auth';
 
 import { auth } from '@/firebase/config';
+import { SignOutIcon } from '@/icons/icons';
 import { useAppSelector } from '@/redux/hooks';
 
 import { LoginButton } from './LoginButton';
@@ -12,15 +13,18 @@ export function Profile() {
   return (
     <>
       {user ? (
-        <Group>
+        <Group wrap={'nowrap'}>
           <Avatar
+            visibleFrom={'sm'}
             src={user?.photoURL}
             name={user.displayName || ''}
             color={'initials'}
             alt={`Profile picture of ${user.displayName || 'user'}`}
             size={'lg'}
           />
-          <Button onClick={async () => await signOut(auth)}>Sign out</Button>
+          <Button onClick={async () => await signOut(auth)} leftSection={<SignOutIcon />}>
+            Sign out
+          </Button>
         </Group>
       ) : (
         <LoginButton />

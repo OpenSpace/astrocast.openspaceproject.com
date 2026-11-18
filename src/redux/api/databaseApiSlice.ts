@@ -34,6 +34,11 @@ export const databaseApi = createApi({
         _,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
+        // We're currently doing client-side filtering which is ok for now since we don't
+        // value a session as something super private.
+        // @TODO (anden88 2026-11-03): Consider if we want to do server-side filtering,
+        // but then we also need some kind of "update" system that re-fetches data when a
+        // new session is created
         const sessionsRef = ref(db, 'SessionData');
         let unsubscribe: Unsubscribe | null = null;
         try {

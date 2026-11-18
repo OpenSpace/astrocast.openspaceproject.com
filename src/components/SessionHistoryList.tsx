@@ -7,17 +7,24 @@ import {
 
 import { SessionHistoryEntry } from './SessionHistoryEntry';
 
-export function SessionHistoryList() {
+interface Props {
+  // Show only sessions removed by their owner instead of the remaining ones
+  removed?: boolean;
+}
+
+export function SessionHistoryList({ removed = false }: Props) {
   const { data, isLoading } = useGetSessionsHistoryQuery();
   const { data: statistics } = useGetStatisticsQuery();
-  const history = [...(data ?? [])].sort((a, b) => b.created - a.created);
+  const history = (data ?? [])
+    .filter((session) => !!session.removedByUser === removed)
+    .sort((a, b) => b.created - a.created);
 
   if (isLoading) {
     return <Text>Loading history...</Text>;
   }
 
   if (history.length === 0) {
-    return <Text>No history available</Text>;
+    return <Text>{removed ? 'No removed sessions' : 'No history available'}</Text>;
   }
 
   return (

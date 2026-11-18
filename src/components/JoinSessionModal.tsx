@@ -52,6 +52,7 @@ export function JoinSessionModal({
               onChange={(event) => setHostPasswordOverride(event.currentTarget.value)}
               placeholder={'Enter host password'}
               description={'Optional host password of this session'}
+              maxLength={100}
             />
             <Checkbox
               label={'Take Hostship'}
@@ -67,6 +68,7 @@ export function JoinSessionModal({
               onChange={(event) => setUsernameOverride(event.currentTarget.value)}
               placeholder={'Enter username'}
               description={'Optional username shown in OpenSpace'}
+              maxLength={50}
             />
           </Stack>
           <Group justify="flex-end" mt={'xs'} gap={'xs'}>

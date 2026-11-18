@@ -6,7 +6,8 @@ import {
   Modal,
   NumberInput,
   Text,
-  TextInput
+  TextInput,
+  Tooltip
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -15,7 +16,7 @@ import { SettingsIcon } from '@/icons/icons';
 import { closeConnection, reconnect } from '@/redux/connection/connectionMiddleware';
 import { startConnection } from '@/redux/connection/connectionSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { ConnectionStatus } from '@/types/enums';
+import { ConnectionStatus, IconSize } from '@/types/enums';
 
 export function OpenSpaceConnection() {
   const { connectionStatus, address, port } = useAppSelector((state) => state.connection);
@@ -26,6 +27,8 @@ export function OpenSpaceConnection() {
   const [opened, { open, close }] = useDisclosure();
 
   const dispatch = useAppDispatch();
+
+  const statusColor = isConnected ? 'green' : isConnecting ? 'yellow' : 'red';
 
   function disconnect() {
     dispatch(closeConnection());
@@ -55,18 +58,47 @@ export function OpenSpaceConnection() {
 
   return (
     <>
-      <Group justify="space-between">
-        <Text fw={700}>OpenSpace: {connectionStatus}</Text>
-        <Group gap={'xs'} align={'center'}>
+      <Group
+        justify="space-between"
+        wrap="nowrap"
+        bg={'dark.6'}
+        p={'xs'}
+        flex={1}
+        miw={0}
+        maw={700}
+        style={{ borderRadius: 'var(--mantine-radius-md)' }}
+      >
+        <Group gap={'sm'} wrap="nowrap">
+          <Text fw={700} visibleFrom="lg">
+            OpenSpace:
+          </Text>
+          <span
+            style={{
+              display: 'inline-block',
+              width: IconSize.xs,
+              height: IconSize.xs,
+              borderRadius: '50%',
+              backgroundColor: `var(--mantine-color-${statusColor}-6)`
+            }}
+          />
+          <Text fw={700} c={statusColor} visibleFrom="md">
+            {connectionStatus}
+          </Text>
+        </Group>
+        <Group gap={'xs'} align={'center'} wrap="nowrap">
           <Button
             onClick={() => (isConnected ? disconnect() : connect())}
             variant="outline"
+            color={statusColor}
+            disabled={isConnecting}
           >
             {isConnected ? 'Disconnect' : isConnecting ? 'Connecting...' : 'Connect'}
           </Button>
-          <ActionIcon onClick={openSettings} aria-label={'Open connection settings'}>
-            <SettingsIcon />
-          </ActionIcon>
+          <Tooltip label={'Open connection settings'}>
+            <ActionIcon onClick={openSettings} aria-label={'Open connection settings'}>
+              <SettingsIcon />
+            </ActionIcon>
+          </Tooltip>
         </Group>
       </Group>
       <Modal

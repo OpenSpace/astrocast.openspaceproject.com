@@ -5,6 +5,7 @@ import { notifications } from '@mantine/notifications';
 import { useOpenSpaceApi } from '@/api/hooks';
 import { useClaimHostMutation } from '@/redux/api/wormholeApiSlice';
 import type { SessionData } from '@/types/types';
+import { showApiErrorNotification } from '@/utils/notifications';
 
 interface Props {
   session: SessionData;
@@ -23,8 +24,6 @@ export function ClaimHostModal({ session, opened, close, hostPassword: hostPw }:
   async function handleConfirm() {
     try {
       const result = await claimHost({ sessionId: session.id, password }).unwrap();
-      // @ts-expect-error API not yet updated, requesting hostship will only work on
-      // latest OpenSpace master
       luaApi?.astrocast.requestHostship(password);
       notifications.show({
         title: 'Host Claimed',
@@ -32,15 +31,8 @@ export function ClaimHostModal({ session, opened, close, hostPassword: hostPw }:
         color: 'green'
       });
       close();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      const code = error?.status || '';
-      const codeMessage = code ? `Error ${code} - ` : '';
-      notifications.show({
-        title: `${codeMessage}Failed to claim host`,
-        message: error.data?.error,
-        color: 'red'
-      });
+    } catch (error) {
+      showApiErrorNotification('Failed to claim host', error);
       close();
     }
   }
@@ -61,6 +53,7 @@ export function ClaimHostModal({ session, opened, close, hostPassword: hostPw }:
               onChange={(event) => setPasswordOverride(event.currentTarget.value)}
               placeholder={'Enter host password'}
               description={'Host password required to claim host of this session'}
+              maxLength={100}
               withAsterisk
             />
           </Stack>

@@ -2,8 +2,9 @@ import { Link, Outlet } from 'react-router';
 import { AppShell, Burger, Group, Image, NavLink, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { AdminIcon, HomeIcon } from '@/icons/icons';
+import { AdminIcon, HistoryIcon, HomeIcon } from '@/icons/icons';
 
+import { OpenSpaceConnection } from './OpenSpaceConnection';
 import { Profile } from './Profile';
 
 export function AppLayout() {
@@ -15,8 +16,8 @@ export function AppLayout() {
       navbar={{ width: 200, breakpoint: 'sm', collapsed: { mobile: !opened } }}
     >
       <AppShell.Header>
-        <Group h={'100%'} justify={'space-between'} px={'xs'}>
-          <Group gap={'xs'}>
+        <Group h={'100%'} justify={'space-between'} wrap={'nowrap'} px={'xs'}>
+          <Group gap={'xs'} wrap={'nowrap'}>
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size={'sm'} />
             <Link to={'/'} style={{ textDecoration: 'none', color: 'inherit' }}>
               <Group gap={'xs'}>
@@ -28,10 +29,13 @@ export function AppLayout() {
                   fit={'contain'}
                   display={'inline-block'}
                 />
-                <Title order={1}>Astrocast</Title>
+                <Title order={1} visibleFrom={'sm'}>
+                  Astrocast
+                </Title>
               </Group>
             </Link>
           </Group>
+          <OpenSpaceConnection />
           <Profile />
         </Group>
       </AppShell.Header>
@@ -41,6 +45,13 @@ export function AppLayout() {
           to={'/'}
           label={'Home'}
           leftSection={<HomeIcon />}
+          onClick={close}
+        />
+        <NavLink
+          component={Link}
+          to={'/my-sessions'}
+          label={'My Sessions'}
+          leftSection={<HistoryIcon />}
           onClick={close}
         />
         <NavLink
