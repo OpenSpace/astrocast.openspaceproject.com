@@ -5,8 +5,8 @@ import { defineConfig, loadEnv } from 'vite';
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
-  const serverURL = new URL(env.VITE_SERVER_URL ?? 'http://localhost:25000');
-  const serverAPIPath = env.VITE_SERVER_API_PATH ?? '/api/v1';
+  const serverURL = new URL(env['VITE_SERVER_URL'] ?? 'http://localhost:25000');
+  const serverAPIPath = env['VITE_SERVER_API_PATH'] ?? '/api/v1';
 
   return {
     plugins: [react(), babel({ presets: [reactCompilerPreset()] })],

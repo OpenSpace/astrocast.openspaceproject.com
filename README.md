@@ -47,8 +47,9 @@ All sessions occupied? Log in with your Google, Facebook, Twitter, or GitHub acc
 | `npm run dev` | Start the app with hot reload (development) |
 | `npm run build` | Type-check and build the production bundle to `dist/` |
 | `npm run preview` | Preview the production build locally |
-| `npm run lint` | Check formatting (Prettier) and linting (ESLint) |
-| `npm run lint-fix` | Auto-fix formatting and lint issues |
+| `npm run lint` | Check linting (ESLint) and formatting (Prettier) |
+| `npm run format` | Auto-fix formatting (Prettier) |
+| `npm run format:check` | Check formatting (Prettier) |
 
 ### Environment Variables
 

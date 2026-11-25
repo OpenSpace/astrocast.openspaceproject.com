@@ -14,7 +14,7 @@ import { DetailsList } from './DetailsList';
 
 interface Props {
   session: SessionData;
-  statistics?: Statistics;
+  statistics?: Statistics | undefined;
 }
 
 export function SessionStatusEntry({ session, statistics }: Props) {

@@ -1,1 +1,7 @@
-README.md
+# Build output and dependencies
+dist
+node_modules
+package-lock.json
+
+# Markdown is checked by markdownlint, whose list indentation differs from Prettier's
+*.md

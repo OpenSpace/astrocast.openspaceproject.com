@@ -41,7 +41,7 @@ async function toAuthUser(user: User): Promise<AuthUser> {
     email: user.email,
     photoURL: user.photoURL,
     providerIds: user.providerData.map((p) => p.providerId),
-    isAdmin: tokenResult.claims.admin === true
+    isAdmin: tokenResult.claims['admin'] === true
   };
 }
 

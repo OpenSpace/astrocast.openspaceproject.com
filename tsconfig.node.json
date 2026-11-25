@@ -1,9 +1,10 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "@openspace/shared-configs/tsconfig.json",
+
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "lib": ["ES2023"],
-    "types": ["node"]
+    "types": ["node"],
+    "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
   },
   "include": ["vite.config.ts"]
 }

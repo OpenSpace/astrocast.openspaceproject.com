@@ -12,7 +12,7 @@ import { DownloadSessionButton } from './DownloadSessionButton';
 
 interface Props {
   session: SessionHistoryData;
-  statistics?: Statistics;
+  statistics?: Statistics | undefined;
 }
 
 export function SessionHistoryEntry({ session, statistics }: Props) {

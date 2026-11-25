@@ -8,13 +8,13 @@ export type CreateSessionRequest = {
   roomName: string;
   profile: string;
   isPrivate: boolean;
-  password?: string;
+  password?: string | undefined;
   hostPassword: string;
-  description?: string;
-  version?: string;
-  keepAlive?: boolean;
-  startDate?: number;
-  endDate?: number;
+  description?: string | undefined;
+  version?: string | undefined;
+  keepAlive?: boolean | undefined;
+  startDate?: number | undefined;
+  endDate?: number | undefined;
 };
 
 export type AdminRightsRequest = {

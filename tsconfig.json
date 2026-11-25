@@ -1,38 +1,4 @@
 {
   "files": [],
-  "compilerOptions": {
-    "target": "es2023",
-    "module": "esnext",
-    "paths": {
-      "@/api/*": ["./src/api/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/config/*": ["./src/config/*"],
-      "@/firebase/*": ["./src/firebase/*"],
-      "@/icons/*": ["./src/icons/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/pages/*": ["./src/pages/*"],
-      "@/redux/*": ["./src/redux/*"],
-      "@/types/*": ["./src/types/*"],
-      "@/utils/*": ["./src/utils/*"]
-    },
-    "skipLibCheck": true,
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    /* Linting */
-    "allowUnreachableCode": false,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true
-  },
-
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
